@@ -1,0 +1,254 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace CancellationTest
+{
+    public partial class screenSizeAdjustment : Form
+    {
+
+        private double a4WidthRatio = 88.6 / 29.7;
+        private double a4HeightRatio = 49.8/21.0;
+
+        public double screenSize { get; private set; }
+
+        private testParameters m_testParameters;
+
+        private System.Windows.Forms.Button okayButton;
+        private System.Windows.Forms.Button increaseButton;
+        private System.Windows.Forms.Button decreaseButton;
+        private System.Windows.Forms.TextBox currentRatioBox;
+        private System.Windows.Forms.GroupBox a4GroupBox;
+
+        public screenSizeAdjustment()
+        {
+            
+
+            testParameters testParameters = new testParameters();
+            testParameters.testType = AvailableExams.Assessment;
+            testParameters.patientName = "Unknown";
+            testParameters.adjustmentRatio = 1.0;
+            testParameters.examTime = 240;
+
+            this.m_testParameters = testParameters;
+
+
+            frameSetup();
+        }
+
+        public screenSizeAdjustment(testParameters testParameters)
+        {
+            this.screenSize = testParameters.adjustmentRatio;
+            this.m_testParameters = testParameters;
+
+            frameSetup();
+
+        }
+
+        public void frameSetup()
+        {
+            Console.WriteLine(DPIUtil.ScaleFactor(this, new Point(1, 1)));
+            Console.WriteLine((int)(100 * Screen.PrimaryScreen.WorkingArea.Width / Screen.PrimaryScreen.Bounds.Width));
+            Console.WriteLine(this.DeviceDpi);
+
+            Console.WriteLine("Screen Width: " + Screen.PrimaryScreen.Bounds.Width);
+
+            this.TopMost = true;
+            this.FormBorderStyle = FormBorderStyle.None;
+            this.WindowState = FormWindowState.Maximized;
+
+            this.screenSize = 1.0;
+
+            InitializeComponent(); 
+
+            
+            //this.currentRatioBox.Enter += new EventHandler(textBox1_Enter);
+            this.currentRatioBox.ReadOnly = true;
+
+            
+
+            
+
+            //adjust();
+            
+        }
+
+
+
+        private void increaseButton_Click(object sender, EventArgs e)
+        {
+            this.screenSize += 0.01;
+            adjust();
+        }
+
+        private void decreaseButton_Click(object sender, EventArgs e)
+        {
+            this.screenSize -= 0.01;
+            adjust();
+        }
+
+        private void adjust()
+        {
+            this.a4GroupBox.Show();
+            
+            Console.WriteLine("screenSize: " + this.screenSize);
+            Console.WriteLine("Current Window Width: " + this.Width);
+            Console.WriteLine("Current Window Height: " + this.Height);
+            currentRatioBox.Text = this.screenSize.ToString();
+            this.a4GroupBox.Width = (int)(this.screenSize * a4WidthRatio * 100);
+            this.a4GroupBox.Height = (int)(this.screenSize * a4HeightRatio * 100);
+
+            this.a4GroupBox.Left = (this.Width - this.a4GroupBox.Width) / 2;
+            this.a4GroupBox.Top = (this.Height - this.a4GroupBox.Height) / 2 - this.currentRatioBox.Height - this.okayButton.Height;
+        }
+
+        private void textBox1_Enter(object sender, EventArgs e)
+        {
+            Console.WriteLine("textBox1_Enter");
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+            //this.screenSize = Convert.ToDouble(currentRatioBox.Text);
+            Console.WriteLine("screenSize: " + currentRatioBox.Text);    
+            adjust();
+        }
+
+        private void okayButton_Click_1(object sender, EventArgs e)
+        {
+            this.m_testParameters.adjustmentRatio = this.screenSize;
+            this.Close();
+        }
+
+        private void InitializeComponent()
+        {
+            this.okayButton = new System.Windows.Forms.Button();
+            this.increaseButton = new System.Windows.Forms.Button();
+            this.decreaseButton = new System.Windows.Forms.Button();
+            this.currentRatioBox = new System.Windows.Forms.TextBox();
+            this.a4GroupBox = new System.Windows.Forms.GroupBox();
+
+            int screenWidth = Screen.PrimaryScreen.Bounds.Width;
+            int screenHeight = Screen.PrimaryScreen.Bounds.Height;
+
+            int testScreenWidth = 1518;
+            int testScreenHeight = 917;
+
+            double adjsutmentWidthRatio = (double)screenWidth / testScreenWidth;
+            double adjsutmentHeightRatio = (double)screenHeight / testScreenHeight;
+   
+            //Lambda functino to adjust the width and height of the form
+            Func<int, int> adjustWidth = (int width) => (int)(width * adjsutmentWidthRatio);
+            Func<int, int> adjustHeight = (int height) => (int)(height * adjsutmentHeightRatio);
+        
+
+
+            Console.WriteLine("screenWidth: " + screenWidth);
+            Console.WriteLine("screenHeight: " + screenHeight);
+
+
+
+            //this.SuspendLayout();
+            // 
+            // okayButton
+            // 
+            this.okayButton.BackColor = System.Drawing.Color.DeepSkyBlue;
+            
+            //this.okayButton.Location = new System.Drawing.Point(adjustWidth(674), adjustHeight(808));
+            this.okayButton.Top = (int)(screenHeight * 0.9);
+            this.okayButton.Left = (int)(screenWidth * 0.45);
+            this.okayButton.Name = "button1";
+            this.okayButton.Size = new System.Drawing.Size((int)(screenWidth * 0.1), (int)(0.08 * screenHeight));
+            this.okayButton.TabIndex = 0;
+            this.okayButton.Text = "Okay";
+            this.okayButton.UseVisualStyleBackColor = false;
+            this.okayButton.Click += new System.EventHandler(this.okayButton_Click_1);
+            // 
+            // increaseButton
+            // 
+            this.increaseButton.BackColor = System.Drawing.Color.DarkGreen;
+            //this.increaseButton.Location = new System.Drawing.Point(adjustWidth(870), adjustHeight(740));
+            this.increaseButton.Top = (int)(screenHeight * 0.8);
+            this.increaseButton.Left = (int)(screenWidth * 0.6);
+            this.increaseButton.Name = "button2";
+            this.increaseButton.Size = new System.Drawing.Size((int)(screenWidth * 0.1), (int)(0.08 * screenHeight));
+            this.increaseButton.TabIndex = 1;
+            this.increaseButton.Text = "Increase";
+            this.increaseButton.UseVisualStyleBackColor = false;
+            this.increaseButton.Click += new System.EventHandler(this.increaseButton_Click);
+            // 
+            // decreaseButton
+            // 
+            this.decreaseButton.BackColor = System.Drawing.Color.DarkRed;
+            //this.decreaseButton.Location = new System.Drawing.Point(adjustWidth(583), adjustHeight(740));
+            this.decreaseButton.Top = (int)(screenHeight * 0.8);
+            this.decreaseButton.Left = (int)(screenWidth * 0.3);
+            this.decreaseButton.Name = "button3";
+            this.decreaseButton.Size = new System.Drawing.Size((int)(screenWidth * 0.1), (int)(0.08 * screenHeight));
+            this.decreaseButton.TabIndex = 2;
+            this.decreaseButton.Text = "Decrease";
+            this.decreaseButton.UseVisualStyleBackColor = false;
+            this.decreaseButton.Click += new System.EventHandler(this.decreaseButton_Click);
+            // 
+            // currentRatioBox
+            // 
+            this.currentRatioBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F);
+            //this.currentRatioBox.Location = new System.Drawing.Point(adjustWidth(679), adjustHeight(740));
+            this.currentRatioBox.Top = (int)(screenHeight * 0.8);
+            this.currentRatioBox.Left = (int)(screenWidth * 0.45);
+            this.currentRatioBox.Name = "textBox1";
+            this.currentRatioBox.Size = new System.Drawing.Size(adjustWidth(185), adjustHeight(62));
+            this.currentRatioBox.TabIndex = 3;
+            this.currentRatioBox.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
+            // 
+            // a4GroupBox
+            // 
+            this.a4GroupBox.BackColor = System.Drawing.Color.WhiteSmoke;
+
+            //this.a4GroupBox.Location = new System.Drawing.Point(adjustWidth(479), adjustHeight(217));
+            this.a4GroupBox.Width = (int)(this.screenSize * a4WidthRatio * 100);
+            this.a4GroupBox.Height = (int)(this.screenSize * a4HeightRatio * 100);
+            //this.a4GroupBox.Location = new System.Drawing.Point((this.Width - this.a4GroupBox.Width) / 2, 
+                //(this.Height - this.a4GroupBox.Height) / 2 - adjustHeight(62) - this.okayButton.Height);
+            
+            //this.a4GroupBox.Left = (int)(screenWidth * 0.4);
+            //this.a4GroupBox.Top = (int)(screenHeight * 0.3);
+            //this.a4GroupBox.Location = new System.Drawing.Point(960,512);
+            this.a4GroupBox.Name = "groupBox1";
+            //this.a4GroupBox.Width = (int)(100);
+            //this.a4GroupBox.Height = (int)(100);
+            this.a4GroupBox.TabIndex = 4;
+            this.a4GroupBox.TabStop = false;
+            this.a4GroupBox.Text = "A4 Paper";
+            this.a4GroupBox.Hide();
+            // 
+            // screenSizeAdjustment
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.Black;
+            //this.ClientSize = new System.Drawing.Size(adjustWidth(1496), adjustHeight(861));
+            this.Controls.Add(this.a4GroupBox);
+            this.Controls.Add(this.currentRatioBox);
+            this.Controls.Add(this.decreaseButton);
+            this.Controls.Add(this.increaseButton);
+            this.Controls.Add(this.okayButton);
+            this.Name = "screenSizeAdjustment";
+            this.Text = "screenSizeAdjustment";
+            Console.WriteLine("screenWidth: " + this.Width);
+            Console.WriteLine("screenHeight: " + this.Height);
+            Console.WriteLine("A4 Ratio: " + a4WidthRatio + " " + a4HeightRatio);
+            Console.WriteLine("Screen Size" + this.screenSize);
+            //this.ResumeLayout(false);
+            //this.PerformLayout();
+
+        }
+    }
+}
