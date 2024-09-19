@@ -18,68 +18,84 @@ using OfficeOpenXml;
 
 namespace CancellationTest
 {
-    internal class examParent : Form
+    internal class praticeParent : Form
     {
-        protected IContainer components;
-        protected MainMenu ImgMenu = null;
-        protected Graphics g = null;
+        private IContainer components;
+        private MainMenu ImgMenu = null;
+        private Graphics g = null;
 
         //A reference map to cacluate the interactions
-        protected int[,] bitMap = null;
+        private int[,] bitMap = null;
 
-        protected int curPtindex = 0;
-        protected Pen GreenPen = null;
-        protected Pen BluePen = null;
-        protected Pen RedPen = null;
-        protected Pen CrossPen = null;
-        protected Point CurPt;
-        protected Point[] Cath2DPts = null;
-        protected Point[] CirPts = null;
-        protected int MaxPts = 0;
+        private int curPtindex = 0;
+        private Pen GreenPen = null;
+        private Pen BluePen = null;
+        private Pen RedPen = null;
+        private Pen CrossPen = null;
+        private Point CurPt;
+        private Point[] Cath2DPts = null;
+        private Point[] CirPts = null;
+        private int MaxPts = 0;
 
-        protected string patientName;
+        private string patientName;
 
         public int adjustedScreenWidth { get; private set; }
         public int adjustedScreenHeight { get; private set; }
 
         //Inorder to standardize the screen size a variable is declared to adjust the size of the screen
-        protected double adjustSize = 1.0;
+        private double adjustSize = 1.0;
 
         //The none adjustsize of the screen
-        protected int screenwidth = 960;
+        private int screenwidth = 960;
         //Total screen size in 575
-        protected int screenheight = 540;
-        protected int verticalOffset = 0;
+        private int screenheight = 540;
+        private int verticalOffset = 0;
+
+        //Sizes of the instruction mugs
+        private int smallMugsize;
+        private int largeMugsize;
 
         //Vars that are declared in class init
-        protected int numberOfHorizontalGrids; // a variable that defines the number of grids in the horizontal direction
-        protected int numberOfVerticalGrids; // a variable that defines the number of grids in the vertical direction
+        private int numberOfHorizontalGrids; // a variable that defines the number of grids in the horizontal direction
+        private int numberOfVerticalGrids; // a variable that defines the number of grids in the vertical direction
 
 
         //Storage of the lines seperating the cells
-        protected int[] horizontalLines;
-        protected int[] verticalLines;
+        private int[] horizontalLines;
+        private int[] verticalLines;
 
         //Refrences for the images
-        protected List<imageObject> images = new List<imageObject>();
+        private List<imageObject> images = new List<imageObject>();
 
         //Action tracker
-        protected actionTracker tracker;
-        protected abstractTestClass localExamObject;
+        private actionTracker tracker;
+        private abstractTestClass localExamObject;
 
-        protected DateTime endTime;
+        private DateTime endTime;
 
-        protected Label timeLabel;
-        protected Label currentTimeLabel;
-        protected Button helpButton;
+        private Label timeLabel;
+        private Label currentTimeLabel;
+        private Button helpButton;
+        private Label crossOutLabel;
+        private Label tryThisLabel;
 
-        protected Point centerScreen;
-        protected Point minBoundry;
-        protected Point maxBoundry;
+        private PictureBox smallLeftCrossedMug;
+        private PictureBox smallRightCrossedMug;
+        private PictureBox largeLeftCrossedMug;
+        private PictureBox LargeRightCrossedMug;
+
+        private PictureBox smallLeftMug;
+        private PictureBox smallRightMug;
+        private PictureBox largeLeftMug;
+        private PictureBox largeRightMug;
+
+        private Point centerScreen;
+        private Point minBoundry;
+        private Point maxBoundry;
 
 
-        public examParent( abstractTestClass examObject, double adjustSize = 0.5,
-            int seconds = 240, string patientName = "None") 
+        public praticeParent( abstractTestClass examObject, double adjustSize = 0.5,
+            int seconds = 240, string patientName = "None")
         {
 
             this.TopMost = true;
@@ -92,12 +108,11 @@ namespace CancellationTest
             //this.screenheight = this.Height;
 
             //Assign the parameter values to the variables
-            this.adjustSize = adjustSize * ((double) this.screenwidth/1920.0);
-            
-            
-
-
+            this.adjustSize = adjustSize * ((double)this.screenwidth / 1920.0); ;
             this.patientName = patientName;
+
+            this.smallMugsize = (int)(0.04 * this.screenwidth);
+            this.largeMugsize = (int)(0.055 * this.screenwidth);
 
             this.BackColor = Color.DarkGray;
             
@@ -118,28 +133,124 @@ namespace CancellationTest
             this.timeLabel = new Label();
             this.timeLabel.Text = "Time:";
             this.timeLabel.Location = new Point((int)(0.8*this.screenwidth), 5);
-            this.timeLabel.Size = new Size((int)(0.05 * this.screenwidth ), (int)(0.035 * this.screenheight));
-            this.timeLabel.Font = new Font("Arial", (int)(0.022 * this.screenheight));
+            this.timeLabel.Size = new Size((int)(0.05 * this.screenwidth ), 40);
+            this.timeLabel.Font = new Font("Arial", 24);
             this.timeLabel.ForeColor = Color.DimGray;
 
             this.currentTimeLabel = new Label();
             this.currentTimeLabel.Text = "00:00";
             this.currentTimeLabel.Location = new Point((int)(0.9 * this.screenwidth), 5);
-            this.currentTimeLabel.Size = new Size((int)(0.05 * this.screenwidth), (int)(0.35 * this.screenheight));
-            this.currentTimeLabel.Font = new Font("Arial", (int)(0.022 * this.screenheight));
+            this.currentTimeLabel.Size = new Size((int)(0.05 * this.screenwidth), 40);
+            this.currentTimeLabel.Font = new Font("Arial", 24);
             this.currentTimeLabel.ForeColor = Color.DeepSkyBlue;
 
             this.helpButton = new Button();
             this.helpButton.Text = "?";
             this.helpButton.Location = new Point((int)(0.95 * this.screenwidth), 5);
-            this.helpButton.Size = new Size((int)(0.035 * this.screenheight), (int)(0.035 * this.screenheight));
-            this.helpButton.Font = new Font("Arial", (int)(0.022 * this.screenheight));
+            this.helpButton.Size = new Size(40, 40);
+            this.helpButton.Font = new Font("Arial", 24);
             this.helpButton.ForeColor = Color.WhiteSmoke;
             this.helpButton.BackColor = Color.DeepSkyBlue;
+
+            this.crossOutLabel = new Label();
+            this.crossOutLabel.Text = "Cross Out the full mugs";
+            this.crossOutLabel.Location = new Point(0, (int)(0.1 * this.screenheight));
+            //Center align the text
+            this.crossOutLabel.TextAlign = ContentAlignment.MiddleCenter;
+            this.crossOutLabel.Size = new Size((int)(this.screenwidth), (int)(0.03 * this.screenwidth));
+            this.crossOutLabel.Font = new Font("Arial", (int)(0.02 * this.screenwidth));
+
+            Image smallLeftTargetImage = imageObject.getImageObject(imageTypes.TargetLeft);
+            smallLeftTargetImage = ResizeImage(smallLeftTargetImage, this.smallMugsize, this.smallMugsize);
+
+            this.smallLeftCrossedMug = new PictureBox();
+            this.smallLeftCrossedMug.Image = smallLeftTargetImage;
+            this.smallLeftCrossedMug.Location = new Point((int)(0.35 * this.screenwidth), (int)(0.165 * this.screenheight));
+            this.smallLeftCrossedMug.Size = new Size(this.smallMugsize, this.smallMugsize);
+
+            Image smallRightTarget = imageObject.getImageObject(imageTypes.TargetRight);
+            smallRightTarget = ResizeImage(smallRightTarget, this.smallMugsize, this.smallMugsize);
+
+            this.smallRightCrossedMug = new PictureBox();
+            this.smallRightCrossedMug.Image= smallRightTarget;
+            this.smallRightCrossedMug.Location = new Point((int)(0.4 * this.screenwidth), (int)(0.165 * this.screenheight));
+            this.smallRightCrossedMug.Size = new Size(this.smallMugsize, this.smallMugsize);
+
+            Image smallLeftDistractor = imageObject.getImageObject(imageTypes.DistractionLeft);
+            smallLeftDistractor = ResizeImage(smallLeftDistractor, this.smallMugsize, this.smallMugsize);
+
+            this.smallLeftMug = new PictureBox();
+            this.smallLeftMug.Image = smallLeftDistractor;
+            this.smallLeftMug.Location = new Point((int)(0.5 * this.screenwidth), (int)(0.165 * this.screenheight));
+            this.smallLeftMug.Size = new Size(this.smallMugsize, this.smallMugsize);
+
+            Image smallRightDistractor = imageObject.getImageObject(imageTypes.DistractionRight);
+            smallRightDistractor = ResizeImage(smallRightDistractor, this.smallMugsize, this.smallMugsize);
+
+            this.smallRightMug = new PictureBox();
+            this.smallRightMug.Image = smallRightDistractor;
+            this.smallRightMug.Location = new Point((int)(0.55 * this.screenwidth), (int)(0.165 * this.screenheight));
+            this.smallRightMug.Size = new Size(this.smallMugsize, this.smallMugsize);
+
+            Image leftTarget = imageObject.getImageObject(imageTypes.TargetLeft);
+            leftTarget = ResizeImage(leftTarget, this.largeMugsize, this.largeMugsize);
+
+            this.largeLeftCrossedMug = new PictureBox();
+            this.largeLeftCrossedMug.Image = leftTarget;
+            this.largeLeftCrossedMug.Location = new Point((int)(0.33 * this.screenwidth), (int)(0.25 * this.screenheight));
+            this.largeLeftCrossedMug.Size = new Size(this.largeMugsize, this.largeMugsize);
+
+            Image rightTarget = imageObject.getImageObject(imageTypes.TargetRight);
+            rightTarget = ResizeImage(rightTarget, this.largeMugsize, this.largeMugsize);
+
+            this.LargeRightCrossedMug = new PictureBox();
+            this.LargeRightCrossedMug.Image = rightTarget;
+            this.LargeRightCrossedMug.Location = new Point((int)(0.4 * this.screenwidth), (int)(0.25 * this.screenheight));
+            this.LargeRightCrossedMug.Size = new Size(this.largeMugsize, this.largeMugsize);
+
+            Image leftDistractor = imageObject.getImageObject(imageTypes.DistractionLeft);
+            leftDistractor = ResizeImage(leftDistractor, this.largeMugsize, this.largeMugsize);
+
+            this.largeLeftMug = new PictureBox();
+            this.largeLeftMug.Image = leftDistractor;
+            this.largeLeftMug.Location = new Point((int)(0.5 * this.screenwidth), (int)(0.25 * this.screenheight));
+            this.largeLeftMug.Size = new Size(this.largeMugsize, this.largeMugsize);
+
+            Image rightDistractor = imageObject.getImageObject(imageTypes.DistractionRight);
+            rightDistractor = ResizeImage(rightDistractor, this.largeMugsize, this.largeMugsize);
+            
+            this.largeRightMug = new PictureBox();
+            this.largeRightMug.Image = rightDistractor;
+            this.largeRightMug.Location = new Point((int)(0.55 * this.screenwidth), (int)(0.25 * this.screenheight));
+            this.largeRightMug.Size = new Size(this.largeMugsize, this.largeMugsize);
+
+            this.tryThisLabel = new Label();
+            this.tryThisLabel.Text = "Try This Example";
+            this.tryThisLabel.Location = new Point(0, (int)(0.37 * this.screenheight));
+            this.tryThisLabel.TextAlign = ContentAlignment.MiddleCenter;
+            this.tryThisLabel.Size = new Size((int)(this.screenwidth), (int)(0.03 * this.screenwidth));
+            this.tryThisLabel.Font = new Font("Arial", (int)(0.02 * this.screenwidth));
+
+
+
+
+
 
             this.Controls.Add(this.timeLabel);
             this.Controls.Add(this.currentTimeLabel);
             this.Controls.Add(this.helpButton);
+            this.Controls.Add(this.smallLeftCrossedMug);
+            this.Controls.Add(this.smallRightCrossedMug);
+            this.Controls.Add(this.smallLeftMug);
+            this.Controls.Add(this.smallRightMug);
+            this.Controls.Add(this.largeLeftCrossedMug);
+            this.Controls.Add(this.LargeRightCrossedMug);
+            this.Controls.Add(this.largeLeftMug);
+            this.Controls.Add(this.largeRightMug);
+            this.Controls.Add(this.tryThisLabel);
+
+
+            this.Controls.Add(this.crossOutLabel);
              
             this.KeyPreview = true;
             this.centerScreen = new Point(this.screenwidth / 2, this.screenheight / 2); 
@@ -150,9 +261,6 @@ namespace CancellationTest
 
             this.minBoundry = new Point((this.screenwidth - frameX)/2, (this.screenheight - frameY)/2);
             this.maxBoundry = new Point((this.screenwidth + frameX) / 2, (this.screenheight + frameY) / 2);
-
-            
-
 
             //Creating a new bitMap
 
@@ -167,7 +275,7 @@ namespace CancellationTest
            
         }
 
-        protected void timer_Tick(object sender, EventArgs e)
+        private void timer_Tick(object sender, EventArgs e)
         {
             TimeSpan timeRemaining = endTime - DateTime.Now;
 
@@ -290,7 +398,7 @@ namespace CancellationTest
 
 
         //draw customized mouse pointer
-        protected Cursor crossCursor(Pen pen, int x, int y)
+        private Cursor crossCursor(Pen pen, int x, int y)
         {
             var pic = new Bitmap(x, y);
             Graphics gr = Graphics.FromImage(pic);
@@ -310,7 +418,7 @@ namespace CancellationTest
             return c;
         }
 
-        protected void bitMapValidation(Graphics g)
+        private void bitMapValidation(Graphics g)
         {
             for (int i = 0; i < this.screenwidth; i++)
             {
@@ -400,14 +508,14 @@ namespace CancellationTest
             dc.DrawRectangle(RedPen, 900, 500, 120, 80);
         }
 
-        protected void Draw2DPoint(Graphics dc, Pen pen, Point pt)
+        private void Draw2DPoint(Graphics dc, Pen pen, Point pt)
         {
             dc.DrawLine(pen, pt.X - 7, pt.Y, pt.X + 7, pt.Y);
             dc.DrawLine(pen, pt.X, pt.Y - 7, pt.X, pt.Y + 7);
         }
 
 
-        protected void increaseAdjustSize()
+        private void increaseAdjustSize()
         {
             this.adjustSize += 0.01;
 
@@ -427,7 +535,7 @@ namespace CancellationTest
     
         }
 
-        protected void decreaseAdjustSize()
+        private void decreaseAdjustSize()
         {
             this.adjustSize -= 0.01;
 
@@ -440,7 +548,7 @@ namespace CancellationTest
             this.CrossPen = new Pen(Color.Black, (float)(frameY * 0.01));
         }
 
-        protected Point adjustedClickPoint(Point clickPoint)
+        private Point adjustedClickPoint(Point clickPoint)
         {
             
             Point newPoint = new Point((int)Math.Round(clickPoint.X / adjustSize) - this.minBoundry.X,
@@ -450,7 +558,7 @@ namespace CancellationTest
             return newPoint;
         }
 
-        protected void InitializeComponent()
+        private void InitializeComponent()
         {
             this.SuspendLayout();
             // 
@@ -465,13 +573,31 @@ namespace CancellationTest
             this.ResumeLayout(false);
 
         }
+
+        public static Image ResizeImage(Image image, int maxWidth, int maxHeight)
+        {
+            // Calculate the new dimensions while maintaining the aspect ratio
+            int originalWidth = image.Width;
+            int originalHeight = image.Height;
+            float ratioX = (float)maxWidth / originalWidth;
+            float ratioY = (float)maxHeight / originalHeight;
+            float ratio = Math.Min(ratioX, ratioY);
+
+            int newWidth = (int)(originalWidth * ratio);
+            int newHeight = (int)(originalHeight * ratio);
+
+            // Create a new bitmap with the new dimensions
+            Bitmap resizedImage = new Bitmap(newWidth, newHeight);
+
+            // Use a graphics object to draw the resized image
+            using (Graphics graphics = Graphics.FromImage(resizedImage))
+            {
+                graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+                graphics.DrawImage(image, 0, 0, newWidth, newHeight);
+            }
+
+            return resizedImage;
+        }
     }
 
-    public enum AvailableExams
-    {
-        RandomPlacement,
-        Assessment,
-        Pratice_1,
-        Pratice_2
-    }
 }

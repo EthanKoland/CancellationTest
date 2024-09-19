@@ -80,10 +80,16 @@
   <ItemGroup>
     <Compile Include="abstractTestClass.cs" />
     <Compile Include="actionTracker.cs" />
+    <Compile Include="praticeParent.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="praticeExam2.cs" />
+    <Compile Include="praticeExam1.cs" />
     <Compile Include="assesmentExam.cs" />
     <Compile Include="CancellationTest.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="DisplayScaleHelper.cs" />
     <Compile Include="DPIUtil.cs" />
     <Compile Include="examParent.cs">
       <SubType>Form</SubType>

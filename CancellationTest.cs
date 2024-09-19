@@ -458,22 +458,49 @@ namespace CancellationTest
             return getMatrixLocation(imgCenter.X, imgCenter.Y);
         }
 
+        public static float GetWindowsDisplayScale()
+        {
+            using (Graphics graphics = Graphics.FromHwnd(IntPtr.Zero))
+            {
+                // Get the DPI for the X and Y axis
+                float dpiX = graphics.DpiX;
+                float dpiY = graphics.DpiY;
+
+                // Assuming the scale is uniform, you can use either dpiX or dpiY
+                // The default DPI is 96, so the scale factor is dpi / 96
+                float scaleFactor = dpiX / 96.0f;
+
+                return scaleFactor;
+            }
+        }
+
 
         [STAThread]
         static void Main()
         {
             abstractTestClass test = new  assesmentExam();
+            abstractTestClass p1 = new praticeExam1();
+            abstractTestClass p2 = new praticeExam2();
+            Application.SetCompatibleTextRenderingDefault(false);
 
             //Application.Run(new examParent(test, 1.0));
-            Application.Run(new screenSizeAdjustment());
+            //Application.Run(new examParent(p1, 1.0));
+            Application.Run(new praticeParent(p2,1.0));
+            //Application.Run(new screenSizeAdjustment());
             //Application.Run(new Menu());
             //Application.Run(new IntermediateScreen());
 
 
             //Testing DPIUtil
             Console.WriteLine(DPIUtil.IsSupportingDpiPerMonitor);
+            Console.WriteLine(GetWindowsDisplayScale());
+
+            float scale = DisplayScaleHelper.GetWindowsDisplayScale();
+            Console.WriteLine($"Windows display scale factor: {scale}");
+
+
             //Get the current screen scale
-            
+
         }
     }
 
