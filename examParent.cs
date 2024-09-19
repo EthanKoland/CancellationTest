@@ -77,6 +77,8 @@ namespace CancellationTest
         protected Point minBoundry;
         protected Point maxBoundry;
 
+        //set of ints to determine wether an image has been clicked
+        protected HashSet<int> clickedImages = new HashSet<int>();
 
         public examParent( abstractTestClass examObject, double adjustSize = 0.5,
             int seconds = 240, string patientName = "None") 
@@ -230,6 +232,12 @@ namespace CancellationTest
                 Console.WriteLine("Image cliscked State" + clickedImage.isClicked);
 
                 this.tracker.addAction(action);
+
+                if (!this.clickedImages.Contains(imageID)){
+                    this.clickedImages.Add(imageID);
+                }
+
+                
            }
 
                 
@@ -370,7 +378,7 @@ namespace CancellationTest
 
                 e.Graphics.DrawImage(imageObject.getImageObject(img.imageType), adjustedX - halfWidth, adjustedY - halfHeight, adjustedWidth, adjustedHeight);
                 
-                if(img.isClicked)
+                if(clickedImages.Contains(img.imageID))
                 {
                     int x1 = adjustedX - adjustedWidth/2;
 
@@ -381,23 +389,14 @@ namespace CancellationTest
 
                     int y2 = y1 + adjustedHeight;
 
-                    e.Graphics.DrawLine(this.CrossPen, x1, y1, x2, y2);
+                    e.Graphics.DrawLine(this.CrossPen, x1, y2, x2, y1);
                     
                 }
 
 
-                e.Graphics.DrawRectangle(Pens.Black, adjustedX - halfWidth, adjustedY - halfWidth, adjustedWidth, adjustedHeight);
+                //e.Graphics.DrawRectangle(Pens.Black, adjustedX - halfWidth, adjustedY - halfWidth, adjustedWidth, adjustedHeight);
             }
 
-
-
-            
-
-            Console.WriteLine("Min Boundry : " + this.minBoundry.X + " " + this.minBoundry.Y);
-            Console.WriteLine("Max Boundry : " + this.maxBoundry.X + " " + this.maxBoundry.Y);
-
-            dc.DrawRectangle(RedPen, this.minBoundry.X, this.minBoundry.Y, this.maxBoundry.X - this.minBoundry.X, this.maxBoundry.Y - this.minBoundry.Y);
-            dc.DrawRectangle(RedPen, 900, 500, 120, 80);
         }
 
         protected void Draw2DPoint(Graphics dc, Pen pen, Point pt)

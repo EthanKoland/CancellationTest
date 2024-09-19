@@ -485,9 +485,9 @@ namespace CancellationTest
 
             //Application.Run(new examParent(test, 1.0));
             //Application.Run(new examParent(p1, 1.0));
-            Application.Run(new praticeParent(p2,1.0));
+            //Application.Run(new praticeParent(p2,1.0));
             //Application.Run(new screenSizeAdjustment());
-            //Application.Run(new Menu());
+            Application.Run(new Menu());
             //Application.Run(new IntermediateScreen());
 
 

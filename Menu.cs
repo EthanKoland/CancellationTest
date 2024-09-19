@@ -66,6 +66,9 @@ namespace CancellationTest
 
             this.groupBox1.Left = (this.Width - this.groupBox1.Width) / 2;
             this.groupBox1.Top = (this.Height - this.groupBox1.Height) / 2;
+
+            Console.WriteLine("Screen Width " + this.Width);
+            Console.WriteLine("Screen Heigth " + this.Height);
         }
 
         public Menu(testParameters testParameters)
@@ -192,8 +195,21 @@ namespace CancellationTest
             
         }
 
+        private int percentScreenWidth(double n)
+        {
+            return (int)Math.Round((this.Width * n) / 100);
+        }
+
+        private int percentScreenHeight(double n)
+        {
+            return (int)Math.Round((this.Height * n) / 100);
+        }
+
         private void InitializeComponent()
         {
+            
+            
+            
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
