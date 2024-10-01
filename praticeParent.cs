@@ -62,7 +62,7 @@ namespace CancellationTest
             this.crossOutLabel.Size = new Size((int)(this.screenwidth), (int)(0.03 * this.screenwidth));
             this.crossOutLabel.Font = new Font("Arial", (int)(0.02 * this.screenwidth));
 
-            Image smallLeftTargetImage = imageObject.getImageObject(imageTypes.TargetLeft);
+            Image smallLeftTargetImage = mugObject.getImageObject(imageTypes.TargetLeft);
             smallLeftTargetImage = ResizeImage(smallLeftTargetImage, this.smallMugsize, this.smallMugsize);
 
             this.smallLeftCrossedMug = new PictureBox();
@@ -70,7 +70,7 @@ namespace CancellationTest
             this.smallLeftCrossedMug.Location = new Point((int)(0.38 * this.screenwidth), (int)(0.165 * this.screenheight));
             this.smallLeftCrossedMug.Size = new Size(this.smallMugsize, this.smallMugsize);
 
-            Image smallRightTarget = imageObject.getImageObject(imageTypes.TargetRight);
+            Image smallRightTarget = mugObject.getImageObject(imageTypes.TargetRight);
             smallRightTarget = ResizeImage(smallRightTarget, this.smallMugsize, this.smallMugsize);
 
             this.smallRightCrossedMug = new PictureBox();
@@ -78,7 +78,7 @@ namespace CancellationTest
             this.smallRightCrossedMug.Location = new Point((int)(0.44 * this.screenwidth), (int)(0.165 * this.screenheight));
             this.smallRightCrossedMug.Size = new Size(this.smallMugsize, this.smallMugsize);
 
-            Image smallLeftDistractor = imageObject.getImageObject(imageTypes.DistractionLeft);
+            Image smallLeftDistractor = mugObject.getImageObject(imageTypes.DistractionLeft);
             smallLeftDistractor = ResizeImage(smallLeftDistractor, this.smallMugsize, this.smallMugsize);
 
             this.smallLeftMug = new PictureBox();
@@ -86,7 +86,7 @@ namespace CancellationTest
             this.smallLeftMug.Location = new Point((int)(0.52 * this.screenwidth), (int)(0.165 * this.screenheight));
             this.smallLeftMug.Size = new Size(this.smallMugsize, this.smallMugsize);
 
-            Image smallRightDistractor = imageObject.getImageObject(imageTypes.DistractionRight);
+            Image smallRightDistractor = mugObject.getImageObject(imageTypes.DistractionRight);
             smallRightDistractor = ResizeImage(smallRightDistractor, this.smallMugsize, this.smallMugsize);
 
             this.smallRightMug = new PictureBox();
@@ -94,7 +94,7 @@ namespace CancellationTest
             this.smallRightMug.Location = new Point((int)(0.58 * this.screenwidth), (int)(0.165 * this.screenheight));
             this.smallRightMug.Size = new Size(this.smallMugsize, this.smallMugsize);
 
-            Image leftTarget = imageObject.getImageObject(imageTypes.TargetLeft);
+            Image leftTarget = mugObject.getImageObject(imageTypes.TargetLeft);
             leftTarget = ResizeImage(leftTarget, this.largeMugsize, this.largeMugsize);
 
             this.largeLeftCrossedMug = new PictureBox();
@@ -102,7 +102,7 @@ namespace CancellationTest
             this.largeLeftCrossedMug.Location = new Point((int)(0.37 * this.screenwidth), (int)(0.25 * this.screenheight));
             this.largeLeftCrossedMug.Size = new Size(this.largeMugsize, this.largeMugsize);
 
-            Image rightTarget = imageObject.getImageObject(imageTypes.TargetRight);
+            Image rightTarget = mugObject.getImageObject(imageTypes.TargetRight);
             rightTarget = ResizeImage(rightTarget, this.largeMugsize, this.largeMugsize);
 
             this.LargeRightCrossedMug = new PictureBox();
@@ -110,7 +110,7 @@ namespace CancellationTest
             this.LargeRightCrossedMug.Location = new Point((int)(0.435 * this.screenwidth), (int)(0.25 * this.screenheight));
             this.LargeRightCrossedMug.Size = new Size(this.largeMugsize, this.largeMugsize);
 
-            Image leftDistractor = imageObject.getImageObject(imageTypes.DistractionLeft);
+            Image leftDistractor = mugObject.getImageObject(imageTypes.DistractionLeft);
             leftDistractor = ResizeImage(leftDistractor, this.largeMugsize, this.largeMugsize);
 
             this.largeLeftMug = new PictureBox();
@@ -118,7 +118,7 @@ namespace CancellationTest
             this.largeLeftMug.Location = new Point((int)(0.51 * this.screenwidth), (int)(0.25 * this.screenheight));
             this.largeLeftMug.Size = new Size(this.largeMugsize, this.largeMugsize);
 
-            Image rightDistractor = imageObject.getImageObject(imageTypes.DistractionRight);
+            Image rightDistractor = mugObject.getImageObject(imageTypes.DistractionRight);
             rightDistractor = ResizeImage(rightDistractor, this.largeMugsize, this.largeMugsize);
             
             this.largeRightMug = new PictureBox();
@@ -231,33 +231,33 @@ namespace CancellationTest
             //Cross out the small left mug
             Point p1  = new Point((int)(0.38 * this.screenwidth), (int)(0.165 * this.screenheight) + this.smallMugsize);
             Point p2 = new Point((int)(0.38 * this.screenwidth) + this.smallMugsize, (int)(0.165 * this.screenheight) );
-            e.Graphics.DrawImage(imageObject.getImageObject(imageTypes.TargetLeft), p1.X, p2.Y, this.smallMugsize, this.smallMugsize);
+            e.Graphics.DrawImage(mugObject.getImageObject(imageTypes.TargetLeft), p1.X, p2.Y, this.smallMugsize, this.smallMugsize);
             e.Graphics.DrawLine(this.instructionPen, p1, p2);
             
 
             //Cross out the small right mug
             p1 = new Point((int)(0.44 * this.screenwidth), (int)(0.165 * this.screenheight) + this.smallMugsize);
             p2 = new Point((int)(0.44 * this.screenwidth) + this.smallMugsize, (int)(0.165 * this.screenheight));
-            e.Graphics.DrawImage(imageObject.getImageObject(imageTypes.TargetRight), p1.X, p2.Y, this.smallMugsize, this.smallMugsize);
+            e.Graphics.DrawImage(mugObject.getImageObject(imageTypes.TargetRight), p1.X, p2.Y, this.smallMugsize, this.smallMugsize);
             e.Graphics.DrawLine(this.instructionPen, p1, p2);
             
 
             //Cross out the large left mug
             p1 = new Point((int)(0.37 * this.screenwidth), (int)(0.25 * this.screenheight) + this.largeMugsize);
             p2 = new Point((int)(0.37 * this.screenwidth) + this.largeMugsize, (int)(0.25 * this.screenheight) );
-            e.Graphics.DrawImage(imageObject.getImageObject(imageTypes.TargetLeft), p1.X, p2.Y, this.largeMugsize, this.largeMugsize);
+            e.Graphics.DrawImage(mugObject.getImageObject(imageTypes.TargetLeft), p1.X, p2.Y, this.largeMugsize, this.largeMugsize);
             e.Graphics.DrawLine(this.instructionPen, p1, p2);
 
             //Cross out the large right mug
             p1 = new Point((int)(0.435 * this.screenwidth), (int)(0.25 * this.screenheight) + this.largeMugsize);
             p2 = new Point((int)(0.435 * this.screenwidth) + this.largeMugsize, (int)(0.25 * this.screenheight));
-            e.Graphics.DrawImage(imageObject.getImageObject(imageTypes.TargetRight), p1.X, p2.Y, this.largeMugsize, this.largeMugsize);
+            e.Graphics.DrawImage(mugObject.getImageObject(imageTypes.TargetRight), p1.X, p2.Y, this.largeMugsize, this.largeMugsize);
             e.Graphics.DrawLine(this.instructionPen, p1, p2);
             
 
 
             //Draw the images in the list
-            foreach (imageObject img in localExamObject.imageList)
+            foreach (mugObject img in localExamObject.imageList)
             {
                 
                 int halfWidth = (int)Math.Round(img.width * adjustSize) / 2;
@@ -269,7 +269,7 @@ namespace CancellationTest
                 int adjustedX = (int)Math.Round(img.imageCenter.X * adjustSize + this.minBoundry.X);
                 int adjustedY = (int)Math.Round(img.imageCenter.Y * adjustSize + this.minBoundry.Y);
 
-                e.Graphics.DrawImage(imageObject.getImageObject(img.imageType), adjustedX - halfWidth, adjustedY - halfHeight, adjustedWidth, adjustedHeight);
+                e.Graphics.DrawImage(mugObject.getImageObject(img.imageType), adjustedX - halfWidth, adjustedY - halfHeight, adjustedWidth, adjustedHeight);
                 
                 if(clickedImages.Contains(img.imageID))
                 {

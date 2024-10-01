@@ -96,7 +96,7 @@ namespace CancellationTest
 
 
             //Calculate the final results
-            foreach (imageObject img in localExamObject.imageList)
+            foreach (mugObject img in localExamObject.imageList)
             {
                 if (img.imageType == imageTypes.TargetLeft || img.imageType == imageTypes.TargetRight)
                 {
@@ -168,13 +168,13 @@ namespace CancellationTest
             Point previousPoint = this.actions[0].clickPoint;
 
             clickAction firstAction = this.actions[0];
-            imageObject firstImage = this.localExamObject.imageList[firstAction.ImageID - 1];
+            mugObject firstImage = this.localExamObject.imageList[firstAction.ImageID - 1];
             leftRightCenter priviousSide = firstImage.side;
             int maxX = this.localExamObject.screenWidth;
 
             foreach (clickAction action in this.actions)
             {
-                imageObject clickedImage = this.localExamObject.imageList[action.ImageID - 1];
+                mugObject clickedImage = this.localExamObject.imageList[action.ImageID - 1];
                 
 
                 double localX = (double) action.clickPoint.X/maxX;
@@ -403,12 +403,12 @@ namespace CancellationTest
                 int row = 52;
                 foreach (clickAction action in this.actions)
                 {
-                    imageObject clickedImage = this.localExamObject.imageList[action.ImageID - 1];
+                    mugObject clickedImage = this.localExamObject.imageList[action.ImageID - 1];
                     worksheet.Cells[row, 1].Value = clickedImage.isClicked ? "Target Succesfully Cancelled" : "Distractor";
                     worksheet.Cells[row, 2].Value = timeSinceStart(action.timeOfClick);
                     worksheet.Cells[row, 3].Value = "1/10";
                     worksheet.Cells[row, 4].Value = clickedImage.side;
-                    worksheet.Cells[row, 5].Value = imageObject.imageOrietation(clickedImage.imageType);
+                    worksheet.Cells[row, 5].Value = mugObject.imageOrietation(clickedImage.imageType);
                     worksheet.Cells[row, 6].Value = action.isCrossed ? "Yes" : "";
                     worksheet.Cells[row, 7].Value = action.clickPoint;
                     worksheet.Cells[row, 8].Value = (action.clickPoint.X * this.sizeRatio) + ", " + (action.clickPoint.Y * this.sizeRatio);
@@ -443,9 +443,9 @@ namespace CancellationTest
             g.DrawString("Date : " + DateTime.Now.ToString("dd/MM/yyyy hh:mm:ss"), new Font("Arial", 12), Brushes.Black, new Point(10, 50));
 
             //Draw the images
-            foreach (imageObject img in this.localExamObject.imageList)
+            foreach (mugObject img in this.localExamObject.imageList)
             {
-                g.DrawImage(imageObject.getImageObject(img.imageType), img.imageCenter.X, img.imageCenter.Y, img.width, img.height);
+                g.DrawImage(mugObject.getImageObject(img.imageType), img.imageCenter.X, img.imageCenter.Y, img.width, img.height);
                 if(img.isClicked)
                 {
                     //Draw a cross on the image

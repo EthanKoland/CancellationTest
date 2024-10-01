@@ -7,6 +7,11 @@ using System.Threading.Tasks;
 
 namespace CancellationTest
 {
+    
+    //Class Name : abstractTestClass
+    //Purpose : This class is an abstract class that is used to define the parameters that are common with all the tests
+    //          This class is used to define the parameters that are common with all the tests
+    
     public abstract class abstractTestClass
     {
         //What do I need in the abstract class
@@ -35,7 +40,7 @@ namespace CancellationTest
 
 
 
-        public List<imageObject> imageList { get; protected set; }
+        public List<mugObject> imageList { get; protected set; }
         public Point cells { get; protected set; }
 
         public abstract void drawHeader(Graphics g, DateTime endingTime);

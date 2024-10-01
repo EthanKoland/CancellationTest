@@ -17,7 +17,7 @@ namespace CancellationTest
             //Horizontal then vertical
             cells = new Point(5, 2);
 
-            imageList = new List<imageObject>();
+            imageList = new List<mugObject>();
 
             this.cellWidth = 0;
             this.cellHeight = 0;
@@ -108,7 +108,7 @@ namespace CancellationTest
 
 
 
-                        this.imageList.Add(new imageObject(nextImageID, type, new Point(x, y), imgSize, imgSize, side, matrixLocation));
+                        this.imageList.Add(new mugObject(nextImageID, type, new Point(x, y), imgSize, imgSize, side, matrixLocation));
                         updateBitMap(x - halfImgSize, x + halfImgSize, y - halfImgSize, y + halfImgSize, nextImageID);
                     }
 
@@ -142,7 +142,7 @@ namespace CancellationTest
 
                         int nextImageID = this.imageList.Count + 1;
 
-                        this.imageList.Add(new imageObject(nextImageID, type, new Point(x, y), imgSize, imgSize, side, matrixLocation));
+                        this.imageList.Add(new mugObject(nextImageID, type, new Point(x, y), imgSize, imgSize, side, matrixLocation));
                         updateBitMap(x - halfImgSize, x + halfImgSize, y - halfImgSize, y + halfImgSize, nextImageID);
                     }
 
@@ -177,7 +177,7 @@ namespace CancellationTest
 
                         int nextImageID = this.imageList.Count + 1;
 
-                        this.imageList.Add(new imageObject(nextImageID, type, new Point(x, y), imgSize, imgSize, side, matrixLocation));
+                        this.imageList.Add(new mugObject(nextImageID, type, new Point(x, y), imgSize, imgSize, side, matrixLocation));
                         updateBitMap(x - halfImgSize, x + halfImgSize, y - halfImgSize, y + halfImgSize, nextImageID);
                     }
 

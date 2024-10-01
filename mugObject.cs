@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CancellationTest
 {
-    public class imageObject
+    public class mugObject
     {
         public int imageID { get; private set; }
         public imageTypes imageType { get; private set; }
@@ -20,7 +20,7 @@ namespace CancellationTest
 
         public int matrixLocation { get; private set; }
 
-        public imageObject(int imageID, imageTypes imageType, Point imageCenter, int width, int height, leftRightCenter side, int matrixLocation)
+        public mugObject(int imageID, imageTypes imageType, Point imageCenter, int width, int height, leftRightCenter side, int matrixLocation)
         {
             this.imageID = imageID;
             this.imageType = imageType;
@@ -37,8 +37,6 @@ namespace CancellationTest
             //If the image is clicked then set the isClicked to true, but if it is already clicked then set it to false
             this.isClicked = !this.isClicked;
             Console.WriteLine("Image Clicked : " + this.imageID + "is clicked " + this.isClicked);
-
-
         }
 
         
@@ -48,6 +46,7 @@ namespace CancellationTest
             return this.imageType == imageTypes.DistractionLeft || this.imageType == imageTypes.DistractionRight;
         }
 
+        //Static helper function to get an image object based on the image type
         static public Image getImageObject(imageTypes types)
         {
             if (types == imageTypes.DistractionLeft)
@@ -72,6 +71,7 @@ namespace CancellationTest
             }
         }
 
+        //Helper function to get the orientation of the image
         static public string imageOrietation(imageTypes types)
         {
             if (types == imageTypes.DistractionLeft)

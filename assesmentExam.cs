@@ -16,7 +16,7 @@ namespace CancellationTest
             //Horizontal then vertical
             cells = new Point(5, 2);
 
-            imageList = new List<imageObject>();
+            imageList = new List<mugObject>();
 
             this.cellWidth = 0;
             this.cellHeight = 0;
@@ -237,7 +237,7 @@ namespace CancellationTest
                 side = leftRightCenter.Right;
             }
 
-            this.imageList.Add(new imageObject(this.nextImageID, imageType, new Point(x, y), imgSize, imgSize, side, matrixLocation));
+            this.imageList.Add(new mugObject(this.nextImageID, imageType, new Point(x, y), imgSize, imgSize, side, matrixLocation));
             updateBitMap(x - imgSize / 2, x + imgSize / 2, y - imgSize / 2, y + imgSize / 2, this.nextImageID);
             this.nextImageID++;
         }

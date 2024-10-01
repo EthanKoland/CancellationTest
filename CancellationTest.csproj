@@ -89,12 +89,10 @@
     <Compile Include="CancellationTest.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="DisplayScaleHelper.cs" />
-    <Compile Include="DPIUtil.cs" />
     <Compile Include="examParent.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="imageObject.cs" />
+    <Compile Include="mugObject.cs" />
     <Compile Include="IntermediateScreen.cs">
       <SubType>Form</SubType>
     </Compile>

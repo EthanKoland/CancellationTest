@@ -61,7 +61,7 @@ namespace CancellationTest
         protected int[] verticalLines;
 
         //Refrences for the images
-        protected List<imageObject> images = new List<imageObject>();
+        protected List<mugObject> images = new List<mugObject>();
 
         //Action tracker
         protected actionTracker tracker;
@@ -224,7 +224,7 @@ namespace CancellationTest
                 action.timeOfClick = DateTime.Now;
 
                 Console.WriteLine("Image Clicked : " + imageID);
-                imageObject clickedImage = this.localExamObject.imageList[imageID - 1];
+                mugObject clickedImage = this.localExamObject.imageList[imageID - 1];
                 clickedImage.setClicked(0, adjustSize);
 
                 action.isCrossed = clickedImage.isClicked;
@@ -364,7 +364,7 @@ namespace CancellationTest
 
 
             //Draw the images in the list
-            foreach (imageObject img in localExamObject.imageList)
+            foreach (mugObject img in localExamObject.imageList)
             {
                 
                 int halfWidth = (int)Math.Round(img.width * adjustSize) / 2;
@@ -376,7 +376,7 @@ namespace CancellationTest
                 int adjustedX = (int)Math.Round(img.imageCenter.X * adjustSize + this.minBoundry.X);
                 int adjustedY = (int)Math.Round(img.imageCenter.Y * adjustSize + this.minBoundry.Y);
 
-                e.Graphics.DrawImage(imageObject.getImageObject(img.imageType), adjustedX - halfWidth, adjustedY - halfHeight, adjustedWidth, adjustedHeight);
+                e.Graphics.DrawImage(mugObject.getImageObject(img.imageType), adjustedX - halfWidth, adjustedY - halfHeight, adjustedWidth, adjustedHeight);
                 
                 if(clickedImages.Contains(img.imageID))
                 {
@@ -470,7 +470,7 @@ namespace CancellationTest
     {
         RandomPlacement,
         Assessment,
-        Pratice_1,
-        Pratice_2
+        Practice_1,
+        Practice_2
     }
 }

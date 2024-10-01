@@ -98,14 +98,14 @@ namespace CancellationTest
             {
                 exam = new assesmentExam();
             }
-            else if (this.testParameters.testType == AvailableExams.Pratice_1)
+            else if (this.testParameters.testType == AvailableExams.Practice_1)
             {
-                //am = new Pratice_1(this.testParameters);
+                //am = new Practice_1(this.testParameters);
                 exam = new assesmentExam();
             }
-            else if (this.testParameters.testType == AvailableExams.Pratice_2)
+            else if (this.testParameters.testType == AvailableExams.Practice_2)
             {
-                //am = new Pratice_2(this.testParameters);
+                //am = new Practice_2(this.testParameters);
                 exam = new assesmentExam();
             }
             else
@@ -122,7 +122,7 @@ namespace CancellationTest
 
             SoundPlayer simpleSound = new SoundPlayer(@"CSounds\popping.wav");
             Console.WriteLine(Application.StartupPath + "\\Sounds\\popping.wav");
-            simpleSound.Play();
+            //simpleSound.Play();
 
             this.player.SoundLocation = "popping.wav";
 
@@ -131,6 +131,24 @@ namespace CancellationTest
 
             //Play the Instructions Mp3
             //wplayer2.controls.play();
+
+
+
+
+            if (this.testParameters.testType != AvailableExams.Assessment)
+            {
+                //Tericary statement id test type is pratice1 then exam = new praticeExam1() else exam = new praticeExam2()
+                praticeParent praticeParent = new praticeParent(exam, this.testParameters.adjustmentRatio, this.testParameters.examTime, this.testParameters.patientName);
+                this.Hide();
+                praticeParent.Show();
+
+            }
+            else
+            {
+                examParent examParent = new examParent(exam, this.testParameters.adjustmentRatio, this.testParameters.examTime, this.testParameters.patientName);
+                this.Hide();
+                examParent.Show();
+            }
 
             //examParent examParent = new examParent(exam, this.testParameters.adjustmentRatio, this.testParameters.examTime, this.testParameters.patientName);
 

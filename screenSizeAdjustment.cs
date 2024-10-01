@@ -32,7 +32,7 @@ namespace CancellationTest
         public screenSizeAdjustment()
         {
             
-
+            //Sample Test Parameters used for testing the page
             testParameters testParameters = new testParameters();
             testParameters.testType = AvailableExams.Assessment;
             testParameters.patientName = "Unknown";
@@ -56,7 +56,6 @@ namespace CancellationTest
 
         public void frameSetup()
         {
-            Console.WriteLine(DPIUtil.ScaleFactor(this, new Point(1, 1)));
             Console.WriteLine((int)(100 * Screen.PrimaryScreen.WorkingArea.Width / Screen.PrimaryScreen.Bounds.Width));
             Console.WriteLine(this.DeviceDpi);
 
