@@ -16,6 +16,7 @@ namespace CancellationTest
         public string patientName;
         public double adjustmentRatio;
         public int examTime;
+        public int crossOutTime;
     }
     public partial class Menu : Form
     {
@@ -55,6 +56,7 @@ namespace CancellationTest
             this.testParameters.patientName = "Unknown";
             this.testParameters.adjustmentRatio = 1.0;
             this.testParameters.examTime = 240;
+            this.testParameters.crossOutTime = -1;
 
             this.TopMost = true;
             this.FormBorderStyle = FormBorderStyle.None;
@@ -117,6 +119,9 @@ namespace CancellationTest
             {
                 this.testParameters.patientName = "Unknown";
             }
+
+            //If the cross out check box is checked then set the cross out time to 5 seconds
+            this.testParameters.crossOutTime = this.checkBox1.Checked ? 5 : -1;
 
             IntermediateScreen intermediateScreen = new IntermediateScreen(this.testParameters);
             this.Hide();
@@ -304,7 +309,7 @@ namespace CancellationTest
             this.groupBox4.Controls.Add(this.checkBox1);
             this.groupBox4.Location = new System.Drawing.Point(relativeScreenWidth(0.004), relativeScreenHeight(0.369));
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(relativeScreenWidth(0.320), relativeScreenHeight(0.01));
+            this.groupBox4.Size = new System.Drawing.Size(relativeScreenWidth(0.320), relativeScreenHeight(0.1));
             this.groupBox4.TabIndex = 5;
             this.groupBox4.TabStop = false;
             // 

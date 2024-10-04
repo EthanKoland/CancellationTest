@@ -39,7 +39,7 @@ namespace CancellationTest
             abstractTestClass p2 = new praticeExam2();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            //Application.Run(new examParent(test, 1.0));
+            //pplication.Run(new examParent(test, 1.0));
             //Application.Run(new examParent(p1, 1.0));
             //Application.Run(new praticeParent(p2,1.0));
             //Application.Run(new screenSizeAdjustment());

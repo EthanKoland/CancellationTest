@@ -60,8 +60,8 @@ namespace CancellationTest
         protected int[] horizontalLines;
         protected int[] verticalLines;
 
-        //Refrences for the images
-        protected List<mugObject> images = new List<mugObject>();
+        //Timer tick time
+        protected int tickTime = 1000;
 
         //Action tracker
         protected actionTracker tracker;
@@ -80,8 +80,11 @@ namespace CancellationTest
         //set of ints to determine wether an image has been clicked
         protected HashSet<int> clickedImages = new HashSet<int>();
 
+        protected Double[] remainingCancelationTime;
+        protected int crossOutTime;
+
         public examParent( abstractTestClass examObject, double adjustSize = 0.5,
-            int seconds = 240, string patientName = "None") 
+            int seconds = 240, string patientName = "None", int crossOutTime = -1) 
         {
 
             this.TopMost = true;
@@ -90,13 +93,15 @@ namespace CancellationTest
 
             this.screenheight = Screen.PrimaryScreen.Bounds.Height;
             this.screenwidth = Screen.PrimaryScreen.Bounds.Width;
+            this.crossOutTime = crossOutTime;
             //this.screenwidth = this.Width;
             //this.screenheight = this.Height;
 
             //Assign the parameter values to the variables
             this.adjustSize = adjustSize * ((double) this.screenwidth/1920.0);
             
-            
+            //List of size the number elements of the mugs list in exam object offset by one to account for IDS starting at 1
+            this.remainingCancelationTime = new double[examObject.imageList.Count + 1];
 
 
             this.patientName = patientName;
@@ -112,7 +117,7 @@ namespace CancellationTest
             this.endTime = DateTime.Now.AddSeconds(seconds);
 
             System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
-            timer.Interval = (1000); // 10 seconds in milliseconds
+            timer.Interval = (this.tickTime); 
             timer.Tick += new EventHandler(timer_Tick);
             timer.Start();
 
@@ -127,7 +132,7 @@ namespace CancellationTest
             this.currentTimeLabel = new Label();
             this.currentTimeLabel.Text = "00:00";
             this.currentTimeLabel.Location = new Point((int)(0.9 * this.screenwidth), 5);
-            this.currentTimeLabel.Size = new Size((int)(0.05 * this.screenwidth), (int)(0.35 * this.screenheight));
+            this.currentTimeLabel.Size = new Size((int)(0.05 * this.screenwidth), (int)(0.03 * this.screenheight));
             this.currentTimeLabel.Font = new Font("Arial", (int)(0.022 * this.screenheight));
             this.currentTimeLabel.ForeColor = Color.DeepSkyBlue;
 
@@ -189,6 +194,23 @@ namespace CancellationTest
             string modifedSeconds = seconds < 10 ? "0" + seconds : "" + seconds;
 
             this.currentTimeLabel.Text = "" + minutes + ":" + modifedSeconds;
+
+            bool refreshScreen = false;
+
+            //Update the remaining time in the remainingCancelationTime array
+            if (this.crossOutTime > 0)
+            {
+                for (int i = 1; i < this.remainingCancelationTime.Length; i++)
+                {
+                    double newTime = Math.Max(0, this.remainingCancelationTime[i] - (tickTime / 1000.0));
+                    this.remainingCancelationTime[i] = newTime;
+                    refreshScreen = newTime == 0 ? true : refreshScreen;
+                }
+            }
+            if(refreshScreen)
+            {
+                this.Refresh();
+            }
         }
 
         void ImageViewer_MouseClick(object sender, MouseEventArgs e)
@@ -227,15 +249,15 @@ namespace CancellationTest
                 mugObject clickedImage = this.localExamObject.imageList[imageID - 1];
                 clickedImage.setClicked(0, adjustSize);
 
+                //Set the image crossed to state to update the action tracker to keep track of user actions
                 action.isCrossed = clickedImage.isClicked;
 
-                Console.WriteLine("Image cliscked State" + clickedImage.isClicked);
+                //Update the remaining time in the remainingCancelationTime array
+                this.remainingCancelationTime[imageID] = this.crossOutTime == -1 ? 1 : this.crossOutTime;
+
+                Console.WriteLine("Image clicked State" + clickedImage.isClicked);
 
                 this.tracker.addAction(action);
-
-                if (!this.clickedImages.Contains(imageID)){
-                    this.clickedImages.Add(imageID);
-                }
 
                 
            }
@@ -378,7 +400,9 @@ namespace CancellationTest
 
                 e.Graphics.DrawImage(mugObject.getImageObject(img.imageType), adjustedX - halfWidth, adjustedY - halfHeight, adjustedWidth, adjustedHeight);
                 
-                if(clickedImages.Contains(img.imageID))
+
+                //if(clickedImages.Contains(img.imageID))
+                if(this.remainingCancelationTime[img.imageID] > 0)
                 {
                     int x1 = adjustedX - adjustedWidth/2;
 
@@ -396,6 +420,8 @@ namespace CancellationTest
 
                 //e.Graphics.DrawRectangle(Pens.Black, adjustedX - halfWidth, adjustedY - halfWidth, adjustedWidth, adjustedHeight);
             }
+
+           
 
         }
 

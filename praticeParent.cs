@@ -43,7 +43,7 @@ namespace CancellationTest
 
         
         public praticeParent( abstractTestClass examObject, double adjustSize = 0.5,
-            int seconds = 240, string patientName = "None") : base(examObject, adjustSize, seconds, patientName)
+            int seconds = 240, string patientName = "None", int crossOutTime = -1) : base(examObject, adjustSize, seconds, patientName, crossOutTime)
         {
 
             
