@@ -68,14 +68,13 @@ namespace CancellationTest
             this.FormBorderStyle = FormBorderStyle.None;
             this.WindowState = FormWindowState.Maximized;
 
-            WMPLib.WindowsMediaPlayer wplayer2 = new WMPLib.WindowsMediaPlayer();
+            
 
-            wplayer2.URL = "Sounds\\Instructions.mp3";
+            wplayer.URL = "Sounds\\Instructions.mp3";
 
-            this.player.SoundLocation = @"popping.wav";
             
             //Play the Instructions Mp3
-            wplayer2.controls.play();
+            wplayer.controls.play();
         }
 
         private void label1_Click(object sender, EventArgs e)
@@ -91,6 +90,8 @@ namespace CancellationTest
         private void button1_Click(object sender, EventArgs e)
         {
             Console.WriteLine("Button Clicked");
+
+            this.wplayer.controls.stop();
 
             abstractTestClass exam;
 
@@ -112,40 +113,20 @@ namespace CancellationTest
             {
                 exam = new assesmentExam();
             }
-            //this.wplayer.controls.play();
-
-            //player.Stop();
-
-            WMPLib.WindowsMediaPlayer wplayer2 = new WMPLib.WindowsMediaPlayer();
-
-            wplayer2.URL = @"C:\Users\ethan\Desktop\Cancellation Transfer\CancellationTest\CancellationTest\Sounds\Instructions.mp3";
-
-            SoundPlayer simpleSound = new SoundPlayer(@"CSounds\popping.wav");
-            Console.WriteLine(Application.StartupPath + "\\Sounds\\popping.wav");
-            //simpleSound.Play();
-
-            this.player.SoundLocation = "popping.wav";
-
-            //Play the player
-            //this.player.Play();
-
-            //Play the Instructions Mp3
-            //wplayer2.controls.play();
-
-
+            
 
 
             if (this.testParameters.testType != AvailableExams.Assessment)
             {
                 //Tericary statement id test type is pratice1 then exam = new praticeExam1() else exam = new praticeExam2()
-                praticeParent praticeParent = new praticeParent(exam, this.testParameters.adjustmentRatio, this.testParameters.examTime, this.testParameters.patientName);
+                praticeParent praticeParent = new praticeParent(exam, this.testParameters.adjustmentRatio, this.testParameters.examTime, this.testParameters.patientName, this.testParameters.crossOutTime);
                 this.Hide();
                 praticeParent.Show();
 
             }
             else
             {
-                examParent examParent = new examParent(exam, this.testParameters.adjustmentRatio, this.testParameters.examTime, this.testParameters.patientName);
+                examParent examParent = new examParent(exam, this.testParameters.adjustmentRatio, this.testParameters.examTime, this.testParameters.patientName, this.testParameters.crossOutTime);
                 this.Hide();
                 examParent.Show();
             }

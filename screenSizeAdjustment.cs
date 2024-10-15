@@ -98,6 +98,11 @@ namespace CancellationTest
         private void adjust()
         {
             //this.a4GroupBox.Show();
+
+            Console.WriteLine("g" + Screen.PrimaryScreen.Bounds.Width + " " + Screen.PrimaryScreen.Bounds.Height);
+
+            int screenWidth = Screen.PrimaryScreen.Bounds.Width;
+            int screenHeight = Screen.PrimaryScreen.Bounds.Height;
             
             Console.WriteLine("screenSize: " + this.screenSize);
             Console.WriteLine("Current Window Width: " + this.Width);
@@ -122,7 +127,7 @@ namespace CancellationTest
             //this.a4Image.Image = ResizeImage(Image.FromFile("A4_ScalePaper.jpg"), imageWidth, imageHeight);
             this.a4Image.Width = imageWidth;
             this.a4Image.Height = imageHeight;
-            this.a4Image.Image = Image.FromFile("A4_ScalePaper.jpg");
+            this.a4Image.Image = ResizeImage(Image.FromFile("A4_ScalePaper.jpg"), imageWidth, imageHeight);
 
             this.a4Image.Left = (this.Width - this.a4Image.Width) / 2;
             this.a4Image.Top = (this.Height - this.a4Image.Height) / 2 - this.currentRatioBox.Height - this.okayButton.Height;
@@ -234,8 +239,8 @@ namespace CancellationTest
             this.a4GroupBox.BackColor = System.Drawing.Color.WhiteSmoke;
 
             //this.a4GroupBox.Location = new System.Drawing.Point(adjustWidth(479), adjustHeight(217));
-            this.a4GroupBox.Width = (int)(this.screenSize * a4WidthRatio * 100);
-            this.a4GroupBox.Height = (int)(this.screenSize * a4HeightRatio * 100);
+            this.a4GroupBox.Width = (int)(this.Width / a4WidthRatio * this.screenSize);
+            this.a4GroupBox.Height = (int)(this.Height / a4HeightRatio * this.screenSize);
             //this.a4GroupBox.Location = new System.Drawing.Point((this.Width - this.a4GroupBox.Width) / 2, 
                 //(this.Height - this.a4GroupBox.Height) / 2 - adjustHeight(62) - this.okayButton.Height);
             
@@ -253,7 +258,7 @@ namespace CancellationTest
             // a4Image
             //
             Image a4paper = Image.FromFile("A4_ScalePaper.jpg");
-            this.a4Image.Image = ResizeImage(a4paper, (int)(this.screenSize * a4WidthRatio * 100), (int)(this.screenSize * a4HeightRatio * 100));
+            this.a4Image.Image = ResizeImage(a4paper, (int)(this.Width / a4WidthRatio * this.screenSize), (int)(this.Height / a4HeightRatio * this.screenSize));
             
             //this.a4Image.Image = re
 
@@ -282,6 +287,7 @@ namespace CancellationTest
             Console.WriteLine("screenHeight: " + this.Height);
             Console.WriteLine("A4 Ratio: " + a4WidthRatio + " " + a4HeightRatio);
             Console.WriteLine("Screen Size" + this.screenSize);
+            this.Load += new EventHandler(initalLoadCalculations);
             //this.ResumeLayout(false);
             //this.PerformLayout();
 
@@ -307,6 +313,12 @@ namespace CancellationTest
 
             return resizedImage;
 
+        }
+
+        private void initalLoadCalculations(object sender, EventArgs e)
+        {
+            // Adjust the size of the GroupBox based on the screen size and a scale factor
+            adjust();
         }
     }
 

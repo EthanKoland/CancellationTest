@@ -15,6 +15,7 @@ using System.Windows.Forms;
 using System.Windows.Media.TextFormatting;
 using CancellationTest;
 using OfficeOpenXml;
+using System.Media;
 
 namespace CancellationTest
 {
@@ -83,6 +84,10 @@ namespace CancellationTest
         protected Double[] remainingCancelationTime;
         protected int crossOutTime;
 
+        //Sound players for the popping sounds
+        protected WMPLib.WindowsMediaPlayer pop2Player = new WMPLib.WindowsMediaPlayer();
+        protected SoundPlayer poppingPlayer = new SoundPlayer(@"Sounds\popping.wav");
+
         public examParent( abstractTestClass examObject, double adjustSize = 0.5,
             int seconds = 240, string patientName = "None", int crossOutTime = -1) 
         {
@@ -90,6 +95,7 @@ namespace CancellationTest
             this.TopMost = true;
             this.FormBorderStyle = FormBorderStyle.None;
             this.WindowState = FormWindowState.Maximized;
+            this.pop2Player.URL =  "Sounds\\pop2.mp3";
 
             this.screenheight = Screen.PrimaryScreen.Bounds.Height;
             this.screenwidth = Screen.PrimaryScreen.Bounds.Width;
@@ -143,6 +149,7 @@ namespace CancellationTest
             this.helpButton.Font = new Font("Arial", (int)(0.022 * this.screenheight));
             this.helpButton.ForeColor = Color.WhiteSmoke;
             this.helpButton.BackColor = Color.DeepSkyBlue;
+            this.helpButton.Click += new EventHandler(helpButton_Click);
 
             this.Controls.Add(this.timeLabel);
             this.Controls.Add(this.currentTimeLabel);
@@ -235,6 +242,19 @@ namespace CancellationTest
             if (imageID != 0)
            {
 
+                Random rand = new Random();
+
+                if(rand.Next(2) == 1)
+                {
+                    //Play the popping sound
+                    this.pop2Player.controls.play();
+                }
+                else
+                {
+                    //Play the other popping sound
+                    this.poppingPlayer.Play();
+                }
+                
                 int halfWidth = this.localExamObject.imageList[imageID - 1].width / 2;
                 int halfHeight = this.localExamObject.imageList[imageID - 1].height / 2;
 
@@ -295,21 +315,11 @@ namespace CancellationTest
                 this.tracker.export(filename);
                 this.tracker.outPutImage(this.patientName, timeRemaining);
             }
-            else if (e.KeyCode == Keys.Oemplus)
-            {
-                increaseAdjustSize();
-                Console.WriteLine("Adjust Size : " + this.adjustSize);
-            }
-            else if (e.KeyCode == Keys.OemMinus)
-            {
-                decreaseAdjustSize();
-                Console.WriteLine("Adjust Size : " + this.adjustSize);
-            }
-            else if(e.KeyCode == Keys.H)
+            else if (e.KeyCode == Keys.H)
             {
                 Console.WriteLine("Help Button Clicked");
             }
-            else if(e.KeyCode == Keys.Q)
+            else if (e.KeyCode == Keys.Q || e.KeyCode == Keys.Escape)
             {
                 System.Windows.Forms.Application.Exit();
 
@@ -488,6 +498,16 @@ namespace CancellationTest
             this.Name = "ImageViewer";
             this.Text = "CancellationTest";
             this.ResumeLayout(false);
+
+        }
+
+        protected void helpButton_Click(object sender, EventArgs e)
+        {
+            Console.WriteLine("Help Button Clicked");
+
+            //Pop up the help menu
+            helpScreen help = new helpScreen();
+            help.ShowDialog();
 
         }
     }

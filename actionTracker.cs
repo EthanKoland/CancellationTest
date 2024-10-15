@@ -458,10 +458,11 @@ namespace CancellationTest
                 //Draw the path of the user
                 Point previousPoint = this.actions[0].clickPoint;
 
-                
+
 
                 //Draw a red square centered at the center of the image to enote the start
-                g.FillRectangle(Brushes.Red, new Rectangle(previousPoint.X - halfSquare, previousPoint.Y - halfSquare, SquareSize, SquareSize));
+                Rectangle initialRectangle = new Rectangle(previousPoint.X - halfSquare, previousPoint.Y - halfSquare, SquareSize, SquareSize);
+                
 
                 for(int i = 1; i < this.actions.Count; i++)
                 {
@@ -479,6 +480,8 @@ namespace CancellationTest
 
                     previousPoint = currentPoint;
                 }
+
+                g.FillRectangle(Brushes.Red, initialRectangle);
 
             }
 
