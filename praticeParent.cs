@@ -179,21 +179,11 @@ namespace CancellationTest
                 this.tracker.export(filename);
                 this.tracker.outPutImage(this.patientName, timeRemaining);
             }
-            else if (e.KeyCode == Keys.Oemplus)
-            {
-                increaseAdjustSize();
-                Console.WriteLine("Adjust Size : " + this.adjustSize);
-            }
-            else if (e.KeyCode == Keys.OemMinus)
-            {
-                decreaseAdjustSize();
-                Console.WriteLine("Adjust Size : " + this.adjustSize);
-            }
             else if(e.KeyCode == Keys.H)
             {
                 Console.WriteLine("Help Button Clicked");
             }
-            else if(e.KeyCode == Keys.Q)
+            else if(e.KeyCode == Keys.Q || e.KeyCode == Keys.Escape)
             {
                 System.Windows.Forms.Application.Exit();
 
@@ -220,7 +210,7 @@ namespace CancellationTest
 
         protected override void OnPaint(PaintEventArgs e)
         {
-            int i;
+            
             base.OnPaint(e);
             e.Graphics.PageUnit = GraphicsUnit.Pixel;
             Graphics dc = e.Graphics;
@@ -289,67 +279,6 @@ namespace CancellationTest
 
                 //e.Graphics.DrawRectangle(Pens.Black, adjustedX - halfWidth, adjustedY - halfWidth, adjustedWidth, adjustedHeight);
             }
-
-        }
-
-
-
-        private void increaseAdjustSize()
-        {
-            this.adjustSize += 0.01;
-
-            //int adjusX = (int)Math.Round(screenwidth * 0.01);
-            //int adjusY = (int)Math.Round(screenheight * 0.01);
-
-            //this.minBoundry = new Point(Math.Max(this.minBoundry.X - adjusX, 0), Math.Max(this.minBoundry.Y - adjusY, 0));
-            //this.maxBoundry = new Point(Math.Min(this.maxBoundry.X + adjusX, screenwidth), Math.Min(this.maxBoundry.Y + adjusY, screenheight));
-
-            int frameX = (int)(localExamObject.screenWidth * this.adjustSize);
-            int frameY = (int)(localExamObject.screenHeight * this.adjustSize);
-
-            this.minBoundry = new Point((this.screenwidth - frameX) / 2, (this.screenheight - frameY) / 2);
-            this.maxBoundry = new Point((this.screenwidth + frameX) / 2, (this.screenheight + frameY) / 2);
-
-            this.CrossPen = new Pen(Color.Black, (float)(frameY * 0.01));
-    
-        }
-
-        private void decreaseAdjustSize()
-        {
-            this.adjustSize -= 0.01;
-
-            int frameX = (int)(localExamObject.screenWidth * this.adjustSize);
-            int frameY = (int)(localExamObject.screenHeight * this.adjustSize);
-
-            this.minBoundry = new Point((this.screenwidth - frameX) / 2, (this.screenheight - frameY) / 2);
-            this.maxBoundry = new Point((this.screenwidth + frameX) / 2, (this.screenheight + frameY) / 2);
-
-            this.CrossPen = new Pen(Color.Black, (float)(frameY * 0.01));
-        }
-
-        private Point adjustedClickPoint(Point clickPoint)
-        {
-            
-            Point newPoint = new Point((int)Math.Round(clickPoint.X / adjustSize) - this.minBoundry.X,
-                                        (int)Math.Round(clickPoint.Y / adjustSize) - this.minBoundry.Y);
-            Console.WriteLine("Adjusted Point : " + newPoint.X + " " + newPoint.Y);
-            
-            return newPoint;
-        }
-
-        private void InitializeComponent()
-        {
-            this.SuspendLayout();
-            // 
-            // ImageViewer
-            // 
-            this.AutoScaleBaseSize = new System.Drawing.Size(11, 27);
-            this.BackColor = System.Drawing.SystemColors.Window;
-            this.ClientSize = new System.Drawing.Size(screenwidth, screenheight + verticalOffset);
-            this.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Name = "ImageViewer";
-            this.Text = "CancellationTest";
-            this.ResumeLayout(false);
 
         }
 

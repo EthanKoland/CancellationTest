@@ -40,8 +40,6 @@ namespace CancellationTest
 
         protected string patientName;
 
-        public int adjustedScreenWidth { get; private set; }
-        public int adjustedScreenHeight { get; private set; }
 
         //Inorder to standardize the screen size a variable is declared to adjust the size of the screen
         protected double adjustSize = 1.0;

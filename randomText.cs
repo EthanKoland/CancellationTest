@@ -42,12 +42,12 @@ namespace CancellationTest
         }
 
 
-        public override void drawHeader(Graphics g, DateTime endingTime)
+        /*public override void drawHeader(Graphics g, DateTime endingTime)
         {
             TimeSpan timeRemaining = endingTime - DateTime.Now;
             g.DrawString("Cancellation Test", new Font("Arial", 16), Brushes.Black, new Point(10, 10));
             g.DrawString("Ending Time : " + timeRemaining, new Font("Arial", 12), Brushes.Black, new Point(10, 30));
-        }
+        }*/
 
 
         private void createImageList()

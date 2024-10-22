@@ -293,7 +293,7 @@ namespace CancellationTest
 
         }
 
-        private Image ResizeImage(Image image, int width, int height)
+        public Image ResizeImage(Image image, int width, int height)
         {
             // Create a new bitmap with the desired dimensions
             Bitmap resizedImage = new Bitmap(width, height);

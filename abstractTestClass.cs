@@ -9,8 +9,8 @@ namespace CancellationTest
 {
     
     //Class Name : abstractTestClass
-    //Purpose : This class is an abstract class that is used to define the parameters that are common with all the tests
-    //          This class is used to define the parameters that are common with all the tests
+    //Purpose : This class is an abstract class that is used to define the parameters that are common with all the test. 
+    //          By using abstract classes the amount of reused code increases
     
     public abstract class abstractTestClass
     {
@@ -25,7 +25,6 @@ namespace CancellationTest
         public int targetsPerCell { get; protected set; }
         public int distractorsPerCell { get; protected set; }
 
-        public double smallImageSize { get; protected set; }
 
         public int numberOfLargeTargetPerCell { get; protected set; }
         public int numberOfLargeLeftGap { get; protected set; }
@@ -43,36 +42,14 @@ namespace CancellationTest
         public List<mugObject> imageList { get; protected set; }
         public Point cells { get; protected set; }
 
-        public abstract void drawHeader(Graphics g, DateTime endingTime);
+        
 
-        public int getMatrixLocation(int x, int y)
-        {
 
-            int row = y / cellHeight;
-            int col = x / cellWidth;
-
-            return row * this.cells.X + col;
-        }
-
-        public int getMatrixLocation(int ImageID)
-        {
-            Point imgCenter = this.imageList[ImageID - 1].imageCenter;
-            return getMatrixLocation(imgCenter.X, imgCenter.Y);
-        }
-
-        public int numberOfHorizontalCells()
-        {
-            return this.cells.X;
-        }
-
-        public int numberOfVerticalCells()
-        {
-            return this.cells.Y;
-        }
 
         public abstract int checkClick(Point p);
     }
 
+    //A enum is used to classify each of the images that are used in the test. Th enum is used to make the code more readable
     public enum imageTypes
     {
         DistractionLeft,
@@ -81,6 +58,7 @@ namespace CancellationTest
         TargetRight
     }
 
+    //A enum is used to classify the location of the text on the screen. The enum is used to make the code more readable
     public enum leftRightCenter
     {
         Left,

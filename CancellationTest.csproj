@@ -86,6 +86,12 @@
     <Compile Include="helpScreen.Designer.cs">
       <DependentUpon>helpScreen.cs</DependentUpon>
     </Compile>
+    <Compile Include="legalScreen.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="legalScreen.Designer.cs">
+      <DependentUpon>legalScreen.cs</DependentUpon>
+    </Compile>
     <Compile Include="praticeParent.cs">
       <SubType>Form</SubType>
     </Compile>

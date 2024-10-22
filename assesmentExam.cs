@@ -13,7 +13,7 @@ namespace CancellationTest
         private int nextImageID = 1;
         public assesmentExam()
         {
-            //Horizontal then vertical
+            //Updating the values used through out the test
             cells = new Point(5, 2);
 
             imageList = new List<mugObject>();
@@ -41,12 +41,7 @@ namespace CancellationTest
         }
 
 
-        public override void drawHeader(Graphics g, DateTime endingTime)
-        {
-            TimeSpan timeRemaining = endingTime - DateTime.Now;
-            g.DrawString("Cancellation Test", new Font("Arial", 16), Brushes.Black, new Point(10, 10));
-            g.DrawString("Ending Time : " + timeRemaining, new Font("Arial", 12), Brushes.Black, new Point(10, 30));
-        }
+        
 
 
         private void createImageList()
@@ -55,15 +50,8 @@ namespace CancellationTest
             this.cellWidth = this.screenWidth / this.cells.X;
             this.cellHeight = this.screenHeight / this.cells.Y;
 
-            double midCell = (double)this.cells.X / 2;
 
-
-
-            int halfSmallMugSize = this.smallMugsize / 2;
-            int halfLargeMugSize = this.largeMugsize / 2;
-
-
-            //addImage()
+            //Adding the images to the screen based on the excel conversion file
             addImage(85, 135, 54, imageTypes.DistractionLeft, 1);
             addImage(200, 120, 68, imageTypes.DistractionRight, 1);
             addImage(80, 260, 54, imageTypes.TargetLeft, 1);

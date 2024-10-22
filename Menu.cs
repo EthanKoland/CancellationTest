@@ -7,6 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Net.Mime.MediaTypeNames;
+using System.Windows.Media.Media3D;
 
 namespace CancellationTest
 {
@@ -46,6 +48,9 @@ namespace CancellationTest
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.DateTimePicker dateTimePicker1;
         private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Button button4;
 
 
         public Menu()
@@ -256,6 +261,9 @@ namespace CancellationTest
             this.Patient = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.button4 = new System.Windows.Forms.Button();
             //this.groupBox1.SuspendLayout();
             //this.groupBox5.SuspendLayout();
             //this.groupBox4.SuspendLayout();
@@ -274,13 +282,26 @@ namespace CancellationTest
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             // 
+            // Patient
+            // 
+            this.Patient.AutoSize = false;
+            this.Patient.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Patient.Location = new System.Drawing.Point(relativeScreenWidth(0.004), relativeScreenHeight(0.02));
+            //this.Patient.Location = new System.Drawing.Point(6, 22);
+            this.Patient.Name = "Patient";
+            this.Patient.Size = new System.Drawing.Size(relativeScreenWidth(.12), relativeScreenHeight(0.063));
+            this.Patient.TabIndex = 1;
+            this.Patient.Text = "Patient";
+            AdjustFontSizeToFit(Patient);
+            // 
             // currentRatioBox
             // 
-            this.textBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F);
-            this.textBox1.Location = new System.Drawing.Point(relativeScreenWidth(0.125), relativeScreenHeight(0.021));
+            this.textBox1.Font = this.Patient.Font;
+            this.textBox1.Location = new System.Drawing.Point(relativeScreenWidth(0.125), relativeScreenHeight(0.02));
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(relativeScreenWidth(0.15), relativeScreenHeight(0.072));
+            this.textBox1.Size = new System.Drawing.Size(relativeScreenWidth(0.3), relativeScreenHeight(0.25));
             this.textBox1.TabIndex = 7;
+
             // 
             // groupBox5
             // 
@@ -292,17 +313,56 @@ namespace CancellationTest
             this.groupBox5.TabIndex = 6;
             this.groupBox5.TabStop = false;
             // 
-            // decreaseButton
+            // Button3
             // 
             this.button3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.button3.Location = new System.Drawing.Point(relativeScreenWidth(0.25), relativeScreenHeight(0.0289));
+            this.button3.Location = new System.Drawing.Point(relativeScreenWidth(0.5), relativeScreenHeight(0.0289));
             this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(relativeScreenWidth(0.16), relativeScreenHeight(0.048));
+            this.button3.Size = new System.Drawing.Size(relativeScreenWidth(0.12), relativeScreenHeight(0.048));
             this.button3.TabIndex = 0;
             this.button3.Text = "Adjust Screen size";
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
-            // 
+            ///
+            // PictureBox1
+            //
+            System.Drawing.Image rawImage = System.Drawing.Image.FromFile("university_of_east_anglia_logo.png");
+
+            this.pictureBox1.Location = new System.Drawing.Point(relativeScreenHeight(0.01), relativeScreenHeight(0.01));
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(relativeScreenWidth(0.1), relativeScreenHeight(0.09));
+            this.pictureBox1.Image = rawImage;
+            this.pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
+            this.pictureBox1.TabIndex = 0;
+            this.pictureBox1.TabStop = false;
+            this.groupBox5.Controls.Add(this.pictureBox1);
+            //
+            //Label2
+            //
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 36F);
+            this.label2.Location = new System.Drawing.Point(relativeScreenWidth(0.12), relativeScreenHeight(0.01));
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(relativeScreenWidth(0.35), relativeScreenHeight(0.085));
+            this.label2.TabIndex = 0;
+            this.label2.Text = "UEA Cancelation Test";
+            
+            this.label2.TextAlign = ContentAlignment.MiddleCenter;
+            this.label2.AutoSize = false;
+            this.groupBox5.Controls.Add(this.label2);
+            //
+            //Button4
+            //
+            this.button4.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            this.button4.Text = "Legal";
+            this.button4.Location = new System.Drawing.Point(relativeScreenWidth(0.63), relativeScreenHeight(0.0289));
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(relativeScreenWidth(0.05), relativeScreenHeight(0.048));
+            this.button4.TabIndex = 1;
+            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
+            this.groupBox5.Controls.Add(this.button4);
+            
+            //
             // groupBox4
             // 
             this.groupBox4.BackColor = System.Drawing.Color.WhiteSmoke;
@@ -315,11 +375,11 @@ namespace CancellationTest
             // 
             // checkBox1
             // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.checkBox1.Location = new System.Drawing.Point(relativeScreenWidth(0.007), relativeScreenHeight(0.016));
+            
+            this.checkBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.checkBox1.Location = new System.Drawing.Point(relativeScreenWidth(0.007), relativeScreenHeight(0.007));
             this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(relativeScreenWidth(0.248), relativeScreenHeight(0.038));
+            this.checkBox1.Size = new System.Drawing.Size(relativeScreenWidth(0.3), relativeScreenHeight(0.09));
             this.checkBox1.TabIndex = 0;
             this.checkBox1.Text = "Invisable Cancellation Condition";
             this.checkBox1.UseVisualStyleBackColor = true;
@@ -336,14 +396,14 @@ namespace CancellationTest
             // 
             // dateTimePicker1
             // 
-            this.dateTimePicker1.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F);
-            this.dateTimePicker1.Location = new System.Drawing.Point(312, 19);
+            this.dateTimePicker1.Font = new System.Drawing.Font("Microsoft Sans Serif", 36F);
+            this.dateTimePicker1.Location = new System.Drawing.Point(relativeScreenWidth(0.21), relativeScreenHeight(0.02));
             this.dateTimePicker1.Name = "dateTimePicker1";
-            this.dateTimePicker1.Size = new System.Drawing.Size(relativeScreenWidth(0.132), relativeScreenHeight(0.072));
+            this.dateTimePicker1.Size = new System.Drawing.Size(relativeScreenWidth(0.132), relativeScreenHeight(0.08));
             this.dateTimePicker1.TabIndex = 10;
             this.dateTimePicker1.CustomFormat = "mm:ss";
             this.dateTimePicker1.Format = DateTimePickerFormat.Custom;
-            //Set the current time ot 4:00
+            //Set the current time to 4:00
             this.dateTimePicker1.Value = dateTimePicker1_startingPoint;
             this.dateTimePicker_PreviousTime = dateTimePicker1_startingPoint;
             this.dateTimePicker1.ShowUpDown = true;
@@ -355,9 +415,11 @@ namespace CancellationTest
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.label1.Location = new System.Drawing.Point(relativeScreenWidth(0.004), relativeScreenHeight(0.015));
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(relativeScreenWidth(0.163), relativeScreenHeight(0.082));
+            this.label1.Size = new System.Drawing.Size(relativeScreenWidth(0.2), relativeScreenHeight(0.082));
             this.label1.TabIndex = 9;
-            this.label1.Text = "Maximum Time for excersize in seconds";
+            this.label1.Text = "Maximum Time for \n excersize in seconds";
+            this.label1.TextAlign = ContentAlignment.MiddleCenter;
+            AdjustFontSizeToFit(label1);
             // 
             // increaseButton
             // 
@@ -383,17 +445,6 @@ namespace CancellationTest
             this.button1.Text = "Exit";
             this.button1.UseVisualStyleBackColor = false;
             this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
-            // Patient
-            // 
-            this.Patient.AutoSize = true;
-            this.Patient.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Patient.Location = new System.Drawing.Point(relativeScreenWidth(0.004), relativeScreenHeight(0.026));
-            //this.Patient.Location = new System.Drawing.Point(6, 22);
-            this.Patient.Name = "Patient";
-            this.Patient.Size = new System.Drawing.Size(relativeScreenWidth(.12), relativeScreenHeight(0.063));
-            this.Patient.TabIndex = 1;
-            this.Patient.Text = "Patient";
             // 
             // groupBox2
             // 
@@ -445,15 +496,8 @@ namespace CancellationTest
             this.groupBox2.Controls.Add(this.comboBox1);
             this.groupBox3.Controls.Add(this.dateTimePicker1);
             this.groupBox3.Controls.Add(this.label1);
-            //this.groupBox1.ResumeLayout(false);
-            //this.groupBox1.PerformLayout();
-            //this.groupBox5.ResumeLayout(false);
-            //this.groupBox4.ResumeLayout(false);
-            //this.groupBox4.PerformLayout();
-            //this.groupBox3.ResumeLayout(false);
-            //((System.ComponentModel.ISupportInitialize)(this.dateTimePicker1)).EndInit();
-            //this.groupBox2.ResumeLayout(false);
-            //this.ResumeLayout(false);
+            AdjustFontSizeToFit(label2);
+            AdjustFontSizeToFit(Patient);
 
         }
 
@@ -466,6 +510,35 @@ namespace CancellationTest
         {
             //Multiple the screen width by the percentage
             return (int)Math.Round(Screen.PrimaryScreen.Bounds.Width * n * 1.25);    
+        }
+
+        private void AdjustFontSizeToFit(Label label)
+        {
+            // Start with a reasonably large font size
+            float fontSize = 10.0f;
+            Font testFont = new Font(label.Font.FontFamily, fontSize, label.Font.Style);
+
+            // Measure the text size
+            Size textSize = TextRenderer.MeasureText(label.Text, testFont);
+
+            // Increase the font size until the text no longer fits within the label's boundaries
+            while (textSize.Width < label.Width && textSize.Height < label.Height)
+            {
+                fontSize += 0.5f;
+                testFont = new Font(label.Font.FontFamily, fontSize, label.Font.Style);
+                textSize = TextRenderer.MeasureText(label.Text, testFont);
+            }
+
+            // Set the font to the largest size that fits within the boundaries
+            label.Font = new Font(label.Font.FontFamily, fontSize - 0.5f, label.Font.Style);
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            legalScreen legalScreen = new legalScreen();
+            
+            legalScreen.ShowDialog();
+            
         }
     }
 }

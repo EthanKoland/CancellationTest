@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 
 namespace CancellationTest
 {
+    //Action Tracker is used to track the actions of each of exams. This was broken into a seperate class to seperate the front end from the backend of the program. The main goal is to output the data to an excel file
     public class actionTracker
     {
         private List<clickAction> actions = new List<clickAction>();
@@ -31,6 +32,7 @@ namespace CancellationTest
 
         public actionTracker(abstractTestClass examObject, string patientID = "Unknown", int numOfHorizontalCells = 5, double sizeRatio = 1.0)
         {
+            //Var creation and initialization
             this.actions = new List<clickAction>();
             this.localExamObject = examObject;
             this.patientID = patientID;
@@ -40,13 +42,16 @@ namespace CancellationTest
             this.outputPath = AppDomain.CurrentDomain.BaseDirectory;
         }
 
+        //Because actions is a private variable, we need to create a method to add actions to the list. This simply controlls the action being added to the list
         public void addAction(clickAction action) { this.actions.Add(action); }
 
+        //This is the main export function that creates the excel file from the actions
         public void export(string filename)
         {
 
             DateTime endTime = DateTime.Now;
 
+            //Variables to store the results 
             int leftTargetsCrossed = 0;
             int rightTargetsCrossed = 0;
             int centerTargetsCrossed = 0;
@@ -95,15 +100,19 @@ namespace CancellationTest
             
 
 
-            //Calculate the final results
+            //Loop through each of the mugs to tally the mugs clicked
             foreach (mugObject img in localExamObject.imageList)
             {
+                //Check if the image is a target or a distractor
                 if (img.imageType == imageTypes.TargetLeft || img.imageType == imageTypes.TargetRight)
                 {
+                    //Incriment the number of targets
                     numberOfTargets++;
+                    //If statement to sperate and tally the correct tally based on location
                     if (img.side == leftRightCenter.Left)
                     {
                         leftTargets++;
+                        //Terinary operator to check if the image was clicked
                         leftTargetsCrossed += img.isClicked ? 1 : 0;
                     }
                     else if (img.side == leftRightCenter.Right)
@@ -117,8 +126,10 @@ namespace CancellationTest
                         centerTargetsCrossed += img.isClicked ? 1 : 0;
                     }
                 }
+                //If the image is not a target, then it is a distractor
                 else
                 {
+                    //Incriment the number of distractors
                     distractorsCrossed++;
 
                     if (img.side == leftRightCenter.Left)
@@ -164,6 +175,7 @@ namespace CancellationTest
                 }
             }
 
+            //Starting point for the caluclations on the time taken on each side of the screen
             DateTime previousSideTime = this.startTime;
             Point previousPoint = this.actions[0].clickPoint;
 
@@ -172,8 +184,10 @@ namespace CancellationTest
             leftRightCenter priviousSide = firstImage.side;
             int maxX = this.localExamObject.screenWidth;
 
+            //Loop through each of the click actions
             foreach (clickAction action in this.actions)
             {
+                //Retrieve the image that was clicked
                 mugObject clickedImage = this.localExamObject.imageList[action.ImageID - 1];
                 
 
@@ -182,7 +196,7 @@ namespace CancellationTest
                 leftRightCenter side =  localX < 0.5 ? leftRightCenter.Left : leftRightCenter.Right;
 
 
-                //Check if the side has changed
+                //Check if the side has changed - If it isn't then the patient has switched sides on the screen so need to determine attributes of the side
                 if (side != priviousSide)
                 {
                     double timeTaken = (action.timeOfClick - previousSideTime).TotalSeconds;
@@ -255,7 +269,7 @@ namespace CancellationTest
 
             Console.WriteLine("FileName " + filename);
 
-
+            //Creating the excel file
             ExcelPackage.LicenseContext = OfficeOpenXml.LicenseContext.NonCommercial;
             using (ExcelPackage excel = new ExcelPackage(new FileInfo(filename)))
             {
@@ -400,6 +414,7 @@ namespace CancellationTest
                 worksheet.Cells[51, 7].Value = "Pixel Location";
                 worksheet.Cells[51, 8].Value = "Normalized Position";
 
+                //Adding each action to the excel file
                 int row = 52;
                 foreach (clickAction action in this.actions)
                 {
@@ -423,9 +438,10 @@ namespace CancellationTest
             };
         }
 
+        //Creating the supporting image for the excel file and test
         public void outPutImage(string PatientName, TimeSpan timeTaken)
         {
-            //Create a new bitmap
+            //Create a new bitmap - Blank image to write on
             Bitmap bmp = new Bitmap(this.localExamObject.screenWidth, this.localExamObject.screenHeight);
 
             int SquareSize = 20;
@@ -500,10 +516,12 @@ namespace CancellationTest
             return (timeOfEvent - this.startTime).ToString();
         }
 
+        //Seperate function that determines the number of intersections between the paths of clicks
         private int intersectionCount()
         {
             int count = 0;
 
+            //If the count is less then 4, then there are not enough points to create an intersection
             if(this.actions.Count < 4)
             {
                 return 0;
@@ -519,6 +537,7 @@ namespace CancellationTest
                     Point point1j = this.actions[j].clickPoint;
                     Point point2j = this.actions[j + 1].clickPoint;
 
+                    //Retrieve the X and Y values for each of the points - This is done to make the calculations easier and more readable
                     int x1i = point1i.X;
                     int y1i = point1i.Y;
 
@@ -531,20 +550,7 @@ namespace CancellationTest
                     int x2j = point2j.X;
                     int y2j = point2j.Y;
 
-                    //double Dx = (point1i.X * point2i.Y - point1i.Y * point2i.X) * (point1j.X - point2j.X) - (point1i.X - point2i.X) * (point1j.X * point2j.Y - point1j.Y * point2j.X);
-                    //double Dy = (point1i.X * point2i.Y - point1i.Y * point2i.X) * (point1j.Y - point2j.Y) - (point1i.Y - point2i.Y) * (point1j.X * point2j.Y - point1j.Y * point2j.X);
-
-                    //double Dx = ((x1i * y2i - y1i * x2i) * (x1j - x2j)) - ((x1i - x2i) * (x1j * y2j - y1j * x2j));
-                    //double Dy = ((x1i * y2i - y1i * x2i) * (y1j - y2j)) - ((y1i - y2i) * (x1j * y2j - y1j * x2j));
-
-                    //double D = ((x1i - x2i) * (y1j - y2j)) - ((y1i - y2i) * (x1j - x2j));
-
-                    //double Px = Dx / D;
-                   // double Py = Dy / D;
-
-                    //bool condition1 = (D > 0) && ((x1i < Px) && (Px < x2i)) && ((x1j < Px) && (Px < x2j));
-                    //bool condition2 = ((Py > y1i) && (Py < y2i)) && ((Py > y1j) && (Py < y2j));
-
+                    //Slope of the lines
                     double m1 = (double)(y2i - y1i) / (double)(x2i - x1i);
                     double m2 = (double)(y2j - y1j) / (double)(x2j - x1j);
 
@@ -582,6 +588,8 @@ namespace CancellationTest
 
 
     }
+
+    //A Simple struct that is used to group together data from the click action
     public struct clickAction
     {
         public Point clickPoint;
