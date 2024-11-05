@@ -241,8 +241,9 @@ namespace CancellationTest
            {
 
                 Random rand = new Random();
+                int nextint = rand.Next(2);
 
-                if(rand.Next(2) == 1)
+                if (rand.Next(2) == 1)
                 {
                     //Play the popping sound
                     this.pop2Player.controls.play();
@@ -382,8 +383,7 @@ namespace CancellationTest
 
         protected override void OnPaint(PaintEventArgs e)
         {
-            int i;
-            base.OnPaint(e);
+            
             e.Graphics.PageUnit = GraphicsUnit.Pixel;
             Graphics dc = e.Graphics;
             dc.PageUnit = GraphicsUnit.Pixel;

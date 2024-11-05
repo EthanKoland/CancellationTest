@@ -210,6 +210,7 @@ namespace CancellationTest
 
         protected override void OnPaint(PaintEventArgs e)
         {
+
             
             base.OnPaint(e);
             e.Graphics.PageUnit = GraphicsUnit.Pixel;
@@ -246,39 +247,7 @@ namespace CancellationTest
             
 
 
-            //Draw the images in the list
-            foreach (mugObject img in localExamObject.imageList)
-            {
-                
-                int halfWidth = (int)Math.Round(img.width * adjustSize) / 2;
-                int halfHeight = (int)Math.Round(img.height * adjustSize) / 2;
-
-                int adjustedHeight = (int)Math.Round(img.height * adjustSize);
-                int adjustedWidth = (int)Math.Round(img.width * adjustSize);
-
-                int adjustedX = (int)Math.Round(img.imageCenter.X * adjustSize + this.minBoundry.X);
-                int adjustedY = (int)Math.Round(img.imageCenter.Y * adjustSize + this.minBoundry.Y);
-
-                e.Graphics.DrawImage(mugObject.getImageObject(img.imageType), adjustedX - halfWidth, adjustedY - halfHeight, adjustedWidth, adjustedHeight);
-                
-                if(clickedImages.Contains(img.imageID))
-                {
-                    int x1 = adjustedX - adjustedWidth/2;
-
-                    int y1 = adjustedY - adjustedHeight / 2;
-
-
-                    int x2 = x1 + adjustedWidth;
-
-                    int y2 = y1 + adjustedHeight;
-
-                    e.Graphics.DrawLine(this.CrossPen, x1, y2, x2, y1);
-                    
-                }
-
-
-                //e.Graphics.DrawRectangle(Pens.Black, adjustedX - halfWidth, adjustedY - halfWidth, adjustedWidth, adjustedHeight);
-            }
+            
 
         }
 

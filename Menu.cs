@@ -51,6 +51,9 @@ namespace CancellationTest
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.PictureBox neuroLab;
+        private System.Windows.Forms.PictureBox fundingBox;
+        private System.Windows.Forms.PictureBox strokeLogo;
 
 
         public Menu()
@@ -285,8 +288,8 @@ namespace CancellationTest
             // Patient
             // 
             this.Patient.AutoSize = false;
-            this.Patient.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Patient.Location = new System.Drawing.Point(relativeScreenWidth(0.004), relativeScreenHeight(0.02));
+            //this.Patient.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F,  System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Patient.Location = new System.Drawing.Point(relativeScreenWidth(0.004), relativeScreenHeight(0.16));
             //this.Patient.Location = new System.Drawing.Point(6, 22);
             this.Patient.Name = "Patient";
             this.Patient.Size = new System.Drawing.Size(relativeScreenWidth(.12), relativeScreenHeight(0.063));
@@ -297,7 +300,7 @@ namespace CancellationTest
             // currentRatioBox
             // 
             this.textBox1.Font = this.Patient.Font;
-            this.textBox1.Location = new System.Drawing.Point(relativeScreenWidth(0.125), relativeScreenHeight(0.02));
+            this.textBox1.Location = new System.Drawing.Point(relativeScreenWidth(0.125), relativeScreenHeight(0.16));
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(relativeScreenWidth(0.3), relativeScreenHeight(0.25));
             this.textBox1.TabIndex = 7;
@@ -340,15 +343,14 @@ namespace CancellationTest
             //Label2
             //
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 36F);
-            this.label2.Location = new System.Drawing.Point(relativeScreenWidth(0.12), relativeScreenHeight(0.01));
+            this.label2.Location = new System.Drawing.Point(relativeScreenWidth(0.07), relativeScreenHeight(0.01));
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(relativeScreenWidth(0.35), relativeScreenHeight(0.085));
             this.label2.TabIndex = 0;
-            this.label2.Text = "UEA Cancelation Test";
-            
+            this.label2.Text = "Cancelation Test";
             this.label2.TextAlign = ContentAlignment.MiddleCenter;
             this.label2.AutoSize = false;
-            this.groupBox5.Controls.Add(this.label2);
+            this.groupBox1.Controls.Add(this.label2);
             //
             //Button4
             //
@@ -425,7 +427,7 @@ namespace CancellationTest
             // 
             this.button2.BackColor = System.Drawing.Color.DeepSkyBlue;
             this.button2.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button2.Location = new System.Drawing.Point(relativeScreenWidth(0.566), relativeScreenHeight(0.020));
+            this.button2.Location = new System.Drawing.Point(relativeScreenWidth(0.566), relativeScreenHeight(0.160));
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(relativeScreenWidth(0.11), relativeScreenHeight(0.073));
             this.button2.TabIndex = 3;
@@ -438,7 +440,7 @@ namespace CancellationTest
             this.button1.BackColor = System.Drawing.Color.DimGray;
             this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button1.ForeColor = System.Drawing.Color.White;
-            this.button1.Location = new System.Drawing.Point(relativeScreenWidth(0.448), relativeScreenHeight(0.020));
+            this.button1.Location = new System.Drawing.Point(relativeScreenWidth(0.448), relativeScreenHeight(0.160));
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(relativeScreenWidth(0.108), relativeScreenHeight(0.073));
             this.button1.TabIndex = 2;
@@ -449,9 +451,9 @@ namespace CancellationTest
             // groupBox2
             // 
             this.groupBox2.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.groupBox2.Location = new System.Drawing.Point(relativeScreenWidth(0.004), relativeScreenHeight(0.1));
+            this.groupBox2.Location = new System.Drawing.Point(relativeScreenWidth(0.004), relativeScreenHeight(0.25));
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(relativeScreenWidth(0.69), relativeScreenHeight(0.258));
+            this.groupBox2.Size = new System.Drawing.Size(relativeScreenWidth(0.69), relativeScreenHeight(0.1));
             this.groupBox2.TabIndex = 0;
             this.groupBox2.TabStop = false;
             // 
@@ -470,7 +472,40 @@ namespace CancellationTest
             this.comboBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F);
             //Prevent the combo box from being edited
             this.comboBox1.DropDownStyle = ComboBoxStyle.DropDownList;
-            
+            //
+            //NeuroLab
+            //
+            System.Drawing.Image neuroLabImage = System.Drawing.Image.FromFile("neuroLab_Logo.png");
+            this.neuroLab = new System.Windows.Forms.PictureBox();
+            this.neuroLab.Location = new System.Drawing.Point(relativeScreenWidth(0.01), relativeScreenHeight(0.01));
+            this.neuroLab.Name = "neuroLab";
+            this.neuroLab.Size = new System.Drawing.Size(relativeScreenWidth(0.07), relativeScreenHeight(0.15));
+            this.neuroLab.Image = neuroLabImage;
+            this.neuroLab.SizeMode = PictureBoxSizeMode.Zoom;
+            //
+            //StrokeLogo
+            //
+            System.Drawing.Image strokeLogoImage = System.Drawing.Image.FromFile("Stroke-Association-logo-close-crop.png");
+            this.strokeLogo = new System.Windows.Forms.PictureBox();
+            this.strokeLogo.Location = new System.Drawing.Point(relativeScreenWidth(0.11), relativeScreenHeight(0.01));
+            this.strokeLogo.Name = "strokeLogo";
+            this.strokeLogo.Size = new System.Drawing.Size(relativeScreenWidth(0.11), relativeScreenHeight(0.09));
+            this.strokeLogo.Image = strokeLogoImage;
+            this.strokeLogo.SizeMode = PictureBoxSizeMode.Zoom;
+            this.groupBox5.Controls.Add(this.strokeLogo);
+            //
+            //FundingBox
+            //
+            System.Drawing.Image fundingBoxImage = System.Drawing.Image.FromFile("Funded_fix.png");
+            this.fundingBox = new System.Windows.Forms.PictureBox();
+            this.fundingBox.Location = new System.Drawing.Point(relativeScreenWidth(0.2), relativeScreenHeight(0.02));
+            this.fundingBox.Name = "fundingBox";
+            this.fundingBox.Size = new System.Drawing.Size(relativeScreenWidth(0.25), relativeScreenHeight(0.06));
+            this.fundingBox.Image = fundingBoxImage;
+            this.fundingBox.SizeMode = PictureBoxSizeMode.Zoom;
+            this.groupBox5.Controls.Add(this.fundingBox);
+
+
 
             // 
             // Menu
@@ -493,9 +528,11 @@ namespace CancellationTest
             this.groupBox1.Controls.Add(this.button1);
             this.groupBox1.Controls.Add(this.Patient);
             this.groupBox1.Controls.Add(this.groupBox2);
+            this.groupBox1.Controls.Add(this.neuroLab);
             this.groupBox2.Controls.Add(this.comboBox1);
             this.groupBox3.Controls.Add(this.dateTimePicker1);
             this.groupBox3.Controls.Add(this.label1);
+            
             AdjustFontSizeToFit(label2);
             AdjustFontSizeToFit(Patient);
 
