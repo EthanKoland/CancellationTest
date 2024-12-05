@@ -212,7 +212,7 @@ namespace CancellationTest
         private void addImage(int x, int y, int imgSize, imageTypes imageType, int matrixLocation)
         {
             leftRightCenter side;
-            if (matrixLocation % 5 < 3)
+            if (matrixLocation % 5 < 2)
             {
                 side = leftRightCenter.Left;
             }

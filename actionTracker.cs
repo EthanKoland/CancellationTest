@@ -107,7 +107,10 @@ namespace CancellationTest
                 if (img.imageType == imageTypes.TargetLeft || img.imageType == imageTypes.TargetRight)
                 {
                     //Incriment the number of targets
-                    numberOfTargets++;
+                    if (img.isClicked)
+                    {
+                        numberOfTargets++;
+                    }
                     //If statement to sperate and tally the correct tally based on location
                     if (img.side == leftRightCenter.Left)
                     {
@@ -130,7 +133,10 @@ namespace CancellationTest
                 else
                 {
                     //Incriment the number of distractors
-                    distractorsCrossed++;
+                    if (img.isClicked)
+                    {
+                        distractorsCrossed++;
+                    }
 
                     if (img.side == leftRightCenter.Left)
                     {
@@ -177,7 +183,7 @@ namespace CancellationTest
 
             //Starting point for the caluclations on the time taken on each side of the screen
             DateTime previousSideTime = this.startTime;
-            Point previousPoint = this.actions[0].clickPoint;
+            Point previousPoint = this.actions.Count > 0 ? this.actions[0].clickPoint : new Point(0, 0);
 
             clickAction firstAction = this.actions[0];
             mugObject firstImage = this.localExamObject.imageList[firstAction.ImageID - 1];
@@ -185,8 +191,11 @@ namespace CancellationTest
             int maxX = this.localExamObject.screenWidth;
 
             //Loop through each of the click actions
-            foreach (clickAction action in this.actions)
+            for(int i = 1; i < this.actions.Count; i++)
             {
+                clickAction action = this.actions[i];
+                
+                
                 //Retrieve the image that was clicked
                 mugObject clickedImage = this.localExamObject.imageList[action.ImageID - 1];
                 
@@ -201,24 +210,35 @@ namespace CancellationTest
                 {
                     double timeTaken = (action.timeOfClick - previousSideTime).TotalSeconds;
                     double distance = Math.Sqrt(Math.Pow(previousPoint.X - action.clickPoint.X, 2) + Math.Pow(previousPoint.Y - action.clickPoint.Y, 2));
-                    if (side == leftRightCenter.Left)
-                    {
-                        double modifierRight = (previousPoint.X - action.clickPoint.X);
-                        double modifierLeft = (maxX / 2 - previousPoint.X);
-                        rightTimeTaken += timeTaken * modifierRight;
-                        leftTimeTaken += timeTaken * modifierLeft;
-                        distanceRight += distance * modifierRight;
-                        distanceLeft += distance * modifierLeft;
-                    }
-                    else
-                    {
-                        double modifierRight = (action.clickPoint.X - maxX);
-                        double modifierLeft = (maxX/2 - previousPoint.X);
-                        rightTimeTaken += timeTaken * modifierRight;
-                        leftTimeTaken += timeTaken * modifierLeft;
-                        distanceRight += distance * modifierRight;
-                        distanceLeft += distance * modifierLeft;
-                    }
+                    //if (side == leftRightCenter.Left)
+                    //{
+                    //    double modifierRight = (previousPoint.X - action.clickPoint.X)/distance;
+                    //    double modifierLeft = (maxX / 2 - previousPoint.X)/distance;
+                    //    rightTimeTaken += timeTaken * modifierRight;
+                    //    leftTimeTaken += timeTaken * modifierLeft;
+                    //    distanceRight += distance * modifierRight;
+                    //    distanceLeft += distance * modifierLeft;
+                    //}
+                    //else
+                    //{
+                    //    double modifierRight = (action.clickPoint.X - maxX/2)/distance;
+                    //    double modifierLeft = (maxX/2 - previousPoint.X)/distance;
+                    //    rightTimeTaken += timeTaken * modifierRight;
+                    //    leftTimeTaken += timeTaken * modifierLeft;
+                    //    distanceRight += distance * modifierRight;
+                    //    distanceLeft += distance * modifierLeft;
+                    //}
+                    int xGreater = Math.Max(previousPoint.X, action.clickPoint.X);
+                    int xLesser = Math.Min(previousPoint.X, action.clickPoint.X);
+
+                    double modifierRight = (xGreater - maxX/2)/distance;
+                    double modifierLeft = (maxX/2 - xLesser)/distance;
+                    rightTimeTaken += timeTaken * modifierRight;
+                    leftTimeTaken += timeTaken * modifierLeft;
+                    distanceRight += distance * modifierRight;
+                    distanceLeft += distance * modifierLeft;
+
+
                 }
                 else
                 {
@@ -227,7 +247,7 @@ namespace CancellationTest
                         leftTimeTaken += (action.timeOfClick - previousSideTime).TotalSeconds;
                         distanceLeft += Math.Sqrt(Math.Pow(previousPoint.X - action.clickPoint.X, 2) + Math.Pow(previousPoint.Y - action.clickPoint.Y, 2));
                     }
-                    else
+                    else if(side == leftRightCenter.Right)
                     {
                         rightTimeTaken += (action.timeOfClick - previousSideTime).TotalSeconds;
                         distanceRight += Math.Sqrt(Math.Pow(previousPoint.X - action.clickPoint.X, 2) + Math.Pow(previousPoint.Y - action.clickPoint.Y, 2));
@@ -265,6 +285,26 @@ namespace CancellationTest
             double intersectionRate = (double)intersections / (double)(totalClicks - leftReclicks - rightReclicks);
 
             //Merge the file name with the current directory
+            //Check that the output folder exist
+            if(!Directory.Exists(Path.Combine(this.outputPath, "Output"))){
+                Directory.CreateDirectory(Path.Combine(this.outputPath, "Output"));
+            }
+            this.outputPath = Path.Combine(this.outputPath, "Output");
+
+            if (!Directory.Exists(Path.Combine(this.outputPath, this.patientID)))
+            {
+                Directory.CreateDirectory(Path.Combine(this.outputPath, this.patientID));
+            }
+            this.outputPath = Path.Combine(this.outputPath, this.patientID);
+
+            if (!Directory.Exists(Path.Combine(this.outputPath, DateTime.Now.ToString("yyyy-MM-dd"))))
+            {
+                Directory.CreateDirectory(Path.Combine(this.outputPath, DateTime.Now.ToString("yyyy-MM-dd")));
+            }
+            this.outputPath = Path.Combine(this.outputPath, DateTime.Now.ToString("yyyy-MM-dd"));
+
+
+
             filename = Path.Combine(this.outputPath, filename);
 
             Console.WriteLine("FileName " + filename);
@@ -333,11 +373,9 @@ namespace CancellationTest
 
                 worksheet.Cells[17, 1].Value = "Reclicks on the right side";
                 worksheet.Cells[17, 2].Value = rightReclicks;
-                worksheet.Cells[17, 3].Value = "0.00% - not working";
 
                 worksheet.Cells[18, 1].Value = "Reclicks on the left side";
                 worksheet.Cells[18, 2].Value = leftReclicks;
-                worksheet.Cells[18, 3].Value = "0.00% - not working";
 
                 worksheet.Cells[20, 1].Value = "Accuracy per location";
 
@@ -421,7 +459,7 @@ namespace CancellationTest
                     mugObject clickedImage = this.localExamObject.imageList[action.ImageID - 1];
                     worksheet.Cells[row, 1].Value = clickedImage.isClicked ? "Target Succesfully Cancelled" : "Distractor";
                     worksheet.Cells[row, 2].Value = timeSinceStart(action.timeOfClick);
-                    worksheet.Cells[row, 3].Value = "1/10";
+                    worksheet.Cells[row, 3].Value = clickedImage.matrixLocation;
                     worksheet.Cells[row, 4].Value = clickedImage.side;
                     worksheet.Cells[row, 5].Value = mugObject.imageOrietation(clickedImage.imageType);
                     worksheet.Cells[row, 6].Value = action.isCrossed ? "Yes" : "";

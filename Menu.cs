@@ -347,7 +347,7 @@ namespace CancellationTest
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(relativeScreenWidth(0.35), relativeScreenHeight(0.085));
             this.label2.TabIndex = 0;
-            this.label2.Text = "Cancelation Test";
+            this.label2.Text = "Cancellation Test";
             this.label2.TextAlign = ContentAlignment.MiddleCenter;
             this.label2.AutoSize = false;
             this.groupBox1.Controls.Add(this.label2);
@@ -383,7 +383,7 @@ namespace CancellationTest
             this.checkBox1.Name = "checkBox1";
             this.checkBox1.Size = new System.Drawing.Size(relativeScreenWidth(0.3), relativeScreenHeight(0.09));
             this.checkBox1.TabIndex = 0;
-            this.checkBox1.Text = "Invisable Cancellation Condition";
+            this.checkBox1.Text = "Invisible Cancellation Condition";
             this.checkBox1.UseVisualStyleBackColor = true;
             // 
             // groupBox3
@@ -419,7 +419,7 @@ namespace CancellationTest
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(relativeScreenWidth(0.2), relativeScreenHeight(0.082));
             this.label1.TabIndex = 9;
-            this.label1.Text = "Maximum Time for \n excersize in seconds";
+            this.label1.Text = "Maximum Time for \n exercize in seconds";
             this.label1.TextAlign = ContentAlignment.MiddleCenter;
             AdjustFontSizeToFit(label1);
             // 
@@ -465,8 +465,8 @@ namespace CancellationTest
             this.comboBox1.Size = new System.Drawing.Size(relativeScreenWidth(0.40), relativeScreenHeight(0.20));
             this.comboBox1.TabIndex = 0;
             this.comboBox1.Items.AddRange(new String[] {
-                "Pratice Test 1",
-                "Pratice Test 2",
+                "Practice Test 1",
+                "Practice Test 2",
                 "Assessment" });
             this.comboBox1.SelectedIndex = 2;
             this.comboBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F);

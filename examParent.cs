@@ -90,7 +90,7 @@ namespace CancellationTest
             int seconds = 240, string patientName = "None", int crossOutTime = -1) 
         {
 
-            this.TopMost = true;
+            //this.TopMost = true;
             this.FormBorderStyle = FormBorderStyle.None;
             this.WindowState = FormWindowState.Maximized;
             this.pop2Player.URL =  "Sounds\\pop2.mp3";
@@ -115,7 +115,7 @@ namespace CancellationTest
             
 
             this.localExamObject = examObject;
-            this.tracker = new actionTracker(this.localExamObject);
+            this.tracker = new actionTracker(this.localExamObject, patientID:patientName);
 
 
             this.endTime = DateTime.Now.AddSeconds(seconds);
@@ -320,6 +320,12 @@ namespace CancellationTest
             }
             else if (e.KeyCode == Keys.Q || e.KeyCode == Keys.Escape)
             {
+                TimeSpan timeRemaining = endTime - DateTime.Now;
+                Console.WriteLine("E Key Pressed");
+                string filename = "CancellationTest_" + this.patientName + "_" + DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss") + ".xlsx";
+                this.tracker.export(filename);
+                this.tracker.outPutImage(this.patientName, timeRemaining);
+
                 System.Windows.Forms.Application.Exit();
 
             }

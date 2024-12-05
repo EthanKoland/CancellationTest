@@ -87,7 +87,7 @@ namespace CancellationTest
             addImage(1410, 794, 54, imageTypes.TargetRight, 6);
             addImage(1581, 903, 68, imageTypes.TargetLeft, 6);
             addImage(1364, 960, 68, imageTypes.DistractionRight, 6);
-            addImage(1311, 967, 54, imageTypes.DistractionLeft, 6);
+            addImage(1300, 967, 54, imageTypes.DistractionLeft, 6);
 
 
 
