@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Numerics;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -27,6 +28,9 @@ namespace CancellationTest
 
         private String outputPath;
 
+        private Dictionary<int, int> reclicks;
+        
+
 
 
 
@@ -40,10 +44,14 @@ namespace CancellationTest
             this.startTime = DateTime.Now;
             this.sizeRatio = sizeRatio;
             this.outputPath = AppDomain.CurrentDomain.BaseDirectory;
+            this.reclicks = new Dictionary<int, int>();
         }
 
         //Because actions is a private variable, we need to create a method to add actions to the list. This simply controlls the action being added to the list
-        public void addAction(clickAction action) { this.actions.Add(action); }
+        public void addAction(clickAction action) { 
+            this.actions.Add(action);
+            this.reclicks[action.ImageID] = this.reclicks.ContainsKey(action.ImageID) ? this.reclicks[action.ImageID] + 1 : 1;
+        }
 
         //This is the main export function that creates the excel file from the actions
         public void export(string filename)
@@ -107,10 +115,8 @@ namespace CancellationTest
                 if (img.imageType == imageTypes.TargetLeft || img.imageType == imageTypes.TargetRight)
                 {
                     //Incriment the number of targets
-                    if (img.isClicked)
-                    {
-                        numberOfTargets++;
-                    }
+                    numberOfTargets++;
+                    
                     //If statement to sperate and tally the correct tally based on location
                     if (img.side == leftRightCenter.Left)
                     {
@@ -178,6 +184,21 @@ namespace CancellationTest
                         }
                     }
 
+                }
+                //Calculating Reclicks
+                if (this.reclicks.ContainsKey(img.imageID))
+                {
+                    
+                    int imgX = img.imageCenter.X;
+
+                    if (0.5 > imgX/ this.localExamObject.screenWidth)
+                    {
+                        leftReclicks += (this.reclicks[img.imageID] - 1);
+                    }
+                    else
+                    {
+                        rightReclicks += (this.reclicks[img.imageID] - 1);
+                    }
                 }
             }
 
@@ -259,14 +280,7 @@ namespace CancellationTest
 
                 if (!action.isCrossed)
                 {
-                    if(side == leftRightCenter.Left)
-                    {
-                        leftReclicks++;
-                    }
-                    else if (side == leftRightCenter.Right)
-                    {
-                        rightReclicks++;
-                    }
+                    reCancellations++;
                 }
 
                 //Calculate the speed of the search
@@ -284,24 +298,9 @@ namespace CancellationTest
 
             double intersectionRate = (double)intersections / (double)(totalClicks - leftReclicks - rightReclicks);
 
-            //Merge the file name with the current directory
-            //Check that the output folder exist
-            if(!Directory.Exists(Path.Combine(this.outputPath, "Output"))){
-                Directory.CreateDirectory(Path.Combine(this.outputPath, "Output"));
-            }
-            this.outputPath = Path.Combine(this.outputPath, "Output");
 
-            if (!Directory.Exists(Path.Combine(this.outputPath, this.patientID)))
-            {
-                Directory.CreateDirectory(Path.Combine(this.outputPath, this.patientID));
-            }
-            this.outputPath = Path.Combine(this.outputPath, this.patientID);
-
-            if (!Directory.Exists(Path.Combine(this.outputPath, DateTime.Now.ToString("yyyy-MM-dd"))))
-            {
-                Directory.CreateDirectory(Path.Combine(this.outputPath, DateTime.Now.ToString("yyyy-MM-dd")));
-            }
-            this.outputPath = Path.Combine(this.outputPath, DateTime.Now.ToString("yyyy-MM-dd"));
+            //Update the output path to refect the current time. Also insures that the excel and photo have the same name and location
+            this.updateOutputPath();
 
 
 
@@ -353,11 +352,11 @@ namespace CancellationTest
                 worksheet.Cells[7, 2].Value = totalTimeTaken;
 
                 worksheet.Cells[9, 1].Value = "Time Spent on the right side";
-                worksheet.Cells[9, 2].Value = (Math.Round(rightTimeTaken / (leftTimeTaken + rightTimeTaken), 4) * 100) + "%";
+                worksheet.Cells[9, 2].Value = (Math.Round(rightTimeTaken / totalTimeTaken, 4) * 100) + "%";
 
               
                 worksheet.Cells[10, 1].Value = "Time Spent on the left side";
-                worksheet.Cells[10, 2].Value = (Math.Round(leftTimeTaken / (leftTimeTaken + rightTimeTaken), 4) * 100) + "%";
+                worksheet.Cells[10, 2].Value = (Math.Round(leftTimeTaken / totalTimeTaken, 4) * 100) + "%";
 
                 worksheet.Cells[11, 1].Value = "Asymmetry Score";
                 worksheet.Cells[11, 2].Value = Math.Round((rightTimeTaken - leftTimeTaken) / totalTimeTaken, 4);
@@ -457,7 +456,15 @@ namespace CancellationTest
                 foreach (clickAction action in this.actions)
                 {
                     mugObject clickedImage = this.localExamObject.imageList[action.ImageID - 1];
-                    worksheet.Cells[row, 1].Value = clickedImage.isClicked ? "Target Succesfully Cancelled" : "Distractor";
+                    //worksheet.Cells[row, 1].Value = clickedImage.isClicked ? "Target Succesfully Cancelled" : "Distractor";
+                    if(clickedImage.imageType == imageTypes.TargetLeft || clickedImage.imageType == imageTypes.TargetRight)
+                    {
+                        worksheet.Cells[row, 1].Value = "Target Succesfully Cancelled";
+                    }
+                    else
+                    {
+                        worksheet.Cells[row, 1].Value = "Distractor";
+                    }
                     worksheet.Cells[row, 2].Value = timeSinceStart(action.timeOfClick);
                     worksheet.Cells[row, 3].Value = clickedImage.matrixLocation;
                     worksheet.Cells[row, 4].Value = clickedImage.side;
@@ -622,7 +629,30 @@ namespace CancellationTest
 
         }
 
-        
+        private void updateOutputPath()
+        {
+            string localPath = AppDomain.CurrentDomain.BaseDirectory;
+
+            if (!Directory.Exists(Path.Combine(localPath, "Output")))
+            {
+                Directory.CreateDirectory(Path.Combine(localPath, "Output"));
+            }
+            localPath = Path.Combine(localPath, "Output");
+
+            if (!Directory.Exists(Path.Combine(localPath, this.patientID)))
+            {
+                Directory.CreateDirectory(Path.Combine(localPath, this.patientID));
+            }
+            localPath = Path.Combine(localPath, this.patientID);
+
+            if (!Directory.Exists(Path.Combine(localPath, DateTime.Now.ToString("yyyy-MM-dd"))))
+            {
+                Directory.CreateDirectory(Path.Combine(localPath, DateTime.Now.ToString("yyyy-MM-dd")));
+            }
+            this.outputPath = Path.Combine(localPath, DateTime.Now.ToString("yyyy-MM-dd"));
+        }
+
+
 
 
     }

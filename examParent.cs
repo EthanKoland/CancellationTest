@@ -89,8 +89,8 @@ namespace CancellationTest
         public examParent( abstractTestClass examObject, double adjustSize = 0.5,
             int seconds = 240, string patientName = "None", int crossOutTime = -1) 
         {
-
-            //this.TopMost = true;
+            
+            this.TopMost = true;
             this.FormBorderStyle = FormBorderStyle.None;
             this.WindowState = FormWindowState.Maximized;
             this.pop2Player.URL =  "Sounds\\pop2.mp3";
