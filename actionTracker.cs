@@ -70,19 +70,19 @@ namespace CancellationTest
             int rightTargets = 0;
             int centerTargets = 0;
 
-            int leftGapLeftDistractorsCrossed = 0;
-            int leftGapRightDistractorsCrossed = 0;
-            int leftGapCenterDistractorsCrossed = 0;
-            int rightGapLeftDistractorsCrossed = 0;
-            int rightGapRightDistractorsCrossed = 0;
-            int rightGapCenterDistractorsCrossed = 0;
+            int leftSide_leftGap_DistractorsCrossed = 0;
+            int leftSide_rightGap_DistractorsCrossed = 0;
+            int center_leftGap_DistractorsCrossed = 0;
+            int rightSide_LeftGap_DistractorsCrossed = 0;
+            int rightSide_rightGap_DistractorsCrossed = 0;
+            int center_rightGap_DistractorsCrossed = 0;
 
-            int leftGapLeftDistractors = 0;
-            int leftGapRightDistractors = 0;
-            int leftGapCenterDistractors = 0;
-            int rightGapLeftDistractors = 0;
-            int rightGapRightDistractors = 0;
-            int rightGapCenterDistractors = 0;
+            int leftSide_leftGap_Distractors = 0;
+            int leftSide_rightGap_Distractors = 0;
+            int center_leftGap_Distractors = 0;
+            int rightSide_LeftGap_Distractors = 0;
+            int rightSide_rightGap_Distractors = 0;
+            int center_rigthGap_Distractors = 0;
 
             int distractorsCrossed = 0;
 
@@ -93,6 +93,9 @@ namespace CancellationTest
             int rightReclicks = 0;
             int leftReclicks = 0;
             int totalClicks = this.actions.Count;
+
+            int leftAllocentric = 0;
+            int rightAllocentric = 0;
 
             double searchSpeed = 0;
             double leftSearchSpeed = 0;
@@ -106,6 +109,11 @@ namespace CancellationTest
 
             int intersections = intersectionCount();
             
+            //Protect against no action being taken and causing our or range errors
+            if(this.actions.Count == 0)
+            {
+                return;
+            }
 
 
             //Loop through each of the mugs to tally the mugs clicked
@@ -134,6 +142,15 @@ namespace CancellationTest
                         centerTargets++;
                         centerTargetsCrossed += img.isClicked ? 1 : 0;
                     }
+
+                    if (img.isClicked && img.imageType == imageTypes.TargetLeft)
+                    {
+                        leftAllocentric++;
+                    }
+                    else if(img.isClicked && img.imageType == imageTypes.TargetRight)
+                    {
+                        rightAllocentric++;
+                    }
                 }
                 //If the image is not a target, then it is a distractor
                 else
@@ -148,39 +165,39 @@ namespace CancellationTest
                     {
                         if (img.imageType == imageTypes.DistractionLeft)
                         {
-                            leftGapLeftDistractorsCrossed += img.isClicked ? 1 : 0;
-                            leftGapLeftDistractors += 1;
+                            leftSide_leftGap_DistractorsCrossed += img.isClicked ? 1 : 0;
+                            leftSide_leftGap_Distractors += 1;
                         }
                         else if (img.imageType == imageTypes.DistractionRight)
                         {
-                            leftGapRightDistractorsCrossed += img.isClicked ? 1 : 0;
-                            leftGapRightDistractors += 1;
+                            leftSide_rightGap_DistractorsCrossed += img.isClicked ? 1 : 0;
+                            leftSide_rightGap_Distractors += 1;
                         }
                     }
                     else if (img.side == leftRightCenter.Right)
                     {
                         if (img.imageType == imageTypes.DistractionLeft)
                         {
-                            rightGapLeftDistractorsCrossed += img.isClicked ? 1 : 0;
-                            rightGapLeftDistractors += 1;
+                            rightSide_LeftGap_DistractorsCrossed += img.isClicked ? 1 : 0;
+                            rightSide_LeftGap_Distractors += 1;
                         }
-                        else if (img.imageType == imageTypes.DistractionRight)
+                       else if (img.imageType == imageTypes.DistractionRight)
                         {
-                            rightGapRightDistractorsCrossed += img.isClicked ? 1 : 0;
-                            rightGapRightDistractors += 1;
+                            rightSide_rightGap_DistractorsCrossed += img.isClicked ? 1 : 0;
+                            rightSide_rightGap_Distractors += 1;
                         }
                     }
                     else
                     {
                         if (img.imageType == imageTypes.DistractionLeft)
                         {
-                            leftGapCenterDistractorsCrossed += img.isClicked ? 1 : 0;
-                            leftGapCenterDistractors += 1;
+                            center_leftGap_DistractorsCrossed += img.isClicked ? 1 : 0;
+                            center_leftGap_Distractors += 1;
                         }
                         else if (img.imageType == imageTypes.DistractionRight)
                         {
-                            rightGapCenterDistractorsCrossed += img.isClicked ? 1 : 0;
-                            rightGapCenterDistractors += 1;
+                            center_rightGap_DistractorsCrossed += img.isClicked ? 1 : 0;
+                            center_rigthGap_Distractors += 1;
                         }
                     }
 
@@ -208,11 +225,14 @@ namespace CancellationTest
 
             clickAction firstAction = this.actions[0];
             mugObject firstImage = this.localExamObject.imageList[firstAction.ImageID - 1];
-            leftRightCenter priviousSide = firstImage.side;
             int maxX = this.localExamObject.screenWidth;
+            int maxY = this.localExamObject.screenHeight;
+
+            leftRightCenter priviousSide = firstAction.clickPoint.X/maxX < 0.5 ? leftRightCenter.Left : leftRightCenter.Right;
+
 
             //Loop through each of the click actions
-            for(int i = 1; i < this.actions.Count; i++)
+            for (int i = 1; i < this.actions.Count; i++)
             {
                 clickAction action = this.actions[i];
                 
@@ -231,24 +251,7 @@ namespace CancellationTest
                 {
                     double timeTaken = (action.timeOfClick - previousSideTime).TotalSeconds;
                     double distance = Math.Sqrt(Math.Pow(previousPoint.X - action.clickPoint.X, 2) + Math.Pow(previousPoint.Y - action.clickPoint.Y, 2));
-                    //if (side == leftRightCenter.Left)
-                    //{
-                    //    double modifierRight = (previousPoint.X - action.clickPoint.X)/distance;
-                    //    double modifierLeft = (maxX / 2 - previousPoint.X)/distance;
-                    //    rightTimeTaken += timeTaken * modifierRight;
-                    //    leftTimeTaken += timeTaken * modifierLeft;
-                    //    distanceRight += distance * modifierRight;
-                    //    distanceLeft += distance * modifierLeft;
-                    //}
-                    //else
-                    //{
-                    //    double modifierRight = (action.clickPoint.X - maxX/2)/distance;
-                    //    double modifierLeft = (maxX/2 - previousPoint.X)/distance;
-                    //    rightTimeTaken += timeTaken * modifierRight;
-                    //    leftTimeTaken += timeTaken * modifierLeft;
-                    //    distanceRight += distance * modifierRight;
-                    //    distanceLeft += distance * modifierLeft;
-                    //}
+                    
                     int xGreater = Math.Max(previousPoint.X, action.clickPoint.X);
                     int xLesser = Math.Min(previousPoint.X, action.clickPoint.X);
 
@@ -260,6 +263,9 @@ namespace CancellationTest
                     distanceLeft += distance * modifierLeft;
 
 
+                    priviousSide = side;
+
+
                 }
                 else
                 {
@@ -267,11 +273,13 @@ namespace CancellationTest
                     {
                         leftTimeTaken += (action.timeOfClick - previousSideTime).TotalSeconds;
                         distanceLeft += Math.Sqrt(Math.Pow(previousPoint.X - action.clickPoint.X, 2) + Math.Pow(previousPoint.Y - action.clickPoint.Y, 2));
+
                     }
                     else if(side == leftRightCenter.Right)
                     {
                         rightTimeTaken += (action.timeOfClick - previousSideTime).TotalSeconds;
                         distanceRight += Math.Sqrt(Math.Pow(previousPoint.X - action.clickPoint.X, 2) + Math.Pow(previousPoint.Y - action.clickPoint.Y, 2));
+
                     }
                 }
 
@@ -285,7 +293,7 @@ namespace CancellationTest
 
                 //Calculate the speed of the search
 
-
+                
 
 
 
@@ -391,24 +399,24 @@ namespace CancellationTest
                 worksheet.Cells[26, 1].Value = "Left Gap";
 
                 worksheet.Cells[27, 1].Value = "Left";
-                worksheet.Cells[27, 2].Value = Math.Round((double)leftGapLeftDistractorsCrossed / leftGapLeftDistractors, 4) * 100 + "%";
+                worksheet.Cells[27, 2].Value = Math.Round((double)leftSide_leftGap_DistractorsCrossed / leftSide_leftGap_Distractors, 4) * 100 + "%";
 
                 worksheet.Cells[28, 1].Value = "Center";
-                worksheet.Cells[28, 2].Value = Math.Round((double)leftGapCenterDistractorsCrossed / leftGapCenterDistractors, 4) * 100 + "%";
+                worksheet.Cells[28, 2].Value = Math.Round((double)center_leftGap_DistractorsCrossed / center_leftGap_Distractors, 4) * 100 + "%";
 
                 worksheet.Cells[29, 1].Value = "Right";
-                worksheet.Cells[29, 2].Value = Math.Round((double)leftGapRightDistractorsCrossed / leftGapRightDistractors, 4) * 100 + "%";
+                worksheet.Cells[29, 2].Value = Math.Round((double)rightSide_LeftGap_DistractorsCrossed / rightSide_LeftGap_Distractors, 4) * 100 + "%";
 
                 worksheet.Cells[30, 1].Value = "Right Gap";
 
                 worksheet.Cells[31, 1].Value = "Left";
-                worksheet.Cells[31, 2].Value = Math.Round((double)rightGapLeftDistractorsCrossed / rightGapLeftDistractors, 4) * 100 + "%";
+                worksheet.Cells[31, 2].Value = Math.Round((double)leftSide_rightGap_DistractorsCrossed / leftSide_rightGap_Distractors, 4) * 100 + "%";
 
                 worksheet.Cells[32, 1].Value = "Center";
-                worksheet.Cells[32, 2].Value = Math.Round((double)rightGapCenterDistractorsCrossed / rightGapCenterDistractors, 4) * 100 + "%";
+                worksheet.Cells[32, 2].Value = Math.Round((double)center_rightGap_DistractorsCrossed / center_rigthGap_Distractors, 4) * 100 + "%";
 
                 worksheet.Cells[33, 1].Value = "Right";
-                worksheet.Cells[33, 2].Value = Math.Round((double)rightGapRightDistractorsCrossed / rightGapRightDistractors, 4) * 100 + "%";
+                worksheet.Cells[33, 2].Value = Math.Round((double)rightSide_rightGap_DistractorsCrossed / rightSide_rightGap_Distractors, 4) * 100 + "%";
 
                 worksheet.Cells[35, 1].Value = "Egocentric neglect Subscores";
 
@@ -419,18 +427,18 @@ namespace CancellationTest
                 worksheet.Cells[38, 2].Value = leftTargetsCrossed;
 
                 worksheet.Cells[39, 1].Value = "Egocentric neglect";
-                worksheet.Cells[39, 2].Value = leftTargetsCrossed - rightTargetsCrossed;
+                worksheet.Cells[39, 2].Value = rightTargetsCrossed - leftTargetsCrossed;
 
                 worksheet.Cells[41, 1].Value = "Allocentric neglect Subscores";
 
                 worksheet.Cells[42, 1].Value = "Total number of left-gap distractors cancelled";
-                worksheet.Cells[42, 2].Value = leftGapLeftDistractorsCrossed + leftGapCenterDistractorsCrossed + leftGapRightDistractorsCrossed;
+                worksheet.Cells[42, 2].Value = leftSide_leftGap_DistractorsCrossed + center_leftGap_DistractorsCrossed + rightSide_LeftGap_DistractorsCrossed;
 
                 worksheet.Cells[43, 1].Value = "Total number of right-gap distractors cancelled";
-                worksheet.Cells[43, 2].Value = rightGapLeftDistractorsCrossed + rightGapCenterDistractorsCrossed + rightGapRightDistractorsCrossed;
+                worksheet.Cells[43, 2].Value = leftSide_rightGap_DistractorsCrossed + center_rightGap_DistractorsCrossed + rightSide_rightGap_DistractorsCrossed;
 
                 worksheet.Cells[44, 1].Value = "Allocentric neglect";
-                worksheet.Cells[44, 2].Value = (leftGapLeftDistractorsCrossed + leftGapCenterDistractorsCrossed + leftGapRightDistractorsCrossed) - (rightGapLeftDistractorsCrossed + rightGapCenterDistractorsCrossed + rightGapRightDistractorsCrossed);
+                worksheet.Cells[44, 2].Value =  (leftSide_rightGap_DistractorsCrossed + center_rightGap_DistractorsCrossed + rightSide_rightGap_DistractorsCrossed) - (leftSide_leftGap_DistractorsCrossed + center_leftGap_DistractorsCrossed + rightSide_LeftGap_DistractorsCrossed);
 
                 worksheet.Cells[46, 1].Value = "Intersections";
 
@@ -446,7 +454,7 @@ namespace CancellationTest
                 worksheet.Cells[51, 2].Value = "Time of Cancellation";
                 worksheet.Cells[51, 3].Value = "Location in Matrix";
                 worksheet.Cells[51, 4].Value = "Side in Matrix";
-                worksheet.Cells[51, 5].Value = "Orientatiom";
+                worksheet.Cells[51, 5].Value = "Orientation";
                 worksheet.Cells[51, 6].Value = "Re-Cancelled";
                 worksheet.Cells[51, 7].Value = "Pixel Location";
                 worksheet.Cells[51, 8].Value = "Normalized Position";
@@ -469,7 +477,7 @@ namespace CancellationTest
                     worksheet.Cells[row, 3].Value = clickedImage.matrixLocation;
                     worksheet.Cells[row, 4].Value = clickedImage.side;
                     worksheet.Cells[row, 5].Value = mugObject.imageOrietation(clickedImage.imageType);
-                    worksheet.Cells[row, 6].Value = action.isCrossed ? "Yes" : "";
+                    worksheet.Cells[row, 6].Value = action.isCrossed ? "" : "Yes";
                     worksheet.Cells[row, 7].Value = action.clickPoint;
                     worksheet.Cells[row, 8].Value = (action.clickPoint.X * this.sizeRatio) + ", " + (action.clickPoint.Y * this.sizeRatio);
 
@@ -484,7 +492,7 @@ namespace CancellationTest
         }
 
         //Creating the supporting image for the excel file and test
-        public void outPutImage(string PatientName, TimeSpan timeTaken)
+        public void outPutImage(string PatientName, TimeSpan timeTaken, int pratice = 0)
         {
             //Create a new bitmap - Blank image to write on
             Bitmap bmp = new Bitmap(this.localExamObject.screenWidth, this.localExamObject.screenHeight);
@@ -546,7 +554,76 @@ namespace CancellationTest
 
             }
 
-            string imageName = "CancellationTest_" + PatientName + "_" + DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss") + ".png";
+            //If the exam type is pratice then include title mugs
+            if (pratice > 0)
+            {
+                int imgWidth = bmp.Width;
+                int imgHeight = bmp.Height;
+
+                int smallMugsize = (int)(0.04 *  imgWidth);
+                int largeMugsize = (int)(0.055 * imgWidth);
+
+                Pen instructionPen = new Pen(Color.Black, 5);
+
+                //Cross out the small left mug
+                Point p1 = new Point((int)(0.38 * imgWidth), (int)(0.165 * imgWidth) + smallMugsize);
+                Point p2 = new Point((int)(0.38 * imgWidth) + smallMugsize, (int)(0.165 * imgWidth));
+                g.DrawImage(mugObject.getImageObject(imageTypes.TargetLeft), p1.X, p2.Y, smallMugsize, smallMugsize);
+                g.DrawLine(instructionPen, p1, p2);
+
+
+                //Cross out the small right mug
+                p1 = new Point((int)(0.44 * imgWidth), (int)(0.165 * imgWidth) + smallMugsize);
+                p2 = new Point((int)(0.44 * imgWidth) + smallMugsize, (int)(0.165 * imgWidth));
+                g.DrawImage(mugObject.getImageObject(imageTypes.TargetRight), p1.X, p2.Y, smallMugsize, smallMugsize);
+                g.DrawLine(instructionPen, p1, p2);
+
+
+                //Cross out the large left mug
+                p1 = new Point((int)(0.37 * imgWidth), (int)(0.25 * imgWidth) + largeMugsize);
+                p2 = new Point((int)(0.37 * imgWidth) + largeMugsize, (int)(0.25 * imgWidth));
+                g.DrawImage(mugObject.getImageObject(imageTypes.TargetLeft), p1.X, p2.Y,largeMugsize, largeMugsize);
+                g.DrawLine(instructionPen, p1, p2);
+
+                //Cross out the large right mug
+                p1 = new Point((int)(0.435 * imgWidth), (int)(0.25 * imgWidth) + largeMugsize);
+                p2 = new Point((int)(0.435 * imgWidth) +  largeMugsize, (int)(0.25 * imgWidth));
+                g.DrawImage(mugObject.getImageObject(imageTypes.TargetRight), p1.X, p2.Y, largeMugsize, largeMugsize);
+                g.DrawLine(instructionPen, p1, p2);
+
+                //Cross out label
+                g.DrawString("Cross out the mugs",
+                    new Font("Arial", (int)(0.02 * imgWidth)), 
+                    Brushes.Black,
+                    new Point(0, (int)(0.1 * imgHeight)));
+
+                //Small left Target Image
+                g.DrawImage(mugObject.getImageObject(imageTypes.TargetLeft), (int)(0.38 * imgWidth), (int)(0.165 * imgWidth), smallMugsize, smallMugsize);
+
+                //Small right Target Image
+                g.DrawImage(mugObject.getImageObject(imageTypes.TargetRight), (int)(0.44 * imgWidth), (int)(0.165 * imgWidth), smallMugsize, smallMugsize);
+
+                //Large left Target Image
+                g.DrawImage(mugObject.getImageObject(imageTypes.TargetLeft), (int)(0.37 * imgWidth), (int)(0.25 * imgWidth), largeMugsize, largeMugsize);
+
+                //Large right Target Image
+                g.DrawImage(mugObject.getImageObject(imageTypes.TargetRight), (int)(0.435 * imgWidth), (int)(0.25 * imgWidth), largeMugsize, largeMugsize);
+
+                //Small Left Distractor Image
+                g.DrawImage(mugObject.getImageObject(imageTypes.DistractionLeft), (int)(0.38 * imgWidth), (int)(0.3 * imgWidth), smallMugsize, smallMugsize);
+
+                //Small Right Distractor Image
+                g.DrawImage(mugObject.getImageObject(imageTypes.DistractionRight), (int)(0.44 * imgWidth), (int)(0.3 * imgWidth), smallMugsize, smallMugsize);
+
+                //Large Left Distractor Image
+                g.DrawImage(mugObject.getImageObject(imageTypes.DistractionLeft), (int)(0.37 * imgWidth), (int)(0.35 * imgWidth), largeMugsize, largeMugsize);
+
+                //Large Right Distractor Image
+                g.DrawImage(mugObject.getImageObject(imageTypes.DistractionRight), (int)(0.435 * imgWidth), (int)(0.35 * imgWidth), largeMugsize, largeMugsize);
+            }
+
+            string imageName = pratice > 0 ? "Pratice" + pratice + "_" : "CancellationTest_";
+            imageName += PatientName + "_" + DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss") + ".png";
             //string imageName = "test.png";
 
             Console.WriteLine("Saving the image");

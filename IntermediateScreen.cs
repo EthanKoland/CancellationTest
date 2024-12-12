@@ -94,7 +94,8 @@ namespace CancellationTest
             //If the test is not an assessment, then we need to create a practiceParent object because the only other option our practice tests
             if (this.testParameters.testType != AvailableExams.Assessment)
             {
-                praticeParent praticeParent = new praticeParent(exam, this.testParameters.adjustmentRatio, this.testParameters.examTime, this.testParameters.patientName, this.testParameters.crossOutTime);
+                int praticeNum = this.testParameters.testType == AvailableExams.Practice_1 ? 1 : 2;
+                praticeParent praticeParent = new praticeParent(exam, praticeNum, this.testParameters.adjustmentRatio, this.testParameters.examTime, this.testParameters.patientName, this.testParameters.crossOutTime);
                 this.Hide();
                 praticeParent.Show();
 
@@ -160,7 +161,7 @@ namespace CancellationTest
             this.label3.Size = new System.Drawing.Size((int)Math.Round(groupBoxWidth * 0.8), (int)Math.Round(groupBoxHeight * 0.15));
             this.label3.Font = new Font("Arial", (int)Math.Round(groupBoxHeight * 0.04));
             this.label3.TabIndex = 2;
-            this.label3.Text = "Please click all the complete mugs (those with no gaps).";
+            this.label3.Text = "Some Mugs will be complete and some will have a gap on the handle";
             // 
             // label2
             // 
@@ -169,7 +170,7 @@ namespace CancellationTest
             this.label2.Size = new System.Drawing.Size((int)Math.Round(groupBoxWidth * 0.8), (int)Math.Round(groupBoxHeight * 0.15));
             this.label2.Font = new Font("Arial", (int)Math.Round(groupBoxHeight * 0.04));
             this.label2.TabIndex = 1;
-            this.label2.Text = "Some Mugs will be complete and some will have a gap on the handle.";
+            this.label2.Text = "Please click all the complete mugs (those with no gaps).";
             // 
             // label1
             // 

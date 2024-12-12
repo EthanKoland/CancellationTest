@@ -42,8 +42,8 @@ namespace CancellationTest
         private PictureBox largeRightMug;
 
         
-        public praticeParent( abstractTestClass examObject, double adjustSize = 0.5,
-            int seconds = 240, string patientName = "None", int crossOutTime = -1) : base(examObject, adjustSize, seconds, patientName, crossOutTime)
+        public praticeParent( abstractTestClass examObject, int praticeExamNum, double adjustSize = 0.5,
+            int seconds = 240, string patientName = "None", int crossOutTime = -1 ) : base(examObject, adjustSize, seconds, patientName, crossOutTime)
         {
 
             

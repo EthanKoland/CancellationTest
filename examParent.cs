@@ -264,9 +264,11 @@ namespace CancellationTest
                 action.ImageID = imageID;
                 action.timeOfClick = DateTime.Now;
 
+                bool timeRemaining = this.remainingCancelationTime[imageID] <= 0;
+
                 Console.WriteLine("Image Clicked : " + imageID);
                 mugObject clickedImage = this.localExamObject.imageList[imageID - 1];
-                clickedImage.setClicked(0, adjustSize);
+                clickedImage.setClicked(0, adjustSize, timeRemaining);
 
                 //Set the image crossed to state to update the action tracker to keep track of user actions
                 action.isCrossed = clickedImage.isClicked;
@@ -431,11 +433,24 @@ namespace CancellationTest
                     
                 }
 
+                //IF img.side is left draw a blue rectange
+                if (img.side == leftRightCenter.Left)
+                {
+                    e.Graphics.DrawRectangle(BluePen, adjustedX - halfWidth, adjustedY - halfWidth, adjustedWidth, adjustedHeight);
+                }
+                else if (img.side == leftRightCenter.Center)
+                {
+                    e.Graphics.DrawRectangle(GreenPen, adjustedX - halfWidth, adjustedY - halfWidth, adjustedWidth, adjustedHeight);
+                }
+                else if (img.side == leftRightCenter.Right)
+                {
+                    e.Graphics.DrawRectangle(RedPen, adjustedX - halfWidth, adjustedY - halfWidth, adjustedWidth, adjustedHeight);
+                }
 
                 //e.Graphics.DrawRectangle(Pens.Black, adjustedX - halfWidth, adjustedY - halfWidth, adjustedWidth, adjustedHeight);
             }
 
-           
+
 
         }
 

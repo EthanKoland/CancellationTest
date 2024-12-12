@@ -32,10 +32,12 @@ namespace CancellationTest
             this.matrixLocation = matrixLocation;
         }
 
-        public void setClicked( int vOffset, double adjust)
+        //Recancel will be true if the time remaining is less than 0 
+        public void setClicked( int vOffset, double adjust, Boolean recancel = false)
         {
+            
             //If the image is clicked then set the isClicked to true, but if it is already clicked then set it to false
-            this.isClicked = !this.isClicked;
+            this.isClicked = recancel ? true : !this.isClicked;
             Console.WriteLine("Image Clicked : " + this.imageID + "is clicked " + this.isClicked);
         }
 
@@ -51,19 +53,19 @@ namespace CancellationTest
         {
             if (types == imageTypes.DistractionLeft)
             {
-                return Image.FromFile("left60.jpg");
+                return Image.FromFile("leftB60.jpg");
             }
             else if (types == imageTypes.DistractionRight)
             {
-                return Image.FromFile("right60.jpg");
+                return Image.FromFile("rightB60.jpg");
             }
             else if (types == imageTypes.TargetLeft)
             {
-                return Image.FromFile("leftB60.jpg");
+                return Image.FromFile("left60.jpg");
             }
             else if (types == imageTypes.TargetRight)
             {
-                return Image.FromFile("rightB60.jpg");
+                return Image.FromFile("right60.jpg");
             }
             else
             {
