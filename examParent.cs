@@ -312,9 +312,7 @@ namespace CancellationTest
             {
                 TimeSpan timeRemaining = endTime - DateTime.Now;
                 Console.WriteLine("E Key Pressed");
-                string filename = "CancellationTest_" + this.patientName + "_" + DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss") + ".xlsx";
-                this.tracker.export(filename);
-                this.tracker.outPutImage(this.patientName, timeRemaining);
+
             }
             else if (e.KeyCode == Keys.H)
             {
@@ -325,12 +323,29 @@ namespace CancellationTest
                 TimeSpan timeRemaining = endTime - DateTime.Now;
                 Console.WriteLine("E Key Pressed");
                 string filename = "CancellationTest_" + this.patientName + "_" + DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss") + ".xlsx";
-                this.tracker.export(filename);
-                this.tracker.outPutImage(this.patientName, timeRemaining);
+                //this.tracker.export(filename);
+                //this.tracker.outPutImage(this.patientName, timeRemaining);
 
                 System.Windows.Forms.Application.Exit();
 
             }
+            else if (e.KeyCode == Keys.D1)
+            {
+                Console.WriteLine("1 Key Pressed -> Creating a Map");
+                Export_Map map = new Export_Map(this.patientName);
+                List<abstractExportClass> list = new List<abstractExportClass>();
+                list.Add(map);
+                this.tracker.export(list);
+            }
+            else if (e.KeyCode == Keys.D2)
+            {
+                Console.WriteLine("2 Key Pressed -> Creating a XLSX");
+                abstractExportClass map = new Export_XLSX(this.patientName);
+                List<abstractExportClass> list = new List<abstractExportClass>();
+                list.Add(map);
+                this.tracker.export(list);
+            }
+            
             Console.WriteLine("Key Pressed" + e.KeyCode);
             this.Refresh();
         }

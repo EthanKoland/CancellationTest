@@ -35,6 +35,8 @@ namespace CancellationTest
             this.numberOfLargeLeftGap = 1;
             this.numberOfLargeRightGap = 1;
 
+            this.isPratice = false;
+
             this.bitMap = new int[this.screenWidth, this.screenHeight];
 
             createImageList();

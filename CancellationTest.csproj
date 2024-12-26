@@ -110,8 +110,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="abstractExportClass.cs" />
     <Compile Include="abstractTestClass.cs" />
     <Compile Include="actionTracker.cs" />
+    <Compile Include="Export_Map.cs" />
+    <Compile Include="Export_XLSX.cs" />
     <Compile Include="helpScreen.cs">
       <SubType>Form</SubType>
     </Compile>

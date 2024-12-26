@@ -37,6 +37,8 @@ namespace CancellationTest
         //The offset is used to set the header of t he frame to adjust for different 
         public int verticalOffset { get; protected set; }
 
+        public bool isPratice { get; protected set; } = true;
+
 
 
         public List<mugObject> imageList { get; protected set; }
