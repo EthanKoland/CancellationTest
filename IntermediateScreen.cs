@@ -161,7 +161,7 @@ namespace CancellationTest
             this.label3.Size = new System.Drawing.Size((int)Math.Round(groupBoxWidth * 0.8), (int)Math.Round(groupBoxHeight * 0.15));
             this.label3.Font = new Font("Arial", (int)Math.Round(groupBoxHeight * 0.04));
             this.label3.TabIndex = 2;
-            this.label3.Text = "Some Mugs will be complete and some will have a gap on the handle";
+            this.label3.Text = "Some Mugs will be complete and some will have a gap on the handle.";
             // 
             // label2
             // 

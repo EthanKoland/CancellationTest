@@ -88,8 +88,9 @@ namespace CancellationTest
                 outputFile.WriteLine();
 
                 outputFile.WriteLine("Session History");
-                outputFile.WriteLine("    Success    |    Time of Cancelation    |    Location in Matrix    |    Orientation    |    Recancelation    |    Pixel Location    |    Normalized Position    ");
-                outputFile.WriteLine("------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+                outputFile.WriteLine("    Success    |  Time of Cancelation  |  Location in Matrix  |  Matrix Side  |  Orientation  |  Recancelation  |  Pixel Location  |  Normalized Position  ");
+                
+                outputFile.WriteLine("-----------------------------------------------------------------------------------------------------------------------------------------------------------");
                 //Write the click d   Target Success-
                 //                    fully Cancelled
                 //                       Distractor  |
@@ -109,17 +110,18 @@ namespace CancellationTest
                         line += "   Distractor  |";
                     }
 
-                    line += CenterString(cRow.time, 27) + "|";
-                    line += CenterString(cRow.matrixLocation, 26) + "|";
-                    line += CenterString(cRow.orientation, 19) + "|";
-                    line += CenterString(cRow.reCancel, 21) + "|";
-                    line += CenterString(cRow.PixelLocation, 22) + "|";
-                    line += CenterString(cRow.normalizedLocation.ToString(), 25);
+                    line += CenterString(cRow.time, 23) + "|";
+                    line += CenterString(cRow.matrixLocation, 22) + "|";
+                    line += CenterString(cRow.matrixSide, 15) + "|";
+                    line += CenterString(cRow.orientation, 15) + "|";
+                    line += CenterString(cRow.reCancel, 17) + "|";
+                    line += CenterString(cRow.PixelLocation, 18) + "|";
+                    line += CenterString(cRow.normalizedLocation.ToString(), 21);
 
                     outputFile.WriteLine(line);
                     if (writeSecondLine)
                     {
-                        outputFile.WriteLine("fully Cancelled|                           |                          |                   |                     |                      |                           ");
+                        outputFile.WriteLine("fully Cancelled|                       |                      |               |               |                 |                  |                       ");
                     }
                     outputFile.WriteLine();
 

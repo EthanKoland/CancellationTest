@@ -32,7 +32,7 @@ namespace CancellationTest
 
         private bool invisableCancelation;
 
-
+        public DateTime endTime { get; set; }
 
         public actionTracker(abstractTestClass examObject, bool invisableCancelation, string patientID = "Unknown", int numOfHorizontalCells = 5, double sizeRatio = 1.0)
         {

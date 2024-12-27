@@ -46,10 +46,10 @@ namespace CancellationTest
             //Application.Run(new Menu());
             //Application.Run(new IntermediateScreen());
             //Application.Run(new helpScreen());
-
+            //Application.Run(new exportScreen("123456789", 1.0));
 
             //Testing DPIUtil
-           
+
 
 
             //Get the current screen scale

@@ -113,6 +113,13 @@
     <Compile Include="abstractExportClass.cs" />
     <Compile Include="abstractTestClass.cs" />
     <Compile Include="actionTracker.cs" />
+    <Compile Include="exportScreen.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="exportScreen.Designer.cs">
+      <DependentUpon>exportScreen.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Export_CSV.cs" />
     <Compile Include="Export_Map.cs" />
     <Compile Include="Export_Txt.cs" />
     <Compile Include="Export_XLSX.cs" />

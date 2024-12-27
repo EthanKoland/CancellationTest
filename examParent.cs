@@ -322,10 +322,12 @@ namespace CancellationTest
             else if (e.KeyCode == Keys.Q || e.KeyCode == Keys.Escape)
             {
                 TimeSpan timeRemaining = endTime - DateTime.Now;
+                tracker.endTime = DateTime.Now;
                 Console.WriteLine("E Key Pressed");
                 string filename = "CancellationTest_" + this.patientName + "_" + DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss") + ".xlsx";
-                //this.tracker.export(filename);
-                //this.tracker.outPutImage(this.patientName, timeRemaining);
+                //Open the export screen
+                exportScreen exportScreenObj = new exportScreen(this.patientName, this.tracker, this.adjustSize);
+                exportScreenObj.ShowDialog();
 
                 System.Windows.Forms.Application.Exit();
 
@@ -333,6 +335,7 @@ namespace CancellationTest
             else if (e.KeyCode == Keys.D1)
             {
                 Console.WriteLine("1 Key Pressed -> Creating a Map");
+                tracker.endTime = DateTime.Now;
                 Export_Map map = new Export_Map(this.patientName);
                 List<abstractExportClass> list = new List<abstractExportClass>();
                 list.Add(map);
@@ -341,6 +344,7 @@ namespace CancellationTest
             else if (e.KeyCode == Keys.D2)
             {
                 Console.WriteLine("2 Key Pressed -> Creating a XLSX");
+                tracker.endTime = DateTime.Now;
                 abstractExportClass map = new Export_XLSX(this.patientName);
                 List<abstractExportClass> list = new List<abstractExportClass>();
                 list.Add(map);
@@ -348,14 +352,24 @@ namespace CancellationTest
             }
             else if (e.KeyCode == Keys.D3)
             {
-                Console.WriteLine("2 Key Pressed -> Creating a XLSX");
+                Console.WriteLine("2 Key Pressed -> Creating a Txt");
+                tracker.endTime = DateTime.Now;
                 abstractExportClass map = new Export_Txt(this.patientName);
                 List<abstractExportClass> list = new List<abstractExportClass>();
                 list.Add(map);
                 this.tracker.export(list);
             }
+            else if (e.KeyCode == Keys.D4)
+            {
+                Console.WriteLine("2 Key Pressed -> Creating a CSV");
+                tracker.endTime = DateTime.Now;
+                abstractExportClass map = new Export_CSV(this.patientName);
+                List<abstractExportClass> list = new List<abstractExportClass>();
+                list.Add(map);
+                this.tracker.export(list);
+            }
 
-                Console.WriteLine("Key Pressed" + e.KeyCode);
+            Console.WriteLine("Key Pressed" + e.KeyCode);
             this.Refresh();
         }
 
