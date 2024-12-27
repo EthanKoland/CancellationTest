@@ -29,12 +29,12 @@ namespace CancellationTest
         private String outputPath;
 
         private Dictionary<int, int> reclicks;
-        
+
+        private bool invisableCancelation;
 
 
 
-
-        public actionTracker(abstractTestClass examObject, string patientID = "Unknown", int numOfHorizontalCells = 5, double sizeRatio = 1.0)
+        public actionTracker(abstractTestClass examObject, bool invisableCancelation, string patientID = "Unknown", int numOfHorizontalCells = 5, double sizeRatio = 1.0)
         {
             //Var creation and initialization
             this.actions = new List<clickAction>();
@@ -45,6 +45,7 @@ namespace CancellationTest
             this.sizeRatio = sizeRatio;
             this.outputPath = AppDomain.CurrentDomain.BaseDirectory;
             this.reclicks = new Dictionary<int, int>();
+            this.invisableCancelation = invisableCancelation;
         }
 
         //Because actions is a private variable, we need to create a method to add actions to the list. This simply controlls the action being added to the list
@@ -337,6 +338,8 @@ namespace CancellationTest
 
             foreach (abstractExportClass exportClass in exportClasses)
             {
+
+                exportClass.invisableCancelation = this.invisableCancelation;
 
                 //Add the variables to the export class
                 exportClass.left_TargetCrossed = leftTargetsCrossed;

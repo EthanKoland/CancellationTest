@@ -146,11 +146,6 @@ namespace CancellationTest
 
             this.wplayer.controls.stop();
 
-
-
-
-
-
             this.Hide();
 
         }

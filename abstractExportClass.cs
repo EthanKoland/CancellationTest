@@ -13,6 +13,7 @@ namespace CancellationTest
         public string patient_ID { get; protected set; }
         public abstractTestClass localExamObj { get;  set; }
         protected List<clickRow> clickRows;
+        public bool invisableCancelation { get; set; } = false;
 
         //Variable used to store the target crosses data
         public int left_TargetCrossed { get; set; }

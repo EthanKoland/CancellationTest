@@ -115,7 +115,8 @@ namespace CancellationTest
             
 
             this.localExamObject = examObject;
-            this.tracker = new actionTracker(this.localExamObject, patientID:patientName);
+            bool invisableCancelation = crossOutTime == -1 ? false : true;
+            this.tracker = new actionTracker(this.localExamObject, invisableCancelation, patientID: patientName);
 
 
             this.endTime = DateTime.Now.AddSeconds(seconds);
@@ -345,8 +346,16 @@ namespace CancellationTest
                 list.Add(map);
                 this.tracker.export(list);
             }
-            
-            Console.WriteLine("Key Pressed" + e.KeyCode);
+            else if (e.KeyCode == Keys.D3)
+            {
+                Console.WriteLine("2 Key Pressed -> Creating a XLSX");
+                abstractExportClass map = new Export_Txt(this.patientName);
+                List<abstractExportClass> list = new List<abstractExportClass>();
+                list.Add(map);
+                this.tracker.export(list);
+            }
+
+                Console.WriteLine("Key Pressed" + e.KeyCode);
             this.Refresh();
         }
 
