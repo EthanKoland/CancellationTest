@@ -54,7 +54,7 @@ namespace CancellationTest
                 for (int i = 1; i < this.clickRows.Count; i++)
                 {
                     
-                    Point currentPoint = this.clickRows[0].normalizedLocation;
+                    Point currentPoint = this.clickRows[i].normalizedLocation;
 
                     //Draw the connection pine betyween the two points
                     g.DrawLine(new Pen(Color.Black, 4), previousPoint, currentPoint);

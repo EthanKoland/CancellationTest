@@ -39,6 +39,8 @@ namespace CancellationTest
         protected int MaxPts = 0;
 
         protected string patientName;
+        protected bool pauseTimer = false;
+        protected TimeSpan pauseTime = new TimeSpan(0, 0, 0);
 
 
         //Inorder to standardize the screen size a variable is declared to adjust the size of the screen
@@ -184,11 +186,24 @@ namespace CancellationTest
         {
             TimeSpan timeRemaining = endTime - DateTime.Now;
 
+            if (this.pauseTimer)
+            {
+                return;
+            }
+
             //If the time is less than 0 then stop the timer
             if (timeRemaining.TotalSeconds < 0)
             {
                 ((System.Windows.Forms.Timer)sender).Stop();
                 this.currentTimeLabel.Text = "0:00";
+
+                tracker.endTime = DateTime.Now;
+                string filename = "CancellationTest_" + this.patientName + "_" + DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss") + ".xlsx";
+                //Open the export screen
+                exportScreen exportScreenObj = new exportScreen(this.patientName, this.tracker, this.adjustSize);
+                exportScreenObj.ShowDialog();
+
+                System.Windows.Forms.Application.Exit();
 
                 return;
             }
@@ -321,6 +336,7 @@ namespace CancellationTest
             }
             else if (e.KeyCode == Keys.Q || e.KeyCode == Keys.Escape)
             {
+                this.pauseTimer = true;
                 TimeSpan timeRemaining = endTime - DateTime.Now;
                 tracker.endTime = DateTime.Now;
                 Console.WriteLine("E Key Pressed");
@@ -337,6 +353,7 @@ namespace CancellationTest
                 Console.WriteLine("1 Key Pressed -> Creating a Map");
                 tracker.endTime = DateTime.Now;
                 Export_Map map = new Export_Map(this.patientName);
+                
                 List<abstractExportClass> list = new List<abstractExportClass>();
                 list.Add(map);
                 this.tracker.export(list);
@@ -357,6 +374,7 @@ namespace CancellationTest
                 abstractExportClass map = new Export_Txt(this.patientName);
                 List<abstractExportClass> list = new List<abstractExportClass>();
                 list.Add(map);
+
                 this.tracker.export(list);
             }
             else if (e.KeyCode == Keys.D4)
@@ -472,7 +490,7 @@ namespace CancellationTest
                 }
 
                 //IF img.side is left draw a blue rectange
-                if (img.side == leftRightCenter.Left)
+                /*if (img.side == leftRightCenter.Left)
                 {
                     e.Graphics.DrawRectangle(BluePen, adjustedX - halfWidth, adjustedY - halfWidth, adjustedWidth, adjustedHeight);
                 }
@@ -483,7 +501,7 @@ namespace CancellationTest
                 else if (img.side == leftRightCenter.Right)
                 {
                     e.Graphics.DrawRectangle(RedPen, adjustedX - halfWidth, adjustedY - halfWidth, adjustedWidth, adjustedHeight);
-                }
+                }*/
 
                 //e.Graphics.DrawRectangle(Pens.Black, adjustedX - halfWidth, adjustedY - halfWidth, adjustedWidth, adjustedHeight);
             }

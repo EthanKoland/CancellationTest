@@ -65,9 +65,9 @@ namespace CancellationTest
             this.comboGroupBox.Controls.Add(this.checkBox_Map);
             this.comboGroupBox.Controls.Add(this.checkBox_Txt);
             this.comboGroupBox.Controls.Add(this.checkBox_Excel);
-            this.comboGroupBox.Controls.Add(this.checkBox_CSV);
-            this.comboGroupBox.Controls.Add(this.checkBox_PDF);
-            this.comboGroupBox.Controls.Add(this.checkBox_IMG);
+            //this.comboGroupBox.Controls.Add(this.checkBox_CSV);
+            //this.comboGroupBox.Controls.Add(this.checkBox_PDF);
+            //this.comboGroupBox.Controls.Add(this.checkBox_IMG);
             //this.comboGroupBox.Controls.Add(this.button_Menu);
             this.comboGroupBox.Controls.Add(this.button_Exit);
             this.comboGroupBox.Controls.Add(this.button_Export);
@@ -132,7 +132,7 @@ namespace CancellationTest
             this.checkBox_IMG.Text = "Export as Image File - In Dev";
 
             this.button_Export.BackColor = System.Drawing.Color.DeepSkyBlue;
-            this.button_Export.Location = new System.Drawing.Point((int)(screenWidth * 0), (int)(screenHeight * 0.8));
+            this.button_Export.Location = new System.Drawing.Point((int)(screenWidth * 0.2), (int)(screenHeight * 0.8));
             this.button_Export.Name = "button_Export";
             this.button_Export.Size = new System.Drawing.Size((int)(screenWidth * 0.2), (int)(screenHeight * 0.11));
             this.button_Export.TabIndex = 7;
@@ -140,7 +140,7 @@ namespace CancellationTest
             this.button_Export.Click += new System.EventHandler(this.export);
 
             this.button_Exit.BackColor = System.Drawing.Color.DeepSkyBlue;
-            this.button_Exit.Location = new System.Drawing.Point((int)(screenWidth * 0.3), (int)(screenHeight * 0.8));
+            this.button_Exit.Location = new System.Drawing.Point((int)(screenWidth * 0.5), (int)(screenHeight * 0.8));
             this.button_Exit.Name = "button_Exit";
             this.button_Exit.Size = new System.Drawing.Size((int)(screenWidth * 0.2), (int)(screenHeight * 0.1));
             this.button_Exit.TabIndex = 8;
@@ -195,6 +195,8 @@ namespace CancellationTest
             }
 
             this.tracker.export(exportList);
+
+            MessageBox.Show("Export Complete");
 
 
         }
