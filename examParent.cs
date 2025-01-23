@@ -236,16 +236,16 @@ namespace CancellationTest
 
         void ImageViewer_MouseClick(object sender, MouseEventArgs e)
         {
-
+            this.CurPt = new Point((int) ((e.X - this.minBoundry.X) / (1 * adjustSize)),
+                                   (int)((e.Y - this.minBoundry.Y) / (1 * adjustSize)));
 
             //Figure out if the click point is within the boundry
-            if(e.X < this.minBoundry.X || e.X > this.maxBoundry.X || e.Y < this.minBoundry.Y || e.Y > this.maxBoundry.Y)
+            if (e.X < this.minBoundry.X || e.X > this.maxBoundry.X || e.Y < this.minBoundry.Y || e.Y > this.maxBoundry.Y)
             {
                 return;
             }   
 
-            this.CurPt = adjustedClickPoint(new Point(e.X, e.Y));
-
+        
 
             // Check if the ooint correlates to any of the images
             int imageID = this.localExamObject.checkClick(this.CurPt);
@@ -455,6 +455,8 @@ namespace CancellationTest
             //localExamObject.drawHeader(dc, endTime);
 
             //bitMapValidation(dc);
+            
+            
 
 
             //Draw the images in the list
@@ -506,7 +508,7 @@ namespace CancellationTest
                 //e.Graphics.DrawRectangle(Pens.Black, adjustedX - halfWidth, adjustedY - halfWidth, adjustedWidth, adjustedHeight);
             }
 
-
+           
 
         }
 

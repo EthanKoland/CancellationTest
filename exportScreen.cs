@@ -134,26 +134,19 @@ namespace CancellationTest
             this.button_Export.BackColor = System.Drawing.Color.DeepSkyBlue;
             this.button_Export.Location = new System.Drawing.Point((int)(screenWidth * 0.2), (int)(screenHeight * 0.8));
             this.button_Export.Name = "button_Export";
-            this.button_Export.Size = new System.Drawing.Size((int)(screenWidth * 0.2), (int)(screenHeight * 0.11));
+            this.button_Export.Size = new System.Drawing.Size((int)(screenWidth * 0.2), (int)(screenHeight * 0.1));
             this.button_Export.TabIndex = 7;
             this.button_Export.Text = "Export";
             this.button_Export.Click += new System.EventHandler(this.export);
 
             this.button_Exit.BackColor = System.Drawing.Color.DeepSkyBlue;
-            this.button_Exit.Location = new System.Drawing.Point((int)(screenWidth * 0.5), (int)(screenHeight * 0.8));
+            this.button_Exit.Location = new System.Drawing.Point((int)(screenWidth * 0.6), (int)(screenHeight * 0.8));
             this.button_Exit.Name = "button_Exit";
             this.button_Exit.Size = new System.Drawing.Size((int)(screenWidth * 0.2), (int)(screenHeight * 0.1));
             this.button_Exit.TabIndex = 8;
             this.button_Exit.Text = "Exit";
             this.button_Exit.Click += new System.EventHandler(this.exit);
 
-            this.button_Menu.BackColor = System.Drawing.Color.DeepSkyBlue;
-            this.button_Menu.Location = new System.Drawing.Point((int)(screenWidth * 0.6), (int)(screenHeight * 0.8));
-            this.button_Menu.Name = "button_Menu";
-            this.button_Menu.Size = new System.Drawing.Size((int)(screenWidth * 0.2), (int)(screenHeight * 0.1));
-            this.button_Menu.TabIndex = 9;
-            this.button_Menu.Text = "Home";
-            this.button_Menu.Click += new System.EventHandler(this.back);
 
 
 
@@ -165,34 +158,23 @@ namespace CancellationTest
         {
             List<abstractExportClass> exportList = new List<abstractExportClass>();
 
-            if (this.checkBox_IMG != null) 
-            { 
-                Console.WriteLine("Exporting as Image");
-            }
-            if (this.checkBox_PDF != null)
-            {
-                Console.WriteLine("Exporting as PDF");
-            }
-            if (this.checkBox_CSV != null)
+            
+            if (this.checkBox_Map.Checked)
             {
                 Console.WriteLine("Exporting as CSV");
-                exportList.Add(new Export_CSV(this.patient_ID));
+                exportList.Add(new Export_Map(this.patient_ID));
             }
-            if (this.checkBox_Excel != null)
+            if (this.checkBox_Excel.Checked)
             {
                 Console.WriteLine("Exporting as Excel");
                 exportList.Add(new Export_XLSX(this.patient_ID));
             }
-            if (this.checkBox_Txt != null)
+            if (this.checkBox_Txt.Checked)
             {
                 Console.WriteLine("Exporting as Txt");
                 exportList.Add(new Export_Txt(this.patient_ID));
             }
-            if (this.checkBox_Map != null)
-            {
-                Console.WriteLine("Exporting as Map");
-                exportList.Add(new Export_Map(this.patient_ID));
-            }
+            
 
             this.tracker.export(exportList);
 

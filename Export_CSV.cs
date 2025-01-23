@@ -106,7 +106,7 @@ namespace CancellationTest
                     {
                         outputFile.WriteLine("fully Cancelled|                           |                          |                   |                     |                      |                           ");
                     }
-                    outputFile.WriteLine();
+                    //outputFile.WriteLine();
 
                 }
 

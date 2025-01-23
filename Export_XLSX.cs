@@ -96,7 +96,7 @@ namespace CancellationTest
                 row++;
                 worksheet.Cells[row, 1].Value = "Targets Cancelled";
                 worksheet.Cells[row, 1].Style.Font.Bold = true;
-                worksheet.Cells[row, 2].Value = "" + (left_TargetCrossed + right_TargetCrossed + center_TargetCrossed) + "/" + total_Targets;
+                worksheet.Cells[row, 2].Value = "" + (left_TargetCrossed + right_TargetCrossed + center_TargetCrossed) + " / " + total_Targets;
                 worksheet.Cells[row, 3].Value = "49";
                 worksheet.Cells[row, 4].Value = "39";
                 worksheet.Cells[row, 5].Value = "50";
@@ -114,7 +114,7 @@ namespace CancellationTest
                 worksheet.Cells[row, 7].Value = "1"; //95th percentile
 
                 row++;
-                worksheet.Cells[row, 1].Value = "Quality Score";
+                worksheet.Cells[row, 1].Value = "Quality of Search Score";
                 worksheet.Cells[row, 1].Style.Font.Bold = true;
                 worksheet.Cells[row, 2].Value = Math.Pow((left_TargetCrossed + right_TargetCrossed + center_TargetCrossed), 2) / (total_Targets * total_TimeTaken);
                 worksheet.Cells[row, 3].Value = "0.43 (.12)"; //Mean score
@@ -158,7 +158,7 @@ namespace CancellationTest
                 worksheet.Cells[row, 1].Value = "Time Spent on the left side";
                 worksheet.Cells[row, 2].Value = (Math.Round(left_TimeTaken / total_TimeTaken, 4) * 100) + "%";
                 worksheet.Cells[row, 3].Value = "54.12 (6.05)"; //Mean score
-                worksheet.Cells[row, 4].Value = "35.21"; //Min score
+                worksheet.Cells[row, 4].Value = "35.31"; //Min score
                 worksheet.Cells[row, 5].Value = "71.28"; //Max score
                 worksheet.Cells[row, 6].Value = "43.71"; //5th percentile
                 worksheet.Cells[row, 7].Value = "63.46"; //95th percentile
@@ -264,6 +264,7 @@ namespace CancellationTest
                 worksheet.Cells[row, 1].Value = "Accuracy per location";
                 worksheet.Cells[row, 1].Style.Font.Bold = true;
 
+                row++;
                 worksheet.Cells[row, 1].Value = "Left";
                 worksheet.Cells[row, 2].Value = left_Accuracy;
 
@@ -286,15 +287,15 @@ namespace CancellationTest
 
                 row++; 
                 worksheet.Cells[row, 1].Value = "Left";
-                worksheet.Cells[row, 2].Value = leftSide_leftGap_distractors;
+                worksheet.Cells[row, 2].Value = leftSide_leftGap_distractorsCrossed;
 
                 row++;
                 worksheet.Cells[row, 1].Value = "Center";
-                worksheet.Cells[row, 2].Value = centerSide_leftGap_distractors;
+                worksheet.Cells[row, 2].Value = centerSide_leftGap_distractorsCrossed;
 
                 row++;
                 worksheet.Cells[row, 1].Value = "Right";
-                worksheet.Cells[row, 2].Value = rightSide_leftGap_distractors;
+                worksheet.Cells[row, 2].Value = rightSide_leftGap_distractorsCrossed;
 
                 row++;
                 worksheet.Cells[row, 1].Value = "Right Gap";
@@ -302,15 +303,15 @@ namespace CancellationTest
 
                 row++;
                 worksheet.Cells[row, 1].Value = "Left";
-                worksheet.Cells[row, 2].Value = leftSide_rightGap_distractors;
+                worksheet.Cells[row, 2].Value = leftSide_rightGap_distractorsCrossed;
 
                 row++;
                 worksheet.Cells[row, 1].Value = "Center";
-                worksheet.Cells[row, 2].Value = centerSide_rightGap_distractors;
+                worksheet.Cells[row, 2].Value = centerSide_rightGap_distractorsCrossed;
 
                 row++;
                 worksheet.Cells[row, 1].Value = "Right";
-                worksheet.Cells[row, 2].Value = rightSide_rightGap_distractors;
+                worksheet.Cells[row, 2].Value = rightSide_rightGap_distractorsCrossed;
 
                 row++;
                 row++;
@@ -355,6 +356,13 @@ namespace CancellationTest
                 var Normative_Age_Table = excel.Workbook.Worksheets["Normative_Age_Table"];
                 _ = this.addNormativeAgeTable(Normative_Age_Table, 1);
 
+                if(excel.Workbook.Worksheets["Search_Map"] != null)
+                {
+                    excel.Workbook.Worksheets.Delete("Search_Map");
+                }
+
+                var Search_Map = excel.Workbook.Worksheets.Add("Search_Map");
+                _ = this.addSearchMap(Search_Map, fileName, 1);
 
                 excel.Save();
 
@@ -397,6 +405,7 @@ namespace CancellationTest
 
             //Adding each action to the excel file
             row++;
+
             foreach (clickRow cRow in this.clickRows)
             {
                 worksheet.Cells[row, 1].Value = cRow.success;
@@ -623,6 +632,36 @@ namespace CancellationTest
             worksheet.Cells[row, 7].Value = "172.52";
             worksheet.Cells[row, 8].Value = "-";
             worksheet.Cells[row, 9].Value = "-";
+
+            return row;
+        }
+
+        private int addSearchMap(ExcelWorksheet worksheet, string filePath, int row)
+        {
+            row++;
+
+            //Replace .xlsx with .png on filePath to get the map image
+            string mapPath = filePath.Replace(".xlsx", ".png");
+
+            //Check if the file exists
+            if (File.Exists(mapPath))
+            {
+                worksheet.Cells[row, 1].Value = "Search Map";
+                worksheet.Cells[row, 1].Style.Font.Bold = true;
+                row++;
+                //worksheet.Cells[row, 1, row + 10, 1].Merge = true;
+                //Add the image to the excel file
+                var picture = worksheet.Drawings.AddPicture("SearchMap", new FileInfo(mapPath));
+                picture.SetPosition(row, 0, 1, 0);
+                picture.SetSize(720, 540);
+            }
+            else
+            {
+                worksheet.Cells[row, 1].Value = "Search Map not found";
+                worksheet.Cells[row, 1].Style.Font.Bold = true;
+                row++;
+                worksheet.Cells[row, 1].Value = mapPath;
+            }
 
             return row;
         }

@@ -9,7 +9,7 @@ namespace CancellationTest
 {
     public class praticeExam1:  abstractTestClass
     {
-        private int[,] bitMap = null;
+        
         private int nextImageID = 1;
         public praticeExam1()
         {
@@ -141,10 +141,7 @@ namespace CancellationTest
             }
         }
 
-        override public int checkClick(Point p)
-        {
-            return this.bitMap[p.X, p.Y];
-        }
+        
 
 
     }

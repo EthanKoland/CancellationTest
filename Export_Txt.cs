@@ -76,10 +76,15 @@ namespace CancellationTest
                 outputFile.WriteLine();
 
                 outputFile.WriteLine("Allocentric Neglect Subscores");
-                outputFile.WriteLine("Total number of left-gap distractors cancelled" + this.leftGap_DistractorsCrossed);
-                outputFile.WriteLine("Total number of right-gap distractors cancelled" + this.rightGap_DistractorsCrossed);
-                outputFile.WriteLine("Allocentric Neglect: " + (this.rightGap_DistractorsCrossed - this.leftGap_DistractorsCrossed));
-                
+                temp_Str = CenterString((this.leftGap_DistractorsCrossed).ToString(), 16);
+                outputFile.WriteLine("Total num of left-gap  |" + CenterString(temp_Str, 16) + "|                |                |                |                |                |");
+                outputFile.WriteLine("distractors cancelled  |" + CenterString("  ", 16) +     "|                |                |                |                |                |");
+                temp_Str = CenterString((this.rightGap_DistractorsCrossed).ToString(), 16);
+                outputFile.WriteLine("Total num of right-gap |" + CenterString(temp_Str, 16) + "|                |                |                |                |                |");
+                outputFile.WriteLine("distractors cancelled  |" + CenterString("  ", 16) +     "|                |                |                |                |                |");
+                temp_Str = CenterString((this.rightGap_DistractorsCrossed - this.leftGap_DistractorsCrossed).ToString(), 16);
+                outputFile.WriteLine("Allocentric Neglect:   |" + CenterString(temp_Str, 16) + "|                |                |                |                |                |");
+
                 temp_Str = leftGap_DistractorsCrossed.ToString();
                 outputFile.WriteLine("Total Num of Left gap  |" + CenterString(temp_Str, 16) + "|                |                |                |                |                |");
                 outputFile.WriteLine("distractors cancelled  |" + CenterString("  ", 16) +     "|                |                |                |                |                |");
@@ -88,6 +93,13 @@ namespace CancellationTest
                 outputFile.WriteLine("distractors cancelled  |" + CenterString("  ", 16) +     "|                |                |                |                |                |");
                 temp_Str = (right_TargetCrossed - left_TargetCrossed).ToString();
                 outputFile.WriteLine("Allocentric Neglect:   |" + CenterString(temp_Str, 16) + "|       0        |       -2       |        1       |        0       |        1       |");
+                outputFile.WriteLine();
+
+                outputFile.WriteLine("Intersections");
+
+                outputFile.WriteLine("Num of intersections   |" + CenterString(temp_Str, 16) + "|       3        |        0       |        43      |        0       |        20      |");
+                temp_Str = intersectionRate.ToString();
+                outputFile.WriteLine("Intersection Rate      |" + CenterString(temp_Str, 16) + "|                |                |                |                |                |");
                 outputFile.WriteLine();
 
                 outputFile.WriteLine("Reclicks on the left Side: " + left_Reclicks);
@@ -102,22 +114,18 @@ namespace CancellationTest
 
                 outputFile.WriteLine("Distractors crossed in each screen regions");
                 outputFile.WriteLine("Left Gap");
-                outputFile.WriteLine("Left Side: " + leftSide_leftGap_distractors);
-                outputFile.WriteLine("Center Side: " + centerSide_leftGap_distractors);
-                outputFile.WriteLine("Right Side: " + rightSide_leftGap_distractors);
+                outputFile.WriteLine("Left Side: " + leftSide_leftGap_distractorsCrossed);
+                outputFile.WriteLine("Center Side: " + centerSide_leftGap_distractorsCrossed);
+                outputFile.WriteLine("Right Side: " + rightSide_leftGap_distractorsCrossed);
                 outputFile.WriteLine("Right Gap");
-                outputFile.WriteLine("Left Side: " + leftSide_rightGap_distractors);
-                outputFile.WriteLine("Center Side: " + centerSide_rightGap_distractors);
-                outputFile.WriteLine("Right Side: " + rightSide_rightGap_distractors);
+                outputFile.WriteLine("Left Side: " + leftSide_rightGap_distractorsCrossed);
+                outputFile.WriteLine("Center Side: " + centerSide_rightGap_distractorsCrossed);
+                outputFile.WriteLine("Right Side: " + rightSide_rightGap_distractorsCrossed);
                 outputFile.WriteLine();
 
                 
 
-                outputFile.WriteLine("Intersections");
-                outputFile.WriteLine("Number of intersections: " + intersections);
-                outputFile.WriteLine("  Mean : 3, Min : 0, Max : 43, 5th : 0, 95th : 20");
-                outputFile.WriteLine("Intersection Rate: " + intersectionRate);
-                outputFile.WriteLine();
+                
 
                 outputFile.WriteLine("Normative data by age groups (by decade)");
                 outputFile.WriteLine("      |       | 18-29 | 30-39 | 40-49 | 50-59 | 60-69 | 70-79 | 80-94 |");

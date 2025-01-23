@@ -11,7 +11,7 @@ namespace CancellationTest
     public class randomTest : abstractTestClass
     {
 
-        private int[,] bitMap = null;
+        //private int[,] bitMap = null;
         public randomTest(int screenWidth = 1000, int screenHeight = 600, int verticalOffset = 0)
         {
             //Horizontal then vertical
@@ -211,15 +211,7 @@ namespace CancellationTest
             }
         }
 
-        override public int checkClick(Point p)
-        {
-            int imageID = this.bitMap[p.X, p.Y];
-            if (imageID != 0)
-            {
-                return imageID;
-            }
-            return -1;
-        }
+        
 
     }
 }

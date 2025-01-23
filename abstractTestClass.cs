@@ -44,11 +44,21 @@ namespace CancellationTest
         public List<mugObject> imageList { get; protected set; }
         public Point cells { get; protected set; }
 
-        
 
 
+        protected int[,] bitMap = null;
 
-        public abstract int checkClick(Point p);
+        public int checkClick(Point p)
+        {
+            //Check that the click point in non negative and greater than the screen width and height
+            //if (p.X < 0 || p.X > this.screenWidth || p.Y < 0 || p.Y > this.screenHeight)
+            //{
+            //    return 0;
+            //}
+
+
+            return this.bitMap[p.X, p.Y];
+        }
     }
 
     //A enum is used to classify each of the images that are used in the test. Th enum is used to make the code more readable

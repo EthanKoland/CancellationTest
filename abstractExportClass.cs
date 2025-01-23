@@ -51,13 +51,19 @@ namespace CancellationTest
 
         //Distractors crossed in regions
         public double leftSide_leftGap_distractors { get; set; } = 0;
+        public double leftSide_leftGap_distractorsCrossed { get; set; } = 0;
         public double leftSide_rightGap_distractors { get; set; } = 0;
+        public double leftSide_rightGap_distractorsCrossed { get; set; } = 0;
 
         public double centerSide_leftGap_distractors { get; set; } = 0;
+        public double centerSide_leftGap_distractorsCrossed { get; set; } = 0;
         public double centerSide_rightGap_distractors { get; set; } = 0;
+        public double centerSide_rightGap_distractorsCrossed { get; set; } = 0;
 
         public double rightSide_leftGap_distractors { get; set; } = 0;
+        public double rightSide_leftGap_distractorsCrossed { get; set; } = 0;
         public double rightSide_rightGap_distractors { get; set; } = 0;
+        public double rightSide_rightGap_distractorsCrossed { get; set; } = 0;
 
         //Intersections
         public int intersections { get; set; } = 0;
