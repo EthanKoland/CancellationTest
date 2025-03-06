@@ -37,11 +37,15 @@ namespace CancellationTest
 
             foreach (mugObject img in this.localExamObj.imageList)
             {
-                g.DrawImage(mugObject.getImageObject(img.imageType), img.imageCenter.X, img.imageCenter.Y, img.width, img.height);
+                //Offset the image center by half the width and height
+                int offset_X = img.imageCenter.X - img.width / 2;
+                int offset_Y = img.imageCenter.Y - img.height / 2;
+
+                g.DrawImage(mugObject.getImageObject(img.imageType), offset_X,offset_Y, img.width, img.height);
                 if (img.isClicked)
                 {
                     //Draw a cross on the image
-                    g.DrawLine(new Pen(Color.Black, 3), img.imageCenter.X, img.imageCenter.Y, img.imageCenter.X + img.width, img.imageCenter.Y + img.height);
+                    g.DrawLine(new Pen(Color.Black, 3), offset_X, offset_Y, offset_X + img.width, offset_Y + img.height);
                 }
             }
 

@@ -143,6 +143,16 @@ namespace CancellationTest
                 worksheet.Cells[row, 6].Value = "73"; //5th percentile
                 worksheet.Cells[row, 7].Value = "187"; //95th percentile
 
+                row++;
+                worksheet.Cells[row, 1].Value = "Center of Cancellation";
+                worksheet.Cells[row, 1].Style.Font.Bold = true;
+                worksheet.Cells[row, 2].Value = centerOfCancellation;
+                worksheet.Cells[row, 3].Value = "-";
+                worksheet.Cells[row, 4].Value = "-";
+                worksheet.Cells[row, 5].Value = "-";
+                worksheet.Cells[row, 6].Value = "-";
+                worksheet.Cells[row, 7].Value = "-";
+
 
                 row++;
                 row++;
@@ -382,26 +392,30 @@ namespace CancellationTest
             worksheet.Cells[row, 1].Style.Font.Bold = true;
             worksheet.Cells[row, 1].Style.Font.UnderLine = true;
             worksheet.Cells[row, 2].Value = "Time of Cancellation";
-            worksheet.Cells[row, 1].Style.Font.Bold = true;
-            worksheet.Cells[row, 1].Style.Font.UnderLine = true;
+            worksheet.Cells[row, 2].Style.Font.Bold = true;
+            worksheet.Cells[row, 2].Style.Font.UnderLine = true;
             worksheet.Cells[row, 3].Value = "Location in Matrix";
-            worksheet.Cells[row, 1].Style.Font.Bold = true;
-            worksheet.Cells[row, 1].Style.Font.UnderLine = true;
+            worksheet.Cells[row, 3].Style.Font.Bold = true;
+            worksheet.Cells[row, 3].Style.Font.UnderLine = true;
             worksheet.Cells[row, 4].Value = "Side in Matrix";
-            worksheet.Cells[row, 1].Style.Font.Bold = true;
-            worksheet.Cells[row, 1].Style.Font.UnderLine = true;
+            worksheet.Cells[row, 4].Style.Font.Bold = true;
+            worksheet.Cells[row, 4].Style.Font.UnderLine = true;
             worksheet.Cells[row, 5].Value = "Orientation";
-            worksheet.Cells[row, 1].Style.Font.Bold = true;
-            worksheet.Cells[row, 1].Style.Font.UnderLine = true;
+            worksheet.Cells[row, 5].Style.Font.Bold = true;
+            worksheet.Cells[row, 5].Style.Font.UnderLine = true;
             worksheet.Cells[row, 6].Value = "Re-Cancelled";
-            worksheet.Cells[row, 1].Style.Font.Bold = true;
-            worksheet.Cells[row, 1].Style.Font.UnderLine = true;
+            worksheet.Cells[row, 6].Style.Font.Bold = true;
+            worksheet.Cells[row, 6].Style.Font.UnderLine = true;
             worksheet.Cells[row, 7].Value = "Pixel Location";
-            worksheet.Cells[row, 1].Style.Font.Bold = true;
-            worksheet.Cells[row, 1].Style.Font.UnderLine = true;
-            worksheet.Cells[row, 8].Value = "Normalized Position";
-            worksheet.Cells[row, 1].Style.Font.Bold = true;
-            worksheet.Cells[row, 1].Style.Font.UnderLine = true;
+            worksheet.Cells[row, 7].Style.Font.Bold = true;
+            worksheet.Cells[row, 7].Style.Font.UnderLine = true;
+            worksheet.Cells[row, 8].Value = "Normalized Center";
+            worksheet.Cells[row, 8].Style.Font.Bold = true;
+            worksheet.Cells[row, 8].Style.Font.UnderLine = true;
+            worksheet.Cells[row, 9].Value = "Normalized Position";
+            worksheet.Cells[row, 9].Style.Font.Bold = true;
+            worksheet.Cells[row, 9].Style.Font.UnderLine = true;
+
 
             //Adding each action to the excel file
             row++;
@@ -415,7 +429,9 @@ namespace CancellationTest
                 worksheet.Cells[row, 5].Value = cRow.orientation;
                 worksheet.Cells[row, 6].Value = cRow.reCancel;
                 worksheet.Cells[row, 7].Value = cRow.PixelLocation;
-                worksheet.Cells[row, 8].Value = cRow.normalizedLocation;
+                worksheet.Cells[row, 8].Value = cRow.mugImageCenter;
+                worksheet.Cells[row, 9].Value = cRow.normalizedLocation;
+                
 
 
                 row++;

@@ -69,6 +69,9 @@ namespace CancellationTest
         public int intersections { get; set; } = 0;
         public double intersectionRate { get; set; } = 0;
 
+        //Center of Cancellation
+        public double centerOfCancellation { get; set; } = 0;
+
         //Adding the click table
         //Have an abstract function that will be used to add the click data to the table
         public void addClickData(List<clickRow> clickRows)
@@ -106,6 +109,7 @@ namespace CancellationTest
 
         }
 
+        
         protected string getFileName(string folderPath, string fileExtension)
         {
             string fileName = this.localExamObj.isPratice ? "PracticeTest_" : "CancellationTest_";
@@ -123,5 +127,6 @@ namespace CancellationTest
         public string reCancel;
         public string PixelLocation;
         public Point normalizedLocation;
+        public Point mugImageCenter;
     }
 }

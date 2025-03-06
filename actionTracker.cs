@@ -331,10 +331,12 @@ namespace CancellationTest
                 newRow.reCancel = action.isCrossed ? "" : "Yes";
                 newRow.PixelLocation = action.clickPoint.ToString();
                 newRow.normalizedLocation = new Point((int)(action.clickPoint.X * this.sizeRatio), (int)(action.clickPoint.Y * this.sizeRatio));
+                newRow.mugImageCenter = clickedImage.imageCenter;
 
                 clickRows.Add(newRow);
             }
 
+            double centerOfCancellation = calculateCenterOfCancellation();
 
             foreach (abstractExportClass exportClass in exportClasses)
             {
@@ -386,6 +388,8 @@ namespace CancellationTest
 
                 exportClass.intersections = intersections;
                 exportClass.intersectionRate = intersectionRate;
+
+                exportClass.centerOfCancellation = centerOfCancellation;
 
                 exportClass.addClickData(clickRows);
                 exportClass.localExamObj = this.localExamObject;
@@ -465,6 +469,38 @@ namespace CancellationTest
 
 
 
+        }
+
+        private double calculateCenterOfCancellation()
+        {
+            int localScreenWith = this.localExamObject.screenWidth;
+
+            int targetsCancelled = 0;
+
+            double horizontalSum = 0;
+            //Loop through each of the mugs
+            foreach (mugObject img in this.localExamObject.imageList)
+            {
+                //Check if the image is a target
+                if (img.imageType == imageTypes.TargetLeft || img.imageType == imageTypes.TargetRight)
+                {
+                    //Check if the image is clicked
+                    if (img.isClicked)
+                    {
+                        //Incriment the click
+                        targetsCancelled++;
+
+                        int x = img.imageCenter.X;
+
+                        x -= localScreenWith;
+
+                        horizontalSum += (double) x/ (double) localScreenWith;
+
+                    }
+                }
+            }
+
+            return targetsCancelled == 0 ? 0 : horizontalSum / targetsCancelled;
         }
 
         private void updateOutputPath()

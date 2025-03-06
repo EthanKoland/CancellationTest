@@ -44,6 +44,8 @@ namespace CancellationTest
                 outputFile.WriteLine("Re-cancellations:      |" + CenterString(temp_Str, 16) + "|       0        |       0        |       1        |       0        |       0        |");
                 temp_Str = total_TimeTaken.ToString();
                 outputFile.WriteLine("Total Time Taken       |" + CenterString(temp_Str, 16) + "| 119.07 (36.85) |       66       |      287       |       73       |      187       |");
+                temp_Str = centerOfCancellation.ToString();
+                outputFile.WriteLine("Center of Cancellation |" + CenterString(temp_Str, 16) + "|       -        |       -        |       -        |       -        |       -        |");
                 outputFile.WriteLine();
 
                 temp_Str = Math.Round(total_SearchSpeed, 2).ToString();
@@ -155,9 +157,9 @@ namespace CancellationTest
                 outputFile.WriteLine("");
 
                 outputFile.WriteLine("Session History");
-                outputFile.WriteLine("    Success    |  Time of Cancelation  |  Location in Matrix  |  Matrix Side  |  Orientation  |  Recancelation  |  Pixel Location  |  Normalized Position  ");
-                
-                outputFile.WriteLine("-----------------------------------------------------------------------------------------------------------------------------------------------------------");
+                outputFile.WriteLine("    Success    |  Time of Cancelation  |  Location in Matrix  |  Matrix Side  |  Orientation  |  Recancelation  |  Pixel Location  | Normalized Center img |  Normalized Position  ");
+                //              Write the click d   Target Success-                                                                                   
+                outputFile.WriteLine("------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
                 //Write the click d   Target Success-
                 //                    fully Cancelled
                 //                       Distractor  |
@@ -183,12 +185,13 @@ namespace CancellationTest
                     line += CenterString(cRow.orientation, 15) + "|";
                     line += CenterString(cRow.reCancel, 17) + "|";
                     line += CenterString(cRow.PixelLocation, 18) + "|";
+                    line += CenterString(cRow.mugImageCenter.ToString(), 23) + "|";
                     line += CenterString(cRow.normalizedLocation.ToString(), 21);
 
                     outputFile.WriteLine(line);
                     if (writeSecondLine)
                     {
-                        outputFile.WriteLine("fully Cancelled|                       |                      |               |               |                 |                  |                       ");
+                        outputFile.WriteLine("fully Cancelled|                       |                      |               |               |                 |                  |                       |                       ");
                     }
                     outputFile.WriteLine();
 

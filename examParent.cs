@@ -276,7 +276,7 @@ namespace CancellationTest
                 Point imageCenter = this.localExamObject.imageList[imageID - 1].imageCenter;
 
                 clickAction action = new clickAction();
-                action.clickPoint = new Point(imageCenter.X + halfWidth, imageCenter.Y + halfHeight);
+                action.clickPoint = new Point(this.CurPt.X, this.CurPt.Y);
                 action.ImageID = imageID;
                 action.timeOfClick = DateTime.Now;
 
@@ -492,15 +492,15 @@ namespace CancellationTest
                 }
 
                 //IF img.side is left draw a blue rectange
-                /*if (img.side == leftRightCenter.Left)
+                /*if (img.matrixLocation == 2 )
                 {
                     e.Graphics.DrawRectangle(BluePen, adjustedX - halfWidth, adjustedY - halfWidth, adjustedWidth, adjustedHeight);
                 }
-                else if (img.side == leftRightCenter.Center)
+                else if ( img.matrixLocation == 3)
                 {
                     e.Graphics.DrawRectangle(GreenPen, adjustedX - halfWidth, adjustedY - halfWidth, adjustedWidth, adjustedHeight);
                 }
-                else if (img.side == leftRightCenter.Right)
+                else if (img.matrixLocation == 7)
                 {
                     e.Graphics.DrawRectangle(RedPen, adjustedX - halfWidth, adjustedY - halfWidth, adjustedWidth, adjustedHeight);
                 }*/
