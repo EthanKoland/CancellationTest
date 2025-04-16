@@ -304,7 +304,7 @@ namespace CancellationTest
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(relativeScreenWidth(0.3), relativeScreenHeight(0.25));
             this.textBox1.TabIndex = 7;
-
+            
             // 
             // groupBox5
             // 
@@ -345,7 +345,7 @@ namespace CancellationTest
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 36F);
             this.label2.Location = new System.Drawing.Point(relativeScreenWidth(0.07), relativeScreenHeight(0.01));
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(relativeScreenWidth(0.35), relativeScreenHeight(0.085));
+            this.label2.Size = new System.Drawing.Size(relativeScreenWidth(0.5), relativeScreenHeight(0.085));
             this.label2.TabIndex = 0;
             this.label2.Text = "Cancellation Test";
             this.label2.TextAlign = ContentAlignment.MiddleCenter;
@@ -419,7 +419,7 @@ namespace CancellationTest
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(relativeScreenWidth(0.2), relativeScreenHeight(0.082));
             this.label1.TabIndex = 9;
-            this.label1.Text = "Maximum Time for \n exercize in seconds";
+            this.label1.Text = "Maximum Time for \n exercise";
             this.label1.TextAlign = ContentAlignment.MiddleCenter;
             AdjustFontSizeToFit(label1);
             // 

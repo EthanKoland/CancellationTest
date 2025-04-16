@@ -279,6 +279,7 @@ namespace CancellationTest
                 action.clickPoint = new Point(this.CurPt.X, this.CurPt.Y);
                 action.ImageID = imageID;
                 action.timeOfClick = DateTime.Now;
+                action.leftOrRightSide = this.localExamObject.imageList[imageID - 1].imageCenter.X < this.screenwidth / 2 ? LeftRight.Left : LeftRight.Right;
 
                 bool timeRemaining = this.remainingCancelationTime[imageID] <= 0;
 

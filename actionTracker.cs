@@ -87,7 +87,7 @@ namespace CancellationTest
 
             int distractorsCrossed = 0;
 
-            double totalTimeTaken = (endTime - this.startTime).TotalSeconds;
+            double totalTimeTaken = (this.actions[this.actions.Count - 1].timeOfClick - this.actions[0].timeOfClick).TotalSeconds;
             double leftTimeTaken = 0;
             double rightTimeTaken = 0;
 
@@ -223,7 +223,7 @@ namespace CancellationTest
             }
 
             //Starting point for the caluclations on the time taken on each side of the screen
-            DateTime previousSideTime = this.startTime;
+            
             Point previousPoint = this.actions.Count > 0 ? this.actions[0].clickPoint : new Point(0, 0);
 
             clickAction firstAction = this.actions[0];
@@ -231,7 +231,8 @@ namespace CancellationTest
             int maxX = this.localExamObject.screenWidth;
             int maxY = this.localExamObject.screenHeight;
 
-            leftRightCenter priviousSide = firstAction.clickPoint.X / maxX < 0.5 ? leftRightCenter.Left : leftRightCenter.Right;
+            LeftRight priviousSide = firstAction.leftOrRightSide;
+            DateTime previousSideTime = firstAction.timeOfClick;
 
 
             //Loop through each of the click actions
@@ -246,7 +247,7 @@ namespace CancellationTest
 
                 double localX = (double)action.clickPoint.X / maxX;
 
-                leftRightCenter side = localX < 0.5 ? leftRightCenter.Left : leftRightCenter.Right;
+                LeftRight side = action.leftOrRightSide;
 
 
                 //Check if the side has changed - If it isn't then the patient has switched sides on the screen so need to determine attributes of the side
@@ -272,13 +273,14 @@ namespace CancellationTest
                 }
                 else
                 {
-                    if (side == leftRightCenter.Left)
+                    if (side == LeftRight.Left)
                     {
+                        Console.WriteLine("Left Side Clicked", (action.timeOfClick - previousSideTime).TotalSeconds);
                         leftTimeTaken += (action.timeOfClick - previousSideTime).TotalSeconds;
                         distanceLeft += Math.Sqrt(Math.Pow(previousPoint.X - action.clickPoint.X, 2) + Math.Pow(previousPoint.Y - action.clickPoint.Y, 2));
 
                     }
-                    else if (side == leftRightCenter.Right)
+                    else if (side == LeftRight.Right)
                     {
                         rightTimeTaken += (action.timeOfClick - previousSideTime).TotalSeconds;
                         distanceRight += Math.Sqrt(Math.Pow(previousPoint.X - action.clickPoint.X, 2) + Math.Pow(previousPoint.Y - action.clickPoint.Y, 2));
@@ -400,7 +402,16 @@ namespace CancellationTest
         }
         public string timeSinceStart(DateTime timeOfEvent)
         {
-            return (timeOfEvent - this.startTime).ToString();
+            // Calculate the time difference
+            TimeSpan totalTime = timeOfEvent - this.startTime;
+
+            // Extract minutes, seconds, and the first digit of milliseconds
+            int minutes = totalTime.Minutes;
+            int seconds = totalTime.Seconds;
+            int firstDigitMilliseconds = totalTime.Milliseconds / 100; // Get the first digit of milliseconds
+
+            // Format the string as "mm:ss.f"
+            return $"{minutes:D2}:{seconds:D2}.{firstDigitMilliseconds}";
         }
 
         //Seperate function that determines the number of intersections between the paths of clicks
@@ -416,13 +427,26 @@ namespace CancellationTest
 
             for(int i = 0; i < this.actions.Count - 2; i++)
             {
-                Point point1i = this.actions[i].clickPoint;
-                Point point2i = this.actions[i + 1].clickPoint;
+                int point1iImgID = this.actions[i].ImageID;
+                int point2iImgID = this.actions[i + 1].ImageID;
 
-                for(int j = i + 1; j < this.actions.Count - 1; j++)
+                //Point point1i = this.actions[i].clickPoint;
+                //Point point2i = this.actions[i + 1].clickPoint;
+                Point point1i = this.localExamObject.imageList[point1iImgID - 1].imageCenter;
+                Point point2i = this.localExamObject.imageList[point2iImgID - 1].imageCenter;
+
+
+                for (int j = i + 1; j < this.actions.Count - 1; j++)
                 {
-                    Point point1j = this.actions[j].clickPoint;
-                    Point point2j = this.actions[j + 1].clickPoint;
+                    //Point point1j = this.actions[j].clickPoint;
+                    //Point point2j = this.actions[j + 1].clickPoint;
+
+                    int point1jImgID = this.actions[j].ImageID;
+                    int point2jImgID = this.actions[j + 1].ImageID;
+
+                    Point point1j = this.localExamObject.imageList[point1jImgID - 1].imageCenter;
+                    Point point2j = this.localExamObject.imageList[point2jImgID - 1].imageCenter;
+
 
                     //Retrieve the X and Y values for each of the points - This is done to make the calculations easier and more readable
                     int x1i = point1i.X;
@@ -538,6 +562,13 @@ namespace CancellationTest
         public int ImageID;
         public DateTime timeOfClick;
         public bool isCrossed;
+        public LeftRight leftOrRightSide; //True is for the left side
+    }
+
+    public enum LeftRight
+    {
+        Left,
+        Right
     }
 }
 

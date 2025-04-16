@@ -33,9 +33,9 @@ namespace CancellationTest
                 
                 outputFile.WriteLine("Session Resume");
                 //                                           |" + CenterString(temp_Str, 16) + "|                |                |                |                |                |");
-                outputFile.WriteLine("Variable               |" + CenterString("Scores", 16) + "|    Mean (SD)   |      Min       |      Max       | 5th Percentile | 95th Percentile|");
+                outputFile.WriteLine("Variable               |" + CenterString("Scores", 16) + "|    Mean (SD)   | Min | Max |5th Percentile|95th Percentile|");
                 string temp_Str = (left_TargetCrossed + right_TargetCrossed + center_TargetCrossed) + "/" + total_Targets;
-                outputFile.WriteLine("Targets Cancelled:     |" + CenterString(temp_Str, 16) + "|       49       |       39       |       50       |       46       |       50       |");
+                outputFile.WriteLine("Targets Cancelled:     |" + CenterString(temp_Str, 16) + "|       49       |       39       |       50       |      46      |      50       |");
                 temp_Str = total_DistractorsCrossed + "/" + total_Distractors;
                 outputFile.WriteLine("Distractors Cancelled: |" + CenterString(temp_Str, 16) + "|       0        |       0        |       4        |       0        |       1        |");
                 temp_Str = "0" + Math.Round(Math.Pow((left_TargetCrossed + right_TargetCrossed + center_TargetCrossed), 2) / (total_Targets * total_TimeTaken),2);
@@ -44,8 +44,18 @@ namespace CancellationTest
                 outputFile.WriteLine("Re-cancellations:      |" + CenterString(temp_Str, 16) + "|       0        |       0        |       1        |       0        |       0        |");
                 temp_Str = total_TimeTaken.ToString();
                 outputFile.WriteLine("Total Time Taken       |" + CenterString(temp_Str, 16) + "| 119.07 (36.85) |       66       |      287       |       73       |      187       |");
-                temp_Str = centerOfCancellation.ToString();
-                outputFile.WriteLine("Center of Cancellation |" + CenterString(temp_Str, 16) + "|       -        |       -        |       -        |       -        |       -        |");
+                temp_Str = Math.Round(centerOfCancellation, 6).ToString();
+                outputFile.WriteLine("Center of Cancellation:|" + CenterString(temp_Str, 16) + "|       -        |       -        |       -        |       -        |       -        |");
+                outputFile.WriteLine();
+
+                temp_Str = Math.Round((right_TimeTaken / total_TimeTaken) * 100, 2).ToString();
+                outputFile.WriteLine("Time Spent on the      |" + CenterString(temp_Str, 16) + "|  45.88 (6.05)  |      28.72     |      28.72     |      36.54     |      56.29     |");
+                outputFile.WriteLine("right side:            |" + CenterString("  ", 16) + "|                |                |                |                |                |");
+                temp_Str = Math.Round((left_TimeTaken / total_TimeTaken) * 100, 2).ToString();
+                outputFile.WriteLine("Time Spent on the      |" + CenterString(temp_Str, 16) + "|  54.12 (6.05)  |      35.21     |      71.28     |      43.71     |      63.46     |");
+                outputFile.WriteLine("left  side:            |" + CenterString("  ", 16) + "|                |                |                |                |                |");
+                temp_Str = Math.Round(((right_TimeTaken - left_TimeTaken) / total_TimeTaken) * 100, 2).ToString();
+                outputFile.WriteLine("Asymmetry Score:       |" + CenterString(temp_Str, 16) + "| -8.24 (12.11)  |     -42.57     |      29.37     |     -26.37     |      12.58     |");
                 outputFile.WriteLine();
 
                 temp_Str = Math.Round(total_SearchSpeed, 2).ToString();
@@ -56,23 +66,13 @@ namespace CancellationTest
                 outputFile.WriteLine("Right Search Speed:    |" + CenterString(temp_Str, 16) + "| 135.49 (29.33) |      65.28     |     182.69     |      86.12     |     180.23     |");
                 outputFile.WriteLine();
 
-                temp_Str = Math.Round((right_TimeTaken / total_TimeTaken), 4).ToString() + "%";
-                outputFile.WriteLine("Time Spent on the      |" + CenterString(temp_Str, 16) + "|  45.88 (6.05)  |      28.72     |      28.72     |      36.54     |      56.29     |");
-                outputFile.WriteLine("right side:            |" + CenterString("  ", 16) +     "|                |                |                |                |                |");
-                temp_Str = Math.Round((left_TimeTaken / total_TimeTaken), 4).ToString() + "%";
-                outputFile.WriteLine("Time Spent on the      |" + CenterString(temp_Str, 16) + "|  54.12 (6.05)  |      35.21     |      71.28     |      43.71     |      63.46     |");
-                outputFile.WriteLine("left  side:            |" + CenterString("  ", 16) +     "|                |                |                |                |                |");
-                temp_Str = Math.Round((right_TimeTaken - left_TimeTaken) / total_TimeTaken, 4).ToString();
-                outputFile.WriteLine("Asymmetry Score:       |" + CenterString(temp_Str, 16) + "| -8.24 (12.11)  |     -42.57     |      29.37     |     -26.37     |      12.58     |");
-                outputFile.WriteLine();
-
                 outputFile.WriteLine("Egocentric Neglect Subscores");
                 temp_Str = left_TargetCrossed.ToString();
                 outputFile.WriteLine("Total Targets Cancelled|" + CenterString(temp_Str, 16) + "|                |                |                |                |                |");
-                outputFile.WriteLine("in left side of grid   |" + CenterString("  ", 16) +     "|                |                |                |                |                |");
+                outputFile.WriteLine("in left side of grid:  |" + CenterString("  ", 16) +     "|                |                |                |                |                |");
                 temp_Str = right_TargetCrossed.ToString();
                 outputFile.WriteLine("Total Targets Cancelled|" + CenterString(temp_Str, 16) + "|                |                |                |                |                |");
-                outputFile.WriteLine("in right side of grid  |" + CenterString("  ", 16) +     "|                |                |                |                |                |");
+                outputFile.WriteLine("in right side of grid: |" + CenterString("  ", 16) +     "|                |                |                |                |                |");
                 temp_Str = (right_TargetCrossed - left_TargetCrossed).ToString();
                 outputFile.WriteLine("Egocentric Neglect:    |" + CenterString(temp_Str, 16) + "|       0        |       -3       |        5       |       -2       |        2       |");
                 outputFile.WriteLine();
@@ -80,29 +80,12 @@ namespace CancellationTest
                 outputFile.WriteLine("Allocentric Neglect Subscores");
                 temp_Str = CenterString((this.leftGap_DistractorsCrossed).ToString(), 16);
                 outputFile.WriteLine("Total num of left-gap  |" + CenterString(temp_Str, 16) + "|                |                |                |                |                |");
-                outputFile.WriteLine("distractors cancelled  |" + CenterString("  ", 16) +     "|                |                |                |                |                |");
+                outputFile.WriteLine("distractors cancelled: |" + CenterString("  ", 16) +     "|                |                |                |                |                |");
                 temp_Str = CenterString((this.rightGap_DistractorsCrossed).ToString(), 16);
                 outputFile.WriteLine("Total num of right-gap |" + CenterString(temp_Str, 16) + "|                |                |                |                |                |");
-                outputFile.WriteLine("distractors cancelled  |" + CenterString("  ", 16) +     "|                |                |                |                |                |");
+                outputFile.WriteLine("distractors cancelled: |" + CenterString("  ", 16) +     "|                |                |                |                |                |");
                 temp_Str = CenterString((this.rightGap_DistractorsCrossed - this.leftGap_DistractorsCrossed).ToString(), 16);
                 outputFile.WriteLine("Allocentric Neglect:   |" + CenterString(temp_Str, 16) + "|                |                |                |                |                |");
-
-                temp_Str = leftGap_DistractorsCrossed.ToString();
-                outputFile.WriteLine("Total Num of Left gap  |" + CenterString(temp_Str, 16) + "|                |                |                |                |                |");
-                outputFile.WriteLine("distractors cancelled  |" + CenterString("  ", 16) +     "|                |                |                |                |                |");
-                temp_Str = rightGap_DistractorsCrossed.ToString();
-                outputFile.WriteLine("Total Num of Right gap |" + CenterString(temp_Str, 16) + "|                |                |                |                |                |");
-                outputFile.WriteLine("distractors cancelled  |" + CenterString("  ", 16) +     "|                |                |                |                |                |");
-                temp_Str = (right_TargetCrossed - left_TargetCrossed).ToString();
-                outputFile.WriteLine("Allocentric Neglect:   |" + CenterString(temp_Str, 16) + "|       0        |       -2       |        1       |        0       |        1       |");
-                outputFile.WriteLine();
-
-                outputFile.WriteLine("Intersections");
-
-                outputFile.WriteLine("Num of intersections   |" + CenterString(temp_Str, 16) + "|       3        |        0       |        43      |        0       |        20      |");
-                temp_Str = intersectionRate.ToString();
-                outputFile.WriteLine("Intersection Rate      |" + CenterString(temp_Str, 16) + "|                |                |                |                |                |");
-                outputFile.WriteLine();
 
                 outputFile.WriteLine("Reclicks on the left Side: " + left_Reclicks);
                 outputFile.WriteLine("Reclicks on the right Side: " + right_Reclicks);
@@ -125,9 +108,14 @@ namespace CancellationTest
                 outputFile.WriteLine("Right Side: " + rightSide_rightGap_distractorsCrossed);
                 outputFile.WriteLine();
 
-                
+                outputFile.WriteLine("Intersections");
 
-                
+                outputFile.WriteLine("Num of intersections:  |" + CenterString(temp_Str, 16) + "|       3        |        0       |        43      |        0       |        20      |");
+                temp_Str = intersectionRate.ToString();
+                outputFile.WriteLine("Intersection Rate:     |" + CenterString(temp_Str, 16) + "|                |                |                |                |                |");
+                outputFile.WriteLine();
+
+
 
                 outputFile.WriteLine("Normative data by age groups (by decade)");
                 outputFile.WriteLine("      |       | 18-29 | 30-39 | 40-49 | 50-59 | 60-69 | 70-79 | 80-94 |");
@@ -150,19 +138,17 @@ namespace CancellationTest
                 outputFile.WriteLine("      |mean   | 152.31| 151.66| 148.84| 140.71| 127.27| 133.90| 105.91|");
                 outputFile.WriteLine("Search|SD     | 25.93 | 28.65 | 21.93 | 26.39 | 24.71 | 25.67 | 17.05 |");
                 outputFile.WriteLine("Speed |min    | 88.82 | 71.19 | 103.78| 90.47 | 84.94 | 96.77 | 82.93 |");
-                outputFile.WriteLine("in sec|max    | 231.20| 198.97| 182.68| 224.58| 175.57| 192.72| 132.72|");
+                outputFile.WriteLine("in sec|max    | 231.20| 198.97| 182.68| 224.58| 175.57| 192.72| 132.12|");
                 outputFile.WriteLine("      |5th    | 102.75| 79.69 | 104.19| 96.49 | 91.29 | 96.77 | 82.93 |");
                 outputFile.WriteLine("      |95th   | 194.93| 193.20| 182.45| 209.77| 172.52|   -   |   -   |");
                 outputFile.WriteLine("------|-------|-------|-------|-------|-------|-------|-------|-------|");
                 outputFile.WriteLine("");
 
                 outputFile.WriteLine("Session History");
-                outputFile.WriteLine("    Success    |  Time of Cancelation  |  Location in Matrix  |  Matrix Side  |  Orientation  |  Recancelation  |  Pixel Location  | Normalized Center img |  Normalized Position  ");
-                //              Write the click d   Target Success-                                                                                   
-                outputFile.WriteLine("------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
-                //Write the click d   Target Success-
-                //                    fully Cancelled
-                //                       Distractor  |
+                outputFile.WriteLine("    Success    |  Time of Cancellation |  Location in Matrix  |  Matrix Side  |  Orientation  | re-cancellation |  Pixel Location  | Normalized Center img |  Normalized Position  ");
+                //outputFile.WriteLine("  Success |   Time of  |Location |Matrix|Orientation|Re-         |Pixel Location|Norm Position|");
+                //outputFile.WriteLine("          |Cancellation|In Matrix| Side |           |cancellation|               |              |");
+                
                 foreach (clickRow cRow in this.clickRows)
                 {
                     bool writeSecondLine = false;
@@ -173,11 +159,23 @@ namespace CancellationTest
                         writeSecondLine = true;
                         line += "Target Success-|";
 
+                        /*writeSecondLine = false;
+                        line += "  Target  |";*/
+
                     }
                     else
                     {
                         line += "   Distractor  |";
+                        //line += "Distractor|";
                     }
+
+                    /*line += CenterString(cRow.time, 12) + "|";
+                    line += CenterString(cRow.matrixLocation, 9) + "|";
+                    line += CenterString(cRow.matrixSide, 6) + "|";
+                    line += CenterString(cRow.orientation, 11) + "|";
+                    line += CenterString(cRow.reCancel, 12) + "|";
+                    line += CenterString(cRow.PixelLocation, 15) + "|";
+                    line += CenterString(cRow.normalizedLocation.ToString(), 15);+ "|"*/
 
                     line += CenterString(cRow.time, 23) + "|";
                     line += CenterString(cRow.matrixLocation, 22) + "|";
@@ -193,7 +191,7 @@ namespace CancellationTest
                     {
                         outputFile.WriteLine("fully Cancelled|                       |                      |               |               |                 |                  |                       |                       ");
                     }
-                    outputFile.WriteLine();
+                   outputFile.WriteLine();
 
                 }
 
