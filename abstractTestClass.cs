@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -44,8 +45,6 @@ namespace CancellationTest
         public List<mugObject> imageList { get; protected set; }
         public Point cells { get; protected set; }
 
-
-
         protected int[,] bitMap = null;
 
         public int checkClick(Point p)
@@ -59,6 +58,8 @@ namespace CancellationTest
 
             return this.bitMap[p.X, p.Y];
         }
+
+        
     }
 
     //A enum is used to classify each of the images that are used in the test. Th enum is used to make the code more readable

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CancellationTest.Properties;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -27,7 +28,9 @@ namespace CancellationTest
         private System.Windows.Forms.Button decreaseButton;
         private System.Windows.Forms.TextBox currentRatioBox;
         private System.Windows.Forms.GroupBox a4GroupBox;
-        private System.Windows.Forms.PictureBox a4Image;
+        private System.Windows.Forms.PictureBox a4ImagePictureBox;
+
+        private Image a4Image = (System.Drawing.Image)(new System.Resources.ResourceManager("CancellationTest.Properties.Resources", typeof(Resources).Assembly).GetObject("A4_ScalePaper"));
 
         public screenSizeAdjustment()
         {
@@ -41,6 +44,7 @@ namespace CancellationTest
 
             this.m_testParameters = testParameters;
 
+            
 
             frameSetup();
         }
@@ -100,23 +104,11 @@ namespace CancellationTest
             //this.a4GroupBox.Show();
 
             Console.WriteLine("g" + Screen.PrimaryScreen.Bounds.Width + " " + Screen.PrimaryScreen.Bounds.Height);
-
-            int screenWidth = Screen.PrimaryScreen.Bounds.Width;
-            int screenHeight = Screen.PrimaryScreen.Bounds.Height;
             
             Console.WriteLine("screenSize: " + this.screenSize);
             Console.WriteLine("Current Window Width: " + this.Width);
             Console.WriteLine("Current Window Height: " + this.Height);
             currentRatioBox.Text = this.screenSize.ToString();
-            //this.a4GroupBox.Width = (int)(this.screenSize * a4WidthRatio * 100);
-            //this.a4GroupBox.Height = (int)(this.screenSize * a4HeightRatio * 100);
-
-            //this.a4GroupBox.Left = (this.Width - this.a4GroupBox.Width) / 2;
-            //this.a4GroupBox.Top = (this.Height - this.a4GroupBox.Height) / 2 - this.currentRatioBox.Height - this.okayButton.Height;
-
-            //this.a4Image.Width = (int)(this.screenSize * a4WidthRatio * 100);
-            //this.a4Image.Height = (int)(this.screenSize * a4HeightRatio * 100);
-            //this.a4Image.Image = ResizeImage(Image.FromFile("A4_ScalePaper.jpg"), this.a4Image.Width, this.a4Image.Height);
 
             int imageWidth = (int)(this.Width/a4WidthRatio * this.screenSize);
             int imageHeight = (int)(this.Height/a4HeightRatio * this.screenSize);
@@ -124,13 +116,13 @@ namespace CancellationTest
             Console.WriteLine("Image Height: " + imageHeight);
             Console.WriteLine("Difference: " + Screen.PrimaryScreen.Bounds.Height + " " + this.Height + " " + this.Height / Screen.PrimaryScreen.Bounds.Height);
             Console.WriteLine("Difference: " + Screen.PrimaryScreen.Bounds.Width + " " + this.Width + " " + this.Width / Screen.PrimaryScreen.Bounds.Width);
-            //this.a4Image.Image = ResizeImage(Image.FromFile("A4_ScalePaper.jpg"), imageWidth, imageHeight);
-            this.a4Image.Width = imageWidth;
-            this.a4Image.Height = imageHeight;
-            this.a4Image.Image = ResizeImage(Image.FromFile("A4_ScalePaper.jpg"), imageWidth, imageHeight);
+            
+            this.a4ImagePictureBox.Width = imageWidth;
+            this.a4ImagePictureBox.Height = imageHeight;
+            this.a4ImagePictureBox.Image = ResizeImage(this.a4Image, imageWidth, imageHeight);
 
-            this.a4Image.Left = (this.Width - this.a4Image.Width) / 2;
-            this.a4Image.Top = (this.Height - this.a4Image.Height) / 2 - this.currentRatioBox.Height - this.okayButton.Height;
+            this.a4ImagePictureBox.Left = (this.Width - this.a4ImagePictureBox.Width) / 2;
+            this.a4ImagePictureBox.Top = (this.Height - this.a4ImagePictureBox.Height) / 2 - this.currentRatioBox.Height - this.okayButton.Height;
 
         }
 
@@ -159,7 +151,7 @@ namespace CancellationTest
             this.decreaseButton = new System.Windows.Forms.Button();
             this.currentRatioBox = new System.Windows.Forms.TextBox();
             this.a4GroupBox = new System.Windows.Forms.GroupBox();
-            this.a4Image = new System.Windows.Forms.PictureBox();
+            this.a4ImagePictureBox = new System.Windows.Forms.PictureBox();
 
             int screenWidth = Screen.PrimaryScreen.Bounds.Width;
             int screenHeight = Screen.PrimaryScreen.Bounds.Height;
@@ -255,16 +247,16 @@ namespace CancellationTest
             this.a4GroupBox.Text = "A4 Paper";
             this.a4GroupBox.Hide();
             //
-            // a4Image
+            // a4ImagePictureBox
             //
-            Image a4paper = Image.FromFile("A4_ScalePaper.jpg");
-            this.a4Image.Image = ResizeImage(a4paper, (int)(this.Width / a4WidthRatio * this.screenSize), (int)(this.Height / a4HeightRatio * this.screenSize));
             
-            //this.a4Image.Image = re
+            this.a4ImagePictureBox.Image = ResizeImage(this.a4Image, (int)(this.Width / a4WidthRatio * this.screenSize), (int)(this.Height / a4HeightRatio * this.screenSize));
+            
+            //this.a4ImagePictureBox.Image = re
 
             //Resize the image to match the screen size
-            this.a4Image.Location = new System.Drawing.Point((this.Width - this.a4Image.Width) / 2, 
-                (this.Height - this.a4Image.Height) / 2 - adjustHeight(62) - this.okayButton.Height);
+            this.a4ImagePictureBox.Location = new System.Drawing.Point((this.Width - this.a4ImagePictureBox.Width) / 2, 
+                (this.Height - this.a4ImagePictureBox.Height) / 2 - adjustHeight(62) - this.okayButton.Height);
 
 
 
@@ -280,7 +272,7 @@ namespace CancellationTest
             this.Controls.Add(this.decreaseButton);
             this.Controls.Add(this.increaseButton);
             this.Controls.Add(this.okayButton);
-            this.Controls.Add(this.a4Image);
+            this.Controls.Add(this.a4ImagePictureBox);
             this.Name = "screenSizeAdjustment";
             this.Text = "screenSizeAdjustment";
             Console.WriteLine("screenWidth: " + this.Width);

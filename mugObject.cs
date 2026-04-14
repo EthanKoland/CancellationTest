@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CancellationTest.Properties;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -20,6 +21,8 @@ namespace CancellationTest
 
         public int matrixLocation { get; private set; }
 
+        public Boolean hasBeenClicked { get; private set; }
+
         public mugObject(int imageID, imageTypes imageType, Point imageCenter, int width, int height, leftRightCenter side, int matrixLocation)
         {
             this.imageID = imageID;
@@ -30,6 +33,7 @@ namespace CancellationTest
             this.isClicked = false;
             this.side = side;
             this.matrixLocation = matrixLocation;
+            
         }
 
         //Recancel will be true if the time remaining is less than 0 
@@ -38,6 +42,9 @@ namespace CancellationTest
             
             //If the image is clicked then set the isClicked to true, but if it is already clicked then set it to false
             this.isClicked = recancel ? true : !this.isClicked;
+            this.hasBeenClicked = true;
+
+
             Console.WriteLine("Image Clicked : " + this.imageID + "is clicked " + this.isClicked);
         }
 
@@ -51,21 +58,23 @@ namespace CancellationTest
         //Static helper function to get an image object based on the image type
         static public Image getImageObject(imageTypes types)
         {
+            System.Resources.ResourceManager resources = new System.Resources.ResourceManager("CancellationTest.Properties.Resources", typeof(Resources).Assembly);
+
             if (types == imageTypes.DistractionLeft)
             {
-                return Image.FromFile("leftB60.jpg");
+                return (System.Drawing.Image)(resources.GetObject("leftB60"));
             }
             else if (types == imageTypes.DistractionRight)
             {
-                return Image.FromFile("rightB60.jpg");
+                return (System.Drawing.Image)(resources.GetObject("rightB60"));
             }
             else if (types == imageTypes.TargetLeft)
             {
-                return Image.FromFile("left60.jpg");
+                return (System.Drawing.Image)(resources.GetObject("left60"));
             }
             else if (types == imageTypes.TargetRight)
             {
-                return Image.FromFile("right60.jpg");
+                return (System.Drawing.Image)(resources.GetObject("right60"));
             }
             else
             {

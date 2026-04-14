@@ -48,13 +48,13 @@ namespace CancellationTest
                 outputFile.WriteLine("Center of Cancellation:|" + CenterString(temp_Str, 16) + "|       -        |       -        |       -        |       -        |       -        |");
                 outputFile.WriteLine();
 
-                temp_Str = Math.Round((right_TimeTaken / total_TimeTaken) * 100, 2).ToString();
+                temp_Str = Math.Round((right_TimeTaken / (right_TimeTaken + left_TimeTaken)) * 100, 2).ToString();
                 outputFile.WriteLine("Time Spent on the      |" + CenterString(temp_Str, 16) + "|  45.88 (6.05)  |      28.72     |      28.72     |      36.54     |      56.29     |");
                 outputFile.WriteLine("right side:            |" + CenterString("  ", 16) + "|                |                |                |                |                |");
-                temp_Str = Math.Round((left_TimeTaken / total_TimeTaken) * 100, 2).ToString();
+                temp_Str = Math.Round((left_TimeTaken / (right_TimeTaken + left_TimeTaken)) * 100, 2).ToString();
                 outputFile.WriteLine("Time Spent on the      |" + CenterString(temp_Str, 16) + "|  54.12 (6.05)  |      35.21     |      71.28     |      43.71     |      63.46     |");
                 outputFile.WriteLine("left  side:            |" + CenterString("  ", 16) + "|                |                |                |                |                |");
-                temp_Str = Math.Round(((right_TimeTaken - left_TimeTaken) / total_TimeTaken) * 100, 2).ToString();
+                temp_Str = Math.Round(((right_TimeTaken - left_TimeTaken) / (right_TimeTaken + left_TimeTaken)) * 100, 2).ToString() + "%";
                 outputFile.WriteLine("Asymmetry Score:       |" + CenterString(temp_Str, 16) + "| -8.24 (12.11)  |     -42.57     |      29.37     |     -26.37     |      12.58     |");
                 outputFile.WriteLine();
 
@@ -73,7 +73,7 @@ namespace CancellationTest
                 temp_Str = right_TargetCrossed.ToString();
                 outputFile.WriteLine("Total Targets Cancelled|" + CenterString(temp_Str, 16) + "|                |                |                |                |                |");
                 outputFile.WriteLine("in right side of grid: |" + CenterString("  ", 16) +     "|                |                |                |                |                |");
-                temp_Str = (right_TargetCrossed - left_TargetCrossed).ToString();
+                temp_Str = (left_TargetCrossed - right_TargetCrossed).ToString();
                 outputFile.WriteLine("Egocentric Neglect:    |" + CenterString(temp_Str, 16) + "|       0        |       -3       |        5       |       -2       |        2       |");
                 outputFile.WriteLine();
 

@@ -72,6 +72,15 @@ namespace CancellationTest
         //Center of Cancellation
         public double centerOfCancellation { get; set; } = 0;
 
+        // Left and Right Search Distances
+        public double leftSearchDistance { get; set; } = 0;
+        public double rightSearchDistance { get; set; } = 0;
+
+        public DateTime startTime { get; set; }
+        public DateTime endTime { get; set; }
+
+        public List<Point> intersectionPoints { get; set; } = new List<Point>();
+
         //Adding the click table
         //Have an abstract function that will be used to add the click data to the table
         public void addClickData(List<clickRow> clickRows)

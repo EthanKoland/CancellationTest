@@ -9,9 +9,12 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using static System.Net.Mime.MediaTypeNames;
 using System.Windows.Media.Media3D;
+using CancellationTest.Properties;
+using System.Resources;
 
 namespace CancellationTest
 {
+
     public struct testParameters
     {
         public AvailableExams testType;
@@ -52,8 +55,10 @@ namespace CancellationTest
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.PictureBox neuroLab;
+        private System.Windows.Forms.PictureBox centLogo;
         private System.Windows.Forms.PictureBox fundingBox;
         private System.Windows.Forms.PictureBox strokeLogo;
+        private Icon icon;
 
 
         public Menu()
@@ -70,8 +75,8 @@ namespace CancellationTest
             this.FormBorderStyle = FormBorderStyle.None;
             this.WindowState = FormWindowState.Maximized;
 
-            //move the groupbox to the center of the form
-           
+
+            this.Icon = (Icon)(new System.Resources.ResourceManager("CancellationTest.Properties.Resources", typeof(Resources).Assembly).GetObject("CENT_icon"));
 
 
             this.groupBox1.Left = (this.Width - this.groupBox1.Width) / 2;
@@ -247,7 +252,9 @@ namespace CancellationTest
 
         private void InitializeComponent()
         {
-            
+
+            System.Resources.ResourceManager resources = new System.Resources.ResourceManager("CancellationTest.Properties.Resources", typeof(Resources).Assembly);
+
             
             
             this.groupBox1 = new System.Windows.Forms.GroupBox();
@@ -329,7 +336,7 @@ namespace CancellationTest
             ///
             // PictureBox1
             //
-            System.Drawing.Image rawImage = System.Drawing.Image.FromFile("university_of_east_anglia_logo.png");
+            System.Drawing.Image rawImage = (System.Drawing.Image)(resources.GetObject("university_of_east_anglia_logo"));
 
             this.pictureBox1.Location = new System.Drawing.Point(relativeScreenHeight(0.01), relativeScreenHeight(0.01));
             this.pictureBox1.Name = "pictureBox1";
@@ -343,19 +350,19 @@ namespace CancellationTest
             //Label2
             //
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 36F);
-            this.label2.Location = new System.Drawing.Point(relativeScreenWidth(0.07), relativeScreenHeight(0.01));
+            this.label2.Location = new System.Drawing.Point(relativeScreenWidth(0.15), relativeScreenHeight(0.01));
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(relativeScreenWidth(0.5), relativeScreenHeight(0.085));
+            this.label2.Size = new System.Drawing.Size(relativeScreenWidth(0.5), relativeScreenHeight(0.1));
             this.label2.TabIndex = 0;
             this.label2.Text = "Cancellation Test";
-            this.label2.TextAlign = ContentAlignment.MiddleCenter;
+            this.label2.TextAlign = ContentAlignment.MiddleLeft;
             this.label2.AutoSize = false;
             this.groupBox1.Controls.Add(this.label2);
             //
             //Button4
             //
             this.button4.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.button4.Text = "Legal";
+            this.button4.Text = "Licence";
             this.button4.Location = new System.Drawing.Point(relativeScreenWidth(0.63), relativeScreenHeight(0.0289));
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(relativeScreenWidth(0.05), relativeScreenHeight(0.048));
@@ -475,17 +482,29 @@ namespace CancellationTest
             //
             //NeuroLab
             //
-            System.Drawing.Image neuroLabImage = System.Drawing.Image.FromFile("neuroLab_Logo.png");
+            System.Drawing.Image neuroLabImage = (System.Drawing.Image)(resources.GetObject("neuroLab_Logo"));
             this.neuroLab = new System.Windows.Forms.PictureBox();
-            this.neuroLab.Location = new System.Drawing.Point(relativeScreenWidth(0.01), relativeScreenHeight(0.01));
+            this.neuroLab.Location = new System.Drawing.Point(relativeScreenWidth(0.08), relativeScreenHeight(0.01));
             this.neuroLab.Name = "neuroLab";
             this.neuroLab.Size = new System.Drawing.Size(relativeScreenWidth(0.07), relativeScreenHeight(0.15));
             this.neuroLab.Image = neuroLabImage;
             this.neuroLab.SizeMode = PictureBoxSizeMode.Zoom;
             //
+            //Cent Logo
+            //
+            System.Drawing.Image centLogoImage = (System.Drawing.Image)(resources.GetObject("CENT_logo"));
+            this.centLogo = new System.Windows.Forms.PictureBox();
+            this.centLogo.Location = new System.Drawing.Point(relativeScreenWidth(0.01), relativeScreenHeight(0.01));
+            this.centLogo.Name = "centLogo";
+            this.centLogo.Size = new System.Drawing.Size(relativeScreenWidth(0.07), relativeScreenHeight(0.15));
+            this.centLogo.Image = centLogoImage;
+            this.centLogo.SizeMode = PictureBoxSizeMode.Zoom;
+
+
+            //
             //StrokeLogo
             //
-            System.Drawing.Image strokeLogoImage = System.Drawing.Image.FromFile("Stroke-Association-logo-close-crop.png");
+            System.Drawing.Image strokeLogoImage = (System.Drawing.Image)(resources.GetObject("Stroke_Association_logo_close_crop"));
             this.strokeLogo = new System.Windows.Forms.PictureBox();
             this.strokeLogo.Location = new System.Drawing.Point(relativeScreenWidth(0.11), relativeScreenHeight(0.01));
             this.strokeLogo.Name = "strokeLogo";
@@ -496,7 +515,7 @@ namespace CancellationTest
             //
             //FundingBox
             //
-            System.Drawing.Image fundingBoxImage = System.Drawing.Image.FromFile("Funded_fix.png");
+            System.Drawing.Image fundingBoxImage = (System.Drawing.Image)(resources.GetObject("Funded_fix"));
             this.fundingBox = new System.Windows.Forms.PictureBox();
             this.fundingBox.Location = new System.Drawing.Point(relativeScreenWidth(0.2), relativeScreenHeight(0.02));
             this.fundingBox.Name = "fundingBox";
@@ -529,6 +548,7 @@ namespace CancellationTest
             this.groupBox1.Controls.Add(this.Patient);
             this.groupBox1.Controls.Add(this.groupBox2);
             this.groupBox1.Controls.Add(this.neuroLab);
+            this.groupBox1.Controls.Add(this.centLogo);
             this.groupBox2.Controls.Add(this.comboBox1);
             this.groupBox3.Controls.Add(this.dateTimePicker1);
             this.groupBox3.Controls.Add(this.label1);

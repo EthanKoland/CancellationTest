@@ -16,6 +16,8 @@ using System.Windows.Media.TextFormatting;
 using CancellationTest;
 using OfficeOpenXml;
 using System.Media;
+using CancellationTest.Properties;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace CancellationTest
 {
@@ -88,10 +90,13 @@ namespace CancellationTest
         protected WMPLib.WindowsMediaPlayer pop2Player = new WMPLib.WindowsMediaPlayer();
         protected SoundPlayer poppingPlayer = new SoundPlayer(@"Sounds\popping.wav");
 
+        
+
         public examParent( abstractTestClass examObject, double adjustSize = 0.5,
             int seconds = 240, string patientName = "None", int crossOutTime = -1) 
         {
             
+
             this.TopMost = true;
             this.FormBorderStyle = FormBorderStyle.None;
             this.WindowState = FormWindowState.Maximized;
@@ -118,7 +123,7 @@ namespace CancellationTest
 
             this.localExamObject = examObject;
             bool invisableCancelation = crossOutTime == -1 ? false : true;
-            this.tracker = new actionTracker(this.localExamObject, invisableCancelation, patientID: patientName);
+            this.tracker = new actionTracker(this.localExamObject, invisableCancelation, patientID: patientName, sizeRatio: adjustSize);
 
 
             this.endTime = DateTime.Now.AddSeconds(seconds);
@@ -170,7 +175,7 @@ namespace CancellationTest
 
 
             //Creating a new bitMap
-
+            
             InitializeComponent();
             this.KeyDown += new KeyEventHandler(examParent_KeyDown);
             this.MouseClick += new MouseEventHandler(ImageViewer_MouseClick);
@@ -257,17 +262,29 @@ namespace CancellationTest
            {
 
                 Random rand = new Random();
-                int nextint = rand.Next(2);
 
                 if (rand.Next(2) == 1)
                 {
-                    //Play the popping sound
-                    this.pop2Player.controls.play();
+                    // Ensure the pop2Player is ready before playing  
+                    if (this.pop2Player != null && this.pop2Player.controls != null)
+                    {
+                        this.pop2Player.controls.play();
+                    }
                 }
                 else
                 {
-                    //Play the other popping sound
-                    this.poppingPlayer.Play();
+                    // Ensure the poppingPlayer is ready before playing  
+                    if (this.poppingPlayer != null)
+                    {
+                        try
+                        {
+                            this.poppingPlayer.Play();
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine("Error playing sound: " + ex.Message);
+                        }
+                    }
                 }
                 
                 int halfWidth = this.localExamObject.imageList[imageID - 1].width / 2;
@@ -279,9 +296,11 @@ namespace CancellationTest
                 action.clickPoint = new Point(this.CurPt.X, this.CurPt.Y);
                 action.ImageID = imageID;
                 action.timeOfClick = DateTime.Now;
-                action.leftOrRightSide = this.localExamObject.imageList[imageID - 1].imageCenter.X < this.screenwidth / 2 ? LeftRight.Left : LeftRight.Right;
+                action.leftOrRightSide = this.localExamObject.imageList[imageID - 1].imageCenter.X < this.localExamObject.screenWidth / 2 ? LeftRight.Left : LeftRight.Right;
+                action.reClick = this.localExamObject.imageList[imageID - 1].hasBeenClicked;
 
                 bool timeRemaining = this.remainingCancelationTime[imageID] <= 0;
+
 
                 Console.WriteLine("Image Clicked : " + imageID);
                 mugObject clickedImage = this.localExamObject.imageList[imageID - 1];
@@ -341,6 +360,7 @@ namespace CancellationTest
                 TimeSpan timeRemaining = endTime - DateTime.Now;
                 tracker.endTime = DateTime.Now;
                 Console.WriteLine("E Key Pressed");
+                
                 string filename = "CancellationTest_" + this.patientName + "_" + DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss") + ".xlsx";
                 //Open the export screen
                 exportScreen exportScreenObj = new exportScreen(this.patientName, this.tracker, this.adjustSize);
@@ -474,10 +494,25 @@ namespace CancellationTest
                 int adjustedY = (int)Math.Round(img.imageCenter.Y * adjustSize + this.minBoundry.Y);
 
                 e.Graphics.DrawImage(mugObject.getImageObject(img.imageType), adjustedX - halfWidth, adjustedY - halfHeight, adjustedWidth, adjustedHeight);
-                
+
+                //if (img.imageCenter.X  < 1920 / 2)
+                //{
+                //    e.Graphics.DrawRectangle(BluePen, adjustedX - halfWidth, adjustedY - halfWidth, adjustedWidth, adjustedHeight);
+                //}
+                //else
+                //{
+                //    e.Graphics.DrawRectangle(GreenPen, adjustedX - halfWidth, adjustedY - halfWidth, adjustedWidth, adjustedHeight);
+                //}
+
+                //e.Graphics.DrawLine(this.CrossPen, this.screenwidth / 2, 0, this.screenwidth / 2, 1080);
+
+            
+
+
+
 
                 //if(clickedImages.Contains(img.imageID))
-                if(this.remainingCancelationTime[img.imageID] > 0)
+                if (this.remainingCancelationTime[img.imageID] > 0)
                 {
                     int x1 = adjustedX - adjustedWidth/2;
 

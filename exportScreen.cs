@@ -161,7 +161,7 @@ namespace CancellationTest
             
             if (this.checkBox_Map.Checked)
             {
-                Console.WriteLine("Exporting as CSV");
+                Console.WriteLine("Exporting as Map");
                 exportList.Add(new Export_Map(this.patient_ID));
             }
             if (this.checkBox_Excel.Checked)

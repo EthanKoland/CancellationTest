@@ -34,19 +34,23 @@ namespace CancellationTest
         [STAThread]
         static void Main()
         {
+            
+            
+            
             abstractTestClass test = new  assesmentExam();
             abstractTestClass p1 = new praticeExam1();
             abstractTestClass p2 = new praticeExam2();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            //Application.Run(new examParent(test, 1));
+            //Application.Run(new examParent(test,0.75));
             //Application.Run(new examParent(p1, 1.0));
-            //Application.Run(new praticeParent(p1,1, 0.5));
+            //Application.Run(new praticeParent(p1,1, 0.75));
             //.Run(new screenSizeAdjustment());
             Application.Run(new Menu());
             //Application.Run(new IntermediateScreen());
             //Application.Run(new helpScreen());
             //Application.Run(new exportScreen("123456789", 1.0));
+            //Application.Run(new legalScreen());
 
 
         }

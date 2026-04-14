@@ -157,7 +157,7 @@ namespace CancellationTest
                 row++;
                 row++;
                 worksheet.Cells[row, 1].Value = "Time Spent on the right side";
-                worksheet.Cells[row, 2].Value = (Math.Round(right_TimeTaken / total_TimeTaken, 4) * 100) + "%";
+                worksheet.Cells[row, 2].Value = (Math.Round(right_TimeTaken / (right_TimeTaken + left_TimeTaken), 4) * 100) + "%";
                 worksheet.Cells[row, 3].Value = "45.88 (6.05)"; //Mean score
                 worksheet.Cells[row, 4].Value = "28.72"; //Min score
                 worksheet.Cells[row, 5].Value = "64.69"; //Max score
@@ -166,7 +166,7 @@ namespace CancellationTest
 
                 row++;
                 worksheet.Cells[row, 1].Value = "Time Spent on the left side";
-                worksheet.Cells[row, 2].Value = (Math.Round(left_TimeTaken / total_TimeTaken, 4) * 100) + "%";
+                worksheet.Cells[row, 2].Value = (Math.Round(left_TimeTaken / (right_TimeTaken + left_TimeTaken), 4) * 100) + "%";
                 worksheet.Cells[row, 3].Value = "54.12 (6.05)"; //Mean score
                 worksheet.Cells[row, 4].Value = "35.31"; //Min score
                 worksheet.Cells[row, 5].Value = "71.28"; //Max score
@@ -175,7 +175,7 @@ namespace CancellationTest
 
                 row++;
                 worksheet.Cells[row, 1].Value = "Asymmetry Score";
-                worksheet.Cells[row, 2].Value = Math.Round((right_TimeTaken - left_TimeTaken) / total_TimeTaken, 4);
+                worksheet.Cells[row, 2].Value = Math.Round((right_TimeTaken - left_TimeTaken) / (right_TimeTaken + left_TimeTaken), 4) * 100 + "%";
                 worksheet.Cells[row, 3].Value = "-8.24 (12.11)"; //Mean score
                 worksheet.Cells[row, 4].Value = "-42.57"; //Min score
                 worksheet.Cells[row, 5].Value = "29.37"; //Max score
@@ -230,7 +230,7 @@ namespace CancellationTest
                 row++;
                 worksheet.Cells[row, 1].Value = "Egocentric neglect";
                 worksheet.Cells[row, 1].Style.Font.Bold = true;
-                worksheet.Cells[row, 2].Value = this.right_TargetCrossed - this.left_TargetCrossed;
+                worksheet.Cells[row, 2].Value = this.left_TargetCrossed - this.right_TargetCrossed;
                 worksheet.Cells[row, 3].Value = "0"; //Mean score
                 worksheet.Cells[row, 4].Value = "-3"; //Min score
                 worksheet.Cells[row, 5].Value = "5"; //Max score
@@ -340,6 +340,22 @@ namespace CancellationTest
                 row++;
                 worksheet.Cells[row, 1].Value = "Intersection Rate";
                 worksheet.Cells[row, 2].Value = intersectionRate;
+
+                row++;
+                worksheet.Cells[row, 1].Value = "Distance Left";
+                worksheet.Cells[row, 2].Value = leftSearchDistance;
+
+                row++;
+                worksheet.Cells[row, 1].Value = "Time Taken  Left";
+                worksheet.Cells[row, 2].Value = left_TimeTaken;
+
+                row++;
+                worksheet.Cells[row, 1].Value = "Distance Right";
+                worksheet.Cells[row, 2].Value = rightSearchDistance;
+
+                row++;
+                worksheet.Cells[row, 1].Value = "Time Taken  Right";
+                worksheet.Cells[row, 2].Value = right_TimeTaken;
 
                 int row_Checkpoint = row;
 

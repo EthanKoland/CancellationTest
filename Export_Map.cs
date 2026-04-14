@@ -49,6 +49,10 @@ namespace CancellationTest
                 }
             }
 
+            foreach (Point intersection in this.intersectionPoints) {
+                g.FillRectangle(Brushes.Purple, intersection.X - halfSquare, intersection.Y - halfSquare, SquareSize + 5, SquareSize + 5);
+            }
+
             if (this.clickRows != null  && this.clickRows.Count > 0)
             {
                 Point previousPoint = this.clickRows[0].normalizedLocation;
@@ -83,28 +87,28 @@ namespace CancellationTest
                 Pen instructionPen = new Pen(Color.Black, 5);
 
                 //Cross out the small left mug
-                Point p1 = new Point((int)(0.38 * imgWidth), (int)(0.165 * imgWidth) + smallMugsize);
-                Point p2 = new Point((int)(0.38 * imgWidth) + smallMugsize, (int)(0.165 * imgWidth));
+                Point p1 = new Point((int)(0.38 * imgWidth), (int)(0.1 * imgWidth) + smallMugsize);
+                Point p2 = new Point((int)(0.38 * imgWidth) + smallMugsize, (int)(0.1 * imgWidth));
                 g.DrawImage(mugObject.getImageObject(imageTypes.TargetLeft), p1.X, p2.Y, smallMugsize, smallMugsize);
                 g.DrawLine(instructionPen, p1, p2);
 
 
                 //Cross out the small right mug
-                p1 = new Point((int)(0.44 * imgWidth), (int)(0.165 * imgWidth) + smallMugsize);
-                p2 = new Point((int)(0.44 * imgWidth) + smallMugsize, (int)(0.165 * imgWidth));
+                p1 = new Point((int)(0.44 * imgWidth), (int)(0.1 * imgWidth) + smallMugsize);
+                p2 = new Point((int)(0.44 * imgWidth) + smallMugsize, (int)(0.1 * imgWidth));
                 g.DrawImage(mugObject.getImageObject(imageTypes.TargetRight), p1.X, p2.Y, smallMugsize, smallMugsize);
                 g.DrawLine(instructionPen, p1, p2);
 
-
+                
                 //Cross out the large left mug
-                p1 = new Point((int)(0.37 * imgWidth), (int)(0.25 * imgWidth) + largeMugsize);
-                p2 = new Point((int)(0.37 * imgWidth) + largeMugsize, (int)(0.25 * imgWidth));
+                p1 = new Point((int)(0.37 * imgWidth), (int)(0.15 * imgWidth) + largeMugsize);
+                p2 = new Point((int)(0.37 * imgWidth) + largeMugsize, (int)(0.15 * imgWidth));
                 g.DrawImage(mugObject.getImageObject(imageTypes.TargetLeft), p1.X, p2.Y, largeMugsize, largeMugsize);
                 g.DrawLine(instructionPen, p1, p2);
 
                 //Cross out the large right mug
-                p1 = new Point((int)(0.435 * imgWidth), (int)(0.25 * imgWidth) + largeMugsize);
-                p2 = new Point((int)(0.435 * imgWidth) + largeMugsize, (int)(0.25 * imgWidth));
+                p1 = new Point((int)(0.435 * imgWidth), (int)(0.15 * imgWidth) + largeMugsize);
+                p2 = new Point((int)(0.435 * imgWidth) + largeMugsize, (int)(0.15 * imgWidth));
                 g.DrawImage(mugObject.getImageObject(imageTypes.TargetRight), p1.X, p2.Y, largeMugsize, largeMugsize);
                 g.DrawLine(instructionPen, p1, p2);
 
@@ -112,21 +116,21 @@ namespace CancellationTest
                 g.DrawString("Cross out the mugs",
                     new Font("Arial", (int)(0.02 * imgWidth)),
                     Brushes.Black,
-                    new Point(0, (int)(0.1 * imgHeight)));
+                    new Point((int) (0.375 * imgWidth), (int)(0.1 * imgHeight)));
 
                 //Small left Target Image
-                g.DrawImage(mugObject.getImageObject(imageTypes.TargetLeft), (int)(0.38 * imgWidth), (int)(0.165 * imgWidth), smallMugsize, smallMugsize);
+                g.DrawImage(mugObject.getImageObject(imageTypes.DistractionLeft), (int)(0.505 * imgWidth), (int)(0.1 * imgWidth), smallMugsize, smallMugsize);
 
                 //Small right Target Image
-                g.DrawImage(mugObject.getImageObject(imageTypes.TargetRight), (int)(0.44 * imgWidth), (int)(0.165 * imgWidth), smallMugsize, smallMugsize);
+                g.DrawImage(mugObject.getImageObject(imageTypes.DistractionRight), (int)(0.565 * imgWidth), (int)(0.1 * imgWidth), smallMugsize, smallMugsize);
 
                 //Large left Target Image
-                g.DrawImage(mugObject.getImageObject(imageTypes.TargetLeft), (int)(0.37 * imgWidth), (int)(0.25 * imgWidth), largeMugsize, largeMugsize);
+                g.DrawImage(mugObject.getImageObject(imageTypes.DistractionLeft), (int)(0.5 * imgWidth), (int)(0.15 * imgWidth), largeMugsize, largeMugsize);
 
                 //Large right Target Image
-                g.DrawImage(mugObject.getImageObject(imageTypes.TargetRight), (int)(0.435 * imgWidth), (int)(0.25 * imgWidth), largeMugsize, largeMugsize);
+                g.DrawImage(mugObject.getImageObject(imageTypes.DistractionRight), (int)(0.56 * imgWidth), (int)(0.15 * imgWidth), largeMugsize, largeMugsize);
 
-                //Small Left Distractor Image
+                /*//Small Left Distractor Image
                 g.DrawImage(mugObject.getImageObject(imageTypes.DistractionLeft), (int)(0.38 * imgWidth), (int)(0.3 * imgWidth), smallMugsize, smallMugsize);
 
                 //Small Right Distractor Image
@@ -137,7 +141,7 @@ namespace CancellationTest
 
                 //Large Right Distractor Image
                 g.DrawImage(mugObject.getImageObject(imageTypes.DistractionRight), (int)(0.435 * imgWidth), (int)(0.35 * imgWidth), largeMugsize, largeMugsize);
-            }
+            */}
 
             string outputFolder = this.getOutputPath(folderLocation);
             string filePath = this.getFileName(outputFolder, ".png");

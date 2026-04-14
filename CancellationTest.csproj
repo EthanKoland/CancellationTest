@@ -66,6 +66,11 @@
   <PropertyGroup>
     <SignManifests>true</SignManifests>
   </PropertyGroup>
+  <PropertyGroup />
+  <PropertyGroup>
+    <ApplicationIcon>CENT_icon.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup />
   <PropertyGroup>
     <NoWin32Manifest>true</NoWin32Manifest>
   </PropertyGroup>
@@ -161,6 +166,11 @@
       <DependentUpon>Menu.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="randomText.cs" />
     <Compile Include="screenSizeAdjustment.cs">
       <SubType>Form</SubType>
@@ -174,19 +184,17 @@
     <EmbeddedResource Include="IntermediateScreen.resx">
       <DependentUpon>IntermediateScreen.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="legalScreen.resx">
+      <DependentUpon>legalScreen.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Menu.resx">
       <DependentUpon>Menu.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <EmbeddedResource Include="screenSizeAdjustment.resx">
       <DependentUpon>screenSizeAdjustment.cs</DependentUpon>
     </EmbeddedResource>
@@ -233,6 +241,46 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\pop2.mp3" />
+    <None Include="Resources\popping.wav" />
+    <None Include="Resources\university_of_east_anglia_logo.png" />
+    <None Include="Resources\Stroke-Association-logo-close-crop.png" />
+    <None Include="Resources\rightB60.jpg" />
+    <None Include="Resources\right60.jpg" />
+    <None Include="bin\Debug\A4_ScalePaper.jpg" />
+    <None Include="bin\Debug\adaptions.png" />
+    <None Include="bin\Debug\CENT logo.png" />
+    <None Include="bin\Debug\credit.png" />
+    <None Include="bin\Debug\Funded_fix.png" />
+    <None Include="bin\Debug\left60.jpg" />
+    <None Include="bin\Debug\leftB60.jpg" />
+    <None Include="bin\Debug\neuroLab_Logo.png" />
+    <None Include="bin\Debug\noncom.png" />
+    <None Include="bin\Debug\right60.jpg" />
+    <None Include="bin\Debug\rightB60.jpg" />
+    <None Include="bin\Debug\Stroke-Association-logo-close-crop.png" />
+    <None Include="bin\Debug\university_of_east_anglia_logo.png" />
+    <Content Include="CENT logo.ico" />
+    <None Include="Resources\A4_ScalePaper.jpg" />
+    <Content Include="CENT_icon.ico" />
+    <Content Include="Resources\adaptions.png" />
+    <None Include="Resources\CENT logo.png" />
+    <None Include="Resources\CENT_icon.ico" />
+    <None Include="Resources\CENT_logo.png" />
+    <Content Include="Resources\credit.png" />
+    <None Include="Resources\Funded_fix.png" />
+    <None Include="Resources\left60.jpg" />
+    <None Include="Resources\leftB60.jpg" />
+    <None Include="Resources\neuroLab_Logo.png" />
+    <None Include="Resources\Instructions.mp3" />
+    <Content Include="Resources\noncom.png" />
+    <None Include="Resources\CENT logo.ico" />
+    <None Include="Resources\Icon1.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Icons\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
