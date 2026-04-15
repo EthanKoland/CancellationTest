@@ -41,7 +41,9 @@ namespace CancellationTest
 
             this.StartPosition = FormStartPosition.CenterScreen;
             this.Text = "Export Screen";
+#if !DEBUG
             this.TopMost = true;
+#endif
             this.ClientSize = new System.Drawing.Size(screenWidth, screenHeight);
             this.MinimizeBox = false;
             this.MaximizeBox = false;

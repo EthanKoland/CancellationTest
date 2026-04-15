@@ -55,13 +55,20 @@ namespace CancellationTest
 
         private void IntermediateScreen_Load()
         {
+#if !DEBUG
             this.TopMost = true;
+#endif
             this.FormBorderStyle = FormBorderStyle.None;
             this.WindowState = FormWindowState.Maximized;
+            ApplyAspectLayout();
 
-            //Play the Instructions Mp3
-            wplayer.URL = "Sounds\\Instructions.mp3";
-            wplayer.controls.play();
+            //Play the Instructions Mp3 from embedded resources
+            string instructionsPath = ResourceMedia.GetTempMediaFile("Instructions", ".mp3");
+            if (!string.IsNullOrEmpty(instructionsPath))
+            {
+                wplayer.URL = instructionsPath;
+                wplayer.controls.play();
+            }
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -95,20 +102,66 @@ namespace CancellationTest
             if (this.testParameters.testType != AvailableExams.Assessment)
             {
                 int praticeNum = this.testParameters.testType == AvailableExams.Practice_1 ? 1 : 2;
-                praticeParent praticeParent = new praticeParent(exam, praticeNum, this.testParameters.adjustmentRatio, this.testParameters.examTime, this.testParameters.patientName, this.testParameters.crossOutTime);
+                praticeParent praticeParent = new praticeParent(exam, praticeNum, this.testParameters.adjustmentRatio, this.testParameters.examTime, this.testParameters.patientName, this.testParameters.crossOutTime, this.testParameters.aspectRatio);
                 this.Hide();
                 praticeParent.Show();
 
             }
             else
             {
-                examParent examParent = new examParent(exam, this.testParameters.adjustmentRatio, this.testParameters.examTime, this.testParameters.patientName, this.testParameters.crossOutTime);
+                examParent examParent = new examParent(exam, this.testParameters.adjustmentRatio, this.testParameters.examTime, this.testParameters.patientName, this.testParameters.crossOutTime, this.testParameters.aspectRatio);
                 this.Hide();
                 examParent.Show();
             }
 
             
         }
+
+        protected override void OnFormClosing(FormClosingEventArgs e)
+        {
+#if !DEBUG
+            if (e.CloseReason == CloseReason.UserClosing)
+            {
+                e.Cancel = true;
+            }
+#endif
+            base.OnFormClosing(e);
+        }
+
+        protected override void OnResize(EventArgs e)
+        {
+            base.OnResize(e);
+            ApplyAspectLayout();
+        }
+
+        private void ApplyAspectLayout()
+        {
+            if (this.groupBox1 == null)
+            {
+                return;
+            }
+
+            Rectangle contentBounds = AspectRatioLayout.GetContentBounds(this.ClientSize, this.testParameters.aspectRatio);
+            this.groupBox1.Left = contentBounds.Left + (contentBounds.Width - this.groupBox1.Width) / 2;
+            this.groupBox1.Top = contentBounds.Top + (contentBounds.Height - this.groupBox1.Height) / 2;
+            this.Invalidate();
+        }
+
+#if DEBUG
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            base.OnPaint(e);
+
+            Rectangle contentBounds = AspectRatioLayout.GetContentBounds(this.ClientSize, this.testParameters.aspectRatio);
+            using (SolidBrush brush = new SolidBrush(Color.Yellow))
+            {
+                e.Graphics.FillRectangle(brush, 0, 0, contentBounds.Left, this.ClientSize.Height);
+                e.Graphics.FillRectangle(brush, contentBounds.Right, 0, this.ClientSize.Width - contentBounds.Right, this.ClientSize.Height);
+                e.Graphics.FillRectangle(brush, contentBounds.Left, 0, contentBounds.Width, contentBounds.Top);
+                e.Graphics.FillRectangle(brush, contentBounds.Left, contentBounds.Bottom, contentBounds.Width, this.ClientSize.Height - contentBounds.Bottom);
+            }
+        }
+#endif
 
         private void InitializeComponent()
         {

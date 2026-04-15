@@ -27,7 +27,7 @@ namespace CancellationTest
             string fileName = this.getFileName(folderPath, ".xlsx");
 
             //Export the data to an excel file
-            ExcelPackage.LicenseContext = OfficeOpenXml.LicenseContext.NonCommercial;
+            ExcelPackage.License.SetNonCommercialOrganization("CENT_Cancellation_Test");
             using (ExcelPackage excel = new ExcelPackage(new FileInfo(fileName)))
             {
 

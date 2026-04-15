@@ -55,7 +55,95 @@ namespace CancellationTest
 
         }
 
-        
+    }
+
+    internal static class ResourceMedia
+    {
+        private static readonly List<string> TempFiles = new List<string>();
+
+        static ResourceMedia()
+        {
+            AppDomain.CurrentDomain.ProcessExit += (_, __) => CleanupTempFiles();
+        }
+
+        internal static string GetTempMediaFile(string resourceName, string extension)
+        {
+            object resource = Properties.Resources.ResourceManager.GetObject(resourceName, Properties.Resources.Culture);
+            byte[] bytes = resource as byte[];
+            if (bytes == null || bytes.Length == 0)
+            {
+                return null;
+            }
+
+            string tempPath = Path.Combine(Path.GetTempPath(), $"CancellationTest_{resourceName}_{Guid.NewGuid():N}{extension}");
+            File.WriteAllBytes(tempPath, bytes);
+
+            lock (TempFiles)
+            {
+                TempFiles.Add(tempPath);
+            }
+
+            return tempPath;
+        }
+
+        internal static Stream GetMediaStream(string resourceName)
+        {
+            object resource = Properties.Resources.ResourceManager.GetObject(resourceName, Properties.Resources.Culture);
+            byte[] bytes = resource as byte[];
+            if (bytes == null || bytes.Length == 0)
+            {
+                return null;
+            }
+
+            return new MemoryStream(bytes);
+        }
+
+        private static void CleanupTempFiles()
+        {
+            lock (TempFiles)
+            {
+                foreach (string file in TempFiles)
+                {
+                    try
+                    {
+                        if (File.Exists(file))
+                        {
+                            File.Delete(file);
+                        }
+                    }
+                    catch
+                    {
+                    }
+                }
+
+                TempFiles.Clear();
+            }
+        }
+    }
+
+    internal static class AspectRatioLayout
+    {
+        internal static Rectangle GetContentBounds(Size hostSize, double aspectRatio)
+        {
+            if (aspectRatio <= 0 || double.IsNaN(aspectRatio) || double.IsInfinity(aspectRatio))
+            {
+                aspectRatio = (double)hostSize.Width / Math.Max(1, hostSize.Height);
+            }
+
+            int contentWidth = hostSize.Width;
+            int contentHeight = (int)Math.Round(contentWidth / aspectRatio);
+
+            if (contentHeight > hostSize.Height)
+            {
+                contentHeight = hostSize.Height;
+                contentWidth = (int)Math.Round(contentHeight * aspectRatio);
+            }
+
+            int x = (hostSize.Width - contentWidth) / 2;
+            int y = (hostSize.Height - contentHeight) / 2;
+
+            return new Rectangle(x, y, contentWidth, contentHeight);
+        }
     }
 
     

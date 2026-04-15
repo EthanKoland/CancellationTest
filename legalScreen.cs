@@ -43,7 +43,9 @@ namespace CancellationTest
 
             formLoad();
 
+#if !DEBUG
             this.TopMost = true;
+#endif
         }
 
         private void formLoad()

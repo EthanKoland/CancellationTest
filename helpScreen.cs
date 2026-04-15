@@ -36,16 +36,19 @@ namespace CancellationTest
 
             formLoad();
 
+#if !DEBUG
             this.TopMost = true;
+#endif
            
 
-
-
-            wplayer.URL = "Sounds\\Instructions.mp3";
-
+            string instructionsPath = ResourceMedia.GetTempMediaFile("Instructions", ".mp3");
 
             //Play the Instructions Mp3
-            wplayer.controls.play();
+            if (!string.IsNullOrEmpty(instructionsPath))
+            {
+                wplayer.URL = instructionsPath;
+                wplayer.controls.play();
+            }
 
         }
 

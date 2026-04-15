@@ -20,6 +20,7 @@ namespace CancellationTest
         public AvailableExams testType;
         public string patientName;
         public double adjustmentRatio;
+        public double aspectRatio; // Adding aspectRatio to propagate throughout the project
         public int examTime;
         public int crossOutTime;
     }
@@ -68,19 +69,20 @@ namespace CancellationTest
             this.testParameters.testType = AvailableExams.Assessment;
             this.testParameters.patientName = "Unknown";
             this.testParameters.adjustmentRatio = 1.0;
+            this.testParameters.aspectRatio = (double)Screen.PrimaryScreen.Bounds.Width / Screen.PrimaryScreen.Bounds.Height;
             this.testParameters.examTime = 240;
             this.testParameters.crossOutTime = -1;
 
+#if !DEBUG
             this.TopMost = true;
+#endif
             this.FormBorderStyle = FormBorderStyle.None;
             this.WindowState = FormWindowState.Maximized;
 
 
             this.Icon = (Icon)(new System.Resources.ResourceManager("CancellationTest.Properties.Resources", typeof(Resources).Assembly).GetObject("CENT_icon"));
 
-
-            this.groupBox1.Left = (this.Width - this.groupBox1.Width) / 2;
-            this.groupBox1.Top = (this.Height - this.groupBox1.Height) / 2;
+            ApplyAspectLayout();
 
             Console.WriteLine("Screen Width " + this.Width);
             Console.WriteLine("Screen Heigth " + this.Height);
@@ -90,13 +92,18 @@ namespace CancellationTest
         {
             InitializeComponent();
             this.testParameters = testParameters;
+            if (this.testParameters.aspectRatio <= 0)
+            {
+                this.testParameters.aspectRatio = (double)Screen.PrimaryScreen.Bounds.Width / Screen.PrimaryScreen.Bounds.Height;
+            }
 
+#if !DEBUG
             this.TopMost = true;
+#endif
             this.FormBorderStyle = FormBorderStyle.None;
             this.WindowState = FormWindowState.Maximized;
 
-            this.groupBox1.Left = (this.Width - this.groupBox1.Width) / 2;
-            this.groupBox1.Top = (this.Height - this.groupBox1.Height) / 2;
+            ApplyAspectLayout();
         }
 
 
@@ -121,6 +128,11 @@ namespace CancellationTest
 
             this.testParameters.examTime = (int)(dateTimePicker1.Value - OrginPoint).TotalSeconds;
             Console.WriteLine("Exam Time: " + this.testParameters.examTime);
+
+            if (this.testParameters.aspectRatio <= 0)
+            {
+                this.testParameters.aspectRatio = (double)Screen.PrimaryScreen.Bounds.Width / Screen.PrimaryScreen.Bounds.Height;
+            }
 
 
             //Check if a patient Name has been entered else use unknown
@@ -149,19 +161,38 @@ namespace CancellationTest
 
             screenSizeAdjustment.ShowDialog();
             this.testParameters.adjustmentRatio = screenSizeAdjustment.screenSize;
+            this.testParameters.aspectRatio = screenSizeAdjustment.selectedAspectRatio;
 
             this.Show();
+            ApplyAspectLayout();
             Console.WriteLine("Screen Size: " + this.testParameters.adjustmentRatio);
         }
 
         private void Menu_Load(object sender, EventArgs e)
         {
-
+#if !DEBUG
+            this.button1.Visible = false;
+#endif
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
+#if !DEBUG
+            return;
+#else
             this.Close();
+#endif
+        }
+
+        protected override void OnFormClosing(FormClosingEventArgs e)
+        {
+#if !DEBUG
+            if (e.CloseReason == CloseReason.UserClosing)
+            {
+                e.Cancel = true;
+            }
+#endif
+            base.OnFormClosing(e);
         }
 
         private void dateTimePickerStart_ValueChanged(object sender, EventArgs e)
@@ -597,5 +628,40 @@ namespace CancellationTest
             legalScreen.ShowDialog();
             
         }
+
+        protected override void OnResize(EventArgs e)
+        {
+            base.OnResize(e);
+            ApplyAspectLayout();
+        }
+
+        private void ApplyAspectLayout()
+        {
+            if (this.groupBox1 == null)
+            {
+                return;
+            }
+
+            Rectangle contentBounds = AspectRatioLayout.GetContentBounds(this.ClientSize, this.testParameters.aspectRatio);
+            this.groupBox1.Left = contentBounds.Left + (contentBounds.Width - this.groupBox1.Width) / 2;
+            this.groupBox1.Top = contentBounds.Top + (contentBounds.Height - this.groupBox1.Height) / 2;
+            this.Invalidate();
+        }
+
+#if DEBUG
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            base.OnPaint(e);
+
+            Rectangle contentBounds = AspectRatioLayout.GetContentBounds(this.ClientSize, this.testParameters.aspectRatio);
+            using (SolidBrush brush = new SolidBrush(Color.Yellow))
+            {
+                e.Graphics.FillRectangle(brush, 0, 0, contentBounds.Left, this.ClientSize.Height);
+                e.Graphics.FillRectangle(brush, contentBounds.Right, 0, this.ClientSize.Width - contentBounds.Right, this.ClientSize.Height);
+                e.Graphics.FillRectangle(brush, contentBounds.Left, 0, contentBounds.Width, contentBounds.Top);
+                e.Graphics.FillRectangle(brush, contentBounds.Left, contentBounds.Bottom, contentBounds.Width, this.ClientSize.Height - contentBounds.Bottom);
+            }
+        }
+#endif
     }
 }
