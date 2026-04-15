@@ -26,6 +26,8 @@ namespace CancellationTest
     }
     public partial class Menu : Form
     {
+        private const double menuDesignWidth = 1920.0;
+        private const double menuDesignHeight = 1080.0;
 
         private testParameters testParameters;
 
@@ -60,6 +62,7 @@ namespace CancellationTest
         private System.Windows.Forms.PictureBox fundingBox;
         private System.Windows.Forms.PictureBox strokeLogo;
         private Icon icon;
+        private bool menuLayoutInitialized = false;
 
 
         public Menu()
@@ -643,9 +646,93 @@ namespace CancellationTest
             }
 
             Rectangle contentBounds = AspectRatioLayout.GetContentBounds(this.ClientSize, this.testParameters.aspectRatio);
-            this.groupBox1.Left = contentBounds.Left + (contentBounds.Width - this.groupBox1.Width) / 2;
-            this.groupBox1.Top = contentBounds.Top + (contentBounds.Height - this.groupBox1.Height) / 2;
+            ApplyScaledLayout(contentBounds);
             this.Invalidate();
+        }
+
+        private void ApplyScaledLayout(Rectangle contentBounds)
+        {
+            if (contentBounds.Width <= 0 || contentBounds.Height <= 0)
+            {
+                return;
+            }
+
+            float scaleX = (float)(contentBounds.Width / menuDesignWidth);
+            float scaleY = (float)(contentBounds.Height / menuDesignHeight);
+
+            this.groupBox1.Size = new Size((int)Math.Round(0.7 * contentBounds.Width), (int)Math.Round(0.60 * contentBounds.Height));
+            this.groupBox1.Location = new Point(contentBounds.Left + (contentBounds.Width - this.groupBox1.Width) / 2, contentBounds.Top + (contentBounds.Height - this.groupBox1.Height) / 2);
+
+            this.label2.Location = new Point((int)Math.Round(0.15 * contentBounds.Width), (int)Math.Round(0.01 * contentBounds.Height));
+            this.label2.Size = new Size((int)Math.Round(0.5 * contentBounds.Width), (int)Math.Round(0.1 * contentBounds.Height));
+
+            this.Patient.Location = new Point((int)Math.Round(0.004 * contentBounds.Width), (int)Math.Round(0.16 * contentBounds.Height));
+            this.Patient.Size = new Size((int)Math.Round(0.12 * contentBounds.Width), (int)Math.Round(0.063 * contentBounds.Height));
+
+            this.textBox1.Location = new Point((int)Math.Round(0.125 * contentBounds.Width), (int)Math.Round(0.16 * contentBounds.Height));
+            this.textBox1.Size = new Size((int)Math.Round(0.3 * contentBounds.Width), (int)Math.Round(0.05 * contentBounds.Height));
+
+            this.groupBox2.Location = new Point((int)Math.Round(0.004 * contentBounds.Width), (int)Math.Round(0.25 * contentBounds.Height));
+            this.groupBox2.Size = new Size((int)Math.Round(0.69 * contentBounds.Width), (int)Math.Round(0.1 * contentBounds.Height));
+
+            this.comboBox1.Location = new Point((int)Math.Round(0.0065 * contentBounds.Width), (int)Math.Round(0.03 * contentBounds.Height));
+            this.comboBox1.Size = new Size((int)Math.Round(0.4 * contentBounds.Width), (int)Math.Round(0.06 * contentBounds.Height));
+
+            this.groupBox4.Location = new Point((int)Math.Round(0.004 * contentBounds.Width), (int)Math.Round(0.369 * contentBounds.Height));
+            this.groupBox4.Size = new Size((int)Math.Round(0.320 * contentBounds.Width), (int)Math.Round(0.1 * contentBounds.Height));
+
+            this.checkBox1.Location = new Point((int)Math.Round(0.007 * contentBounds.Width), (int)Math.Round(0.007 * contentBounds.Height));
+            this.checkBox1.Size = new Size((int)Math.Round(0.3 * contentBounds.Width), (int)Math.Round(0.09 * contentBounds.Height));
+
+            this.groupBox3.Location = new Point((int)Math.Round(0.342 * contentBounds.Width), (int)Math.Round(0.369 * contentBounds.Height));
+            this.groupBox3.Size = new Size((int)Math.Round(0.347 * contentBounds.Width), (int)Math.Round(0.100 * contentBounds.Height));
+
+            this.label1.Location = new Point((int)Math.Round(0.004 * contentBounds.Width), (int)Math.Round(0.015 * contentBounds.Height));
+            this.label1.Size = new Size((int)Math.Round(0.2 * contentBounds.Width), (int)Math.Round(0.082 * contentBounds.Height));
+
+            this.dateTimePicker1.Location = new Point((int)Math.Round(0.21 * contentBounds.Width), (int)Math.Round(0.02 * contentBounds.Height));
+            this.dateTimePicker1.Size = new Size((int)Math.Round(0.132 * contentBounds.Width), (int)Math.Round(0.08 * contentBounds.Height));
+
+            this.button1.Location = new Point((int)Math.Round(0.448 * contentBounds.Width), (int)Math.Round(0.160 * contentBounds.Height));
+            this.button1.Size = new Size((int)Math.Round(0.108 * contentBounds.Width), (int)Math.Round(0.073 * contentBounds.Height));
+
+            this.button2.Location = new Point((int)Math.Round(0.566 * contentBounds.Width), (int)Math.Round(0.160 * contentBounds.Height));
+            this.button2.Size = new Size((int)Math.Round(0.11 * contentBounds.Width), (int)Math.Round(0.073 * contentBounds.Height));
+
+            this.groupBox5.Location = new Point((int)Math.Round(0.004 * contentBounds.Width), (int)Math.Round(0.478 * contentBounds.Height));
+            this.groupBox5.Size = new Size((int)Math.Round(0.69 * contentBounds.Width), (int)Math.Round(0.106 * contentBounds.Height));
+
+            this.button3.Location = new Point((int)Math.Round(0.5 * contentBounds.Width), (int)Math.Round(0.0289 * contentBounds.Height));
+            this.button3.Size = new Size((int)Math.Round(0.12 * contentBounds.Width), (int)Math.Round(0.048 * contentBounds.Height));
+
+            this.button4.Location = new Point((int)Math.Round(0.63 * contentBounds.Width), (int)Math.Round(0.0289 * contentBounds.Height));
+            this.button4.Size = new Size((int)Math.Round(0.05 * contentBounds.Width), (int)Math.Round(0.048 * contentBounds.Height));
+
+            this.centLogo.Location = new Point((int)Math.Round(0.01 * contentBounds.Width), (int)Math.Round(0.01 * contentBounds.Height));
+            this.centLogo.Size = new Size((int)Math.Round(0.07 * contentBounds.Width), (int)Math.Round(0.15 * contentBounds.Height));
+
+            this.neuroLab.Location = new Point((int)Math.Round(0.08 * contentBounds.Width), (int)Math.Round(0.01 * contentBounds.Height));
+            this.neuroLab.Size = new Size((int)Math.Round(0.07 * contentBounds.Width), (int)Math.Round(0.15 * contentBounds.Height));
+
+            this.strokeLogo.Location = new Point((int)Math.Round(0.11 * contentBounds.Width), (int)Math.Round(0.01 * contentBounds.Height));
+            this.strokeLogo.Size = new Size((int)Math.Round(0.11 * contentBounds.Width), (int)Math.Round(0.09 * contentBounds.Height));
+
+            this.fundingBox.Location = new Point((int)Math.Round(0.2 * contentBounds.Width), (int)Math.Round(0.02 * contentBounds.Height));
+            this.fundingBox.Size = new Size((int)Math.Round(0.25 * contentBounds.Width), (int)Math.Round(0.06 * contentBounds.Height));
+
+            this.pictureBox1.Location = new Point((int)Math.Round(0.01 * contentBounds.Width), (int)Math.Round(0.01 * contentBounds.Height));
+            this.pictureBox1.Size = new Size((int)Math.Round(0.1 * contentBounds.Width), (int)Math.Round(0.09 * contentBounds.Height));
+
+            this.Patient.Font = new Font(this.Patient.Font.FontFamily, Math.Max(8f, 24f * Math.Min(scaleX, scaleY)), this.Patient.Font.Style);
+            this.textBox1.Font = this.Patient.Font;
+            this.comboBox1.Font = new Font(this.comboBox1.Font.FontFamily, Math.Max(8f, 24f * Math.Min(scaleX, scaleY)), this.comboBox1.Font.Style);
+            this.checkBox1.Font = new Font(this.checkBox1.Font.FontFamily, Math.Max(8f, 24f * Math.Min(scaleX, scaleY)), this.checkBox1.Font.Style);
+            this.button1.Font = new Font(this.button1.Font.FontFamily, Math.Max(8f, 24f * Math.Min(scaleX, scaleY)), this.button1.Font.Style);
+            this.button2.Font = new Font(this.button2.Font.FontFamily, Math.Max(8f, 24f * Math.Min(scaleX, scaleY)), this.button2.Font.Style);
+            this.label2.Font = new Font(this.label2.Font.FontFamily, Math.Max(10f, 36f * Math.Min(scaleX, scaleY)), this.label2.Font.Style);
+            this.label1.Font = new Font(this.label1.Font.FontFamily, Math.Max(8f, 12f * Math.Min(scaleX, scaleY)), this.label1.Font.Style);
+            this.button3.Font = new Font(this.button3.Font.FontFamily, Math.Max(8f, 12f * Math.Min(scaleX, scaleY)), this.button3.Font.Style);
+            this.button4.Font = new Font(this.button4.Font.FontFamily, Math.Max(8f, 12f * Math.Min(scaleX, scaleY)), this.button4.Font.Style);
         }
 
 #if DEBUG

@@ -570,22 +570,6 @@ namespace CancellationTest
 
                 e.Graphics.DrawImage(mugObject.getImageObject(img.imageType), adjustedX - halfWidth, adjustedY - halfHeight, adjustedWidth, adjustedHeight);
 
-                //if (img.imageCenter.X  < 1920 / 2)
-                //{
-                //    e.Graphics.DrawRectangle(BluePen, adjustedX - halfWidth, adjustedY - halfWidth, adjustedWidth, adjustedHeight);
-                //}
-                //else
-                //{
-                //    e.Graphics.DrawRectangle(GreenPen, adjustedX - halfWidth, adjustedY - halfWidth, adjustedWidth, adjustedHeight);
-                //}
-
-                //e.Graphics.DrawLine(this.CrossPen, this.screenwidth / 2, 0, this.screenwidth / 2, 1080);
-
-            
-
-
-
-
                 //if(clickedImages.Contains(img.imageID))
                 if (this.remainingCancelationTime[img.imageID] > 0)
                 {
@@ -601,25 +585,23 @@ namespace CancellationTest
                     e.Graphics.DrawLine(this.CrossPen, x1, y2, x2, y1);
                     
                 }
-
-                //IF img.side is left draw a blue rectange
-                /*if (img.matrixLocation == 2 )
+#if DEBUG
+                if (img.side == leftRightCenter.Left)
                 {
-                    e.Graphics.DrawRectangle(BluePen, adjustedX - halfWidth, adjustedY - halfWidth, adjustedWidth, adjustedHeight);
+                    e.Graphics.DrawRectangle(RedPen, adjustedX - halfWidth, adjustedY - halfHeight, adjustedWidth, adjustedHeight);
                 }
-                else if ( img.matrixLocation == 3)
+                else if (img.side == leftRightCenter.Center)
                 {
-                    e.Graphics.DrawRectangle(GreenPen, adjustedX - halfWidth, adjustedY - halfWidth, adjustedWidth, adjustedHeight);
+                    e.Graphics.DrawRectangle(BluePen, adjustedX - halfWidth, adjustedY - halfHeight, adjustedWidth, adjustedHeight);
                 }
-                else if (img.matrixLocation == 7)
+                else if (img.side == leftRightCenter.Right)
                 {
-                    e.Graphics.DrawRectangle(RedPen, adjustedX - halfWidth, adjustedY - halfWidth, adjustedWidth, adjustedHeight);
-                }*/
-
-                //e.Graphics.DrawRectangle(Pens.Black, adjustedX - halfWidth, adjustedY - halfWidth, adjustedWidth, adjustedHeight);
+                    e.Graphics.DrawRectangle(GreenPen, adjustedX - halfWidth, adjustedY - halfHeight, adjustedWidth, adjustedHeight);
+                }
+#endif
             }
 
-           
+
 
         }
 

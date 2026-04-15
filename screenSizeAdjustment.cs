@@ -9,6 +9,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Drawing.Drawing2D;
 
 namespace CancellationTest
 {
@@ -28,9 +29,14 @@ namespace CancellationTest
         private System.Windows.Forms.Button decreaseButton;
         private System.Windows.Forms.Button increaseAspectButton;
         private System.Windows.Forms.Button decreaseAspectButton;
+        private System.Windows.Forms.Button helpButton;
         private System.Windows.Forms.TextBox currentRatioBox;
         private System.Windows.Forms.TextBox currentAspectRatioBox;
         private System.Windows.Forms.GroupBox a4GroupBox;
+        private System.Windows.Forms.Panel screenSizeAdjustGroupBox;
+        private System.Windows.Forms.Panel aspectRatioAdjustGroupBox;
+        private System.Windows.Forms.Label screenSizeGroupLabel;
+        private System.Windows.Forms.Label aspectRatioGroupLabel;
         private System.Windows.Forms.PictureBox a4ImagePictureBox;
 #if DEBUG
         private System.Windows.Forms.Panel debugLeftBar;
@@ -127,6 +133,22 @@ namespace CancellationTest
             adjust();
         }
 
+        private void helpButton_Click(object sender, EventArgs e)
+        {
+            string helpText =
+                "Screen Size vs Aspect Ratio\n\n" +
+                "• Screen Size (Increase/Decrease): scales the A4 preview uniformly up or down.\n" +
+                "• Aspect Ratio (Aspect + / Aspect -): changes width relative to height.\n" +
+                "   - Decreasing aspect ratio makes the A4 preview narrower.\n" +
+                "   - Increasing aspect ratio makes the A4 preview wider.\n\n" +
+                "Recommended adjustment order:\n" +
+                "1) Reduce Screen Size until one A4 dimension aligns with a real A4 sheet.\n" +
+                "2) If the second dimension does not align, adjust Aspect Ratio.\n" +
+                "3) Fine tune Screen Size again if needed.";
+
+            MessageBox.Show(helpText, "Adjustment Help", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
         private void adjust()
         {
             Console.WriteLine("g" + Screen.PrimaryScreen.Bounds.Width + " " + Screen.PrimaryScreen.Bounds.Height);
@@ -138,6 +160,18 @@ namespace CancellationTest
             currentAspectRatioBox.Text = this.selectedAspectRatio.ToString("0.00");
 
             Rectangle contentBounds = AspectRatioLayout.GetContentBounds(this.ClientSize, this.selectedAspectRatio);
+
+            int adjustButtonWidth = Math.Max(120, (int)(contentBounds.Width * 0.085));
+            int adjustButtonHeight = Math.Max(42, (int)(contentBounds.Height * 0.06));
+            int valueBoxWidth = Math.Max(140, (int)(contentBounds.Width * 0.12));
+            int valueBoxHeight = adjustButtonHeight;
+
+            this.decreaseButton.Size = new Size(adjustButtonWidth, adjustButtonHeight);
+            this.increaseButton.Size = new Size(adjustButtonWidth, adjustButtonHeight);
+            this.decreaseAspectButton.Size = new Size(adjustButtonWidth, adjustButtonHeight);
+            this.increaseAspectButton.Size = new Size(adjustButtonWidth, adjustButtonHeight);
+            this.currentRatioBox.Size = new Size(valueBoxWidth, valueBoxHeight);
+            this.currentAspectRatioBox.Size = new Size(valueBoxWidth, valueBoxHeight);
 
             int imageWidth = (int)(contentBounds.Width / a4WidthRatio * this.screenSize);
             int imageHeight = (int)(contentBounds.Height / a4HeightRatio * this.screenSize);
@@ -162,7 +196,7 @@ namespace CancellationTest
             this.a4ImagePictureBox.Left = contentBounds.Left + (contentBounds.Width - this.a4ImagePictureBox.Width) / 2;
             this.a4ImagePictureBox.Top = contentBounds.Top + (contentBounds.Height - this.a4ImagePictureBox.Height) / 2 - this.currentRatioBox.Height - this.okayButton.Height;
 
-            this.decreaseButton.Top = contentBounds.Bottom - (int)(contentBounds.Height * 0.18);
+            this.decreaseButton.Top = contentBounds.Bottom - (int)(contentBounds.Height * 0.20);
             this.decreaseButton.Left = contentBounds.Left + (int)(contentBounds.Width * 0.22);
 
             this.currentRatioBox.Top = this.decreaseButton.Top;
@@ -171,7 +205,7 @@ namespace CancellationTest
             this.increaseButton.Top = this.decreaseButton.Top;
             this.increaseButton.Left = contentBounds.Left + (int)(contentBounds.Width * 0.62);
 
-            this.decreaseAspectButton.Top = contentBounds.Bottom - (int)(contentBounds.Height * 0.28);
+            this.decreaseAspectButton.Top = contentBounds.Bottom - (int)(contentBounds.Height * 0.33);
             this.decreaseAspectButton.Left = this.decreaseButton.Left;
 
             this.currentAspectRatioBox.Top = this.decreaseAspectButton.Top;
@@ -182,6 +216,44 @@ namespace CancellationTest
 
             this.okayButton.Top = contentBounds.Bottom - (int)(contentBounds.Height * 0.08);
             this.okayButton.Left = contentBounds.Left + (int)(contentBounds.Width * 0.45);
+
+            int groupHorizontalPadding = Math.Max(12, (int)(contentBounds.Width * 0.012));
+            int groupTopPadding = Math.Max(18, (int)(contentBounds.Height * 0.025));
+            int groupBottomPadding = Math.Max(8, (int)(contentBounds.Height * 0.01));
+
+            this.screenSizeAdjustGroupBox.Left = this.decreaseButton.Left - groupHorizontalPadding;
+            this.screenSizeAdjustGroupBox.Top = this.decreaseButton.Top - groupTopPadding;
+            this.screenSizeAdjustGroupBox.Width = (this.increaseButton.Right - this.decreaseButton.Left) + (groupHorizontalPadding * 2);
+            this.screenSizeAdjustGroupBox.Height = this.decreaseButton.Height + groupTopPadding + groupBottomPadding;
+            this.screenSizeGroupLabel.Left = this.screenSizeAdjustGroupBox.Left + 12;
+            this.screenSizeGroupLabel.Top = this.screenSizeAdjustGroupBox.Top + 6;
+
+            this.aspectRatioAdjustGroupBox.Left = this.decreaseAspectButton.Left - groupHorizontalPadding;
+            this.aspectRatioAdjustGroupBox.Top = this.decreaseAspectButton.Top - groupTopPadding;
+            this.aspectRatioAdjustGroupBox.Width = (this.increaseAspectButton.Right - this.decreaseAspectButton.Left) + (groupHorizontalPadding * 2);
+            this.aspectRatioAdjustGroupBox.Height = this.decreaseAspectButton.Height + groupTopPadding + groupBottomPadding;
+            this.aspectRatioGroupLabel.Left = this.aspectRatioAdjustGroupBox.Left + 12;
+            this.aspectRatioGroupLabel.Top = this.aspectRatioAdjustGroupBox.Top + 6;
+
+            ApplyRoundedCorners(this.screenSizeAdjustGroupBox, 14);
+            ApplyRoundedCorners(this.aspectRatioAdjustGroupBox, 14);
+
+            this.helpButton.Width = Math.Max(48, (int)(contentBounds.Width * 0.04));
+            this.helpButton.Height = this.helpButton.Width;
+            this.helpButton.Left = contentBounds.Right - this.helpButton.Width - (int)(contentBounds.Width * 0.01);
+            this.helpButton.Top = contentBounds.Top + (int)(contentBounds.Height * 0.01);
+
+            this.screenSizeAdjustGroupBox.SendToBack();
+            this.aspectRatioAdjustGroupBox.SendToBack();
+            this.screenSizeGroupLabel.BringToFront();
+            this.aspectRatioGroupLabel.BringToFront();
+            this.decreaseButton.BringToFront();
+            this.currentRatioBox.BringToFront();
+            this.increaseButton.BringToFront();
+            this.decreaseAspectButton.BringToFront();
+            this.currentAspectRatioBox.BringToFront();
+            this.increaseAspectButton.BringToFront();
+            this.helpButton.BringToFront();
 
 #if DEBUG
             this.debugLeftBar.Bounds = new Rectangle(0, 0, contentBounds.Left, this.ClientSize.Height);
@@ -217,9 +289,14 @@ namespace CancellationTest
             this.decreaseButton = new System.Windows.Forms.Button();
             this.increaseAspectButton = new System.Windows.Forms.Button();
             this.decreaseAspectButton = new System.Windows.Forms.Button();
+            this.helpButton = new System.Windows.Forms.Button();
             this.currentRatioBox = new System.Windows.Forms.TextBox();
             this.currentAspectRatioBox = new System.Windows.Forms.TextBox();
             this.a4GroupBox = new System.Windows.Forms.GroupBox();
+            this.screenSizeAdjustGroupBox = new System.Windows.Forms.Panel();
+            this.aspectRatioAdjustGroupBox = new System.Windows.Forms.Panel();
+            this.screenSizeGroupLabel = new System.Windows.Forms.Label();
+            this.aspectRatioGroupLabel = new System.Windows.Forms.Label();
             this.a4ImagePictureBox = new System.Windows.Forms.PictureBox();
 #if DEBUG
             this.debugLeftBar = new System.Windows.Forms.Panel();
@@ -338,6 +415,45 @@ namespace CancellationTest
             this.decreaseAspectButton.Text = "Aspect -";
             this.decreaseAspectButton.UseVisualStyleBackColor = false;
             this.decreaseAspectButton.Click += new System.EventHandler(this.decreaseAspectButton_Click);
+
+            //
+            // screenSizeAdjustGroupBox
+            //
+            this.screenSizeAdjustGroupBox.BackColor = Color.FromArgb(45, 45, 45);
+            this.screenSizeAdjustGroupBox.BorderStyle = BorderStyle.None;
+
+            //
+            // aspectRatioAdjustGroupBox
+            //
+            this.aspectRatioAdjustGroupBox.BackColor = Color.FromArgb(45, 45, 45);
+            this.aspectRatioAdjustGroupBox.BorderStyle = BorderStyle.None;
+
+            //
+            // screenSizeGroupLabel
+            //
+            this.screenSizeGroupLabel.AutoSize = true;
+            this.screenSizeGroupLabel.ForeColor = Color.WhiteSmoke;
+            this.screenSizeGroupLabel.BackColor = Color.Transparent;
+            this.screenSizeGroupLabel.Text = "Adjust Screen Size";
+
+            //
+            // aspectRatioGroupLabel
+            //
+            this.aspectRatioGroupLabel.AutoSize = true;
+            this.aspectRatioGroupLabel.ForeColor = Color.WhiteSmoke;
+            this.aspectRatioGroupLabel.BackColor = Color.Transparent;
+            this.aspectRatioGroupLabel.Text = "Adjust Aspect Ratio";
+
+            //
+            // helpButton
+            //
+            this.helpButton.BackColor = Color.DeepSkyBlue;
+            this.helpButton.ForeColor = Color.White;
+            this.helpButton.Name = "helpButton";
+            this.helpButton.TabIndex = 9;
+            this.helpButton.Text = "?";
+            this.helpButton.UseVisualStyleBackColor = false;
+            this.helpButton.Click += new System.EventHandler(this.helpButton_Click);
             // 
             // a4GroupBox
             // 
@@ -391,12 +507,17 @@ namespace CancellationTest
             this.Controls.Add(this.debugBottomBar);
 #endif
             this.Controls.Add(this.a4GroupBox);
+            this.Controls.Add(this.screenSizeAdjustGroupBox);
+            this.Controls.Add(this.aspectRatioAdjustGroupBox);
+            this.Controls.Add(this.screenSizeGroupLabel);
+            this.Controls.Add(this.aspectRatioGroupLabel);
             this.Controls.Add(this.currentRatioBox);
             this.Controls.Add(this.currentAspectRatioBox);
             this.Controls.Add(this.decreaseButton);
             this.Controls.Add(this.increaseButton);
             this.Controls.Add(this.decreaseAspectButton);
             this.Controls.Add(this.increaseAspectButton);
+            this.Controls.Add(this.helpButton);
             this.Controls.Add(this.okayButton);
             this.Controls.Add(this.a4ImagePictureBox);
             this.Name = "screenSizeAdjustment";
@@ -447,6 +568,25 @@ namespace CancellationTest
 
             return resizedImage;
 
+        }
+
+        private void ApplyRoundedCorners(Control control, int radius)
+        {
+            if (control.Width <= 0 || control.Height <= 0)
+            {
+                return;
+            }
+
+            GraphicsPath path = new GraphicsPath();
+            int diameter = radius * 2;
+
+            path.AddArc(0, 0, diameter, diameter, 180, 90);
+            path.AddArc(control.Width - diameter, 0, diameter, diameter, 270, 90);
+            path.AddArc(control.Width - diameter, control.Height - diameter, diameter, diameter, 0, 90);
+            path.AddArc(0, control.Height - diameter, diameter, diameter, 90, 90);
+            path.CloseFigure();
+
+            control.Region = new Region(path);
         }
 
         private void initalLoadCalculations(object sender, EventArgs e)

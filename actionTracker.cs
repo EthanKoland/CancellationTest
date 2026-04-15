@@ -462,91 +462,82 @@ namespace CancellationTest
         //Seperate function that determines the number of intersections between the paths of clicks
         private int intersectionCount()
         {
-            int count = 0;
+            this.intersectionPoints.Clear();
 
-            //If the count is less then 4, then there are not enough points to create an intersection
-            if(this.actions.Count < 4)
+            // Need at least 4 clicks to have two non-adjacent segments
+            if (this.actions.Count < 4)
             {
                 return 0;
             }
 
-            for(int i = 0; i < this.actions.Count - 2; i++)
+            int count = 0;
+
+            // Segment i: actions[i] -> actions[i+1]
+            for (int i = 0; i < this.actions.Count - 1; i++)
             {
-                int point1iImgID = this.actions[i].ImageID;
-                int point2iImgID = this.actions[i + 1].ImageID;
+                Point a1 = this.actions[i].clickPoint;
+                Point a2 = this.actions[i + 1].clickPoint;
 
-                //Point point1i = this.actions[i].clickPoint;
-                //Point point2i = this.actions[i + 1].clickPoint;
-                Point point1i = this.actions[i].clickPoint;
-                Point point2i = this.actions[i + 1].clickPoint;
-
-
-                for (int j = i + 1; j < this.actions.Count - 1; j++)
+                // Segment j: actions[j] -> actions[j+1]
+                // Start at i + 2 so segments are non-adjacent and do not share endpoints.
+                for (int j = i + 2; j < this.actions.Count - 1; j++)
                 {
-                    //Point point1j = this.actions[j].clickPoint;
-                    //Point point2j = this.actions[j + 1].clickPoint;
+                    Point b1 = this.actions[j].clickPoint;
+                    Point b2 = this.actions[j + 1].clickPoint;
 
-                    int point1jImgID = this.actions[j].ImageID;
-                    int point2jImgID = this.actions[j + 1].ImageID;
-
-                    //Point point1j = this.localExamObject.imageList[point1jImgID - 1].imageCenter;
-                    //Point point2j = this.localExamObject.imageList[point2jImgID - 1].imageCenter;
-
-                    Point point1j = this.actions[j].clickPoint; 
-                    Point point2j = this.actions[j + 1].clickPoint;
-
-
-                    //Retrieve the X and Y values for each of the points - This is done to make the calculations easier and more readable
-                    int x1i = point1i.X;
-                    int y1i = point1i.Y;
-
-                    int x2i = point2i.X;
-                    int y2i = point2i.Y;
-
-                    int x1j = point1j.X;
-                    int y1j = point1j.Y;
-
-                    int x2j = point2j.X;
-                    int y2j = point2j.Y;
-
-                    //Slope of the lines
-                    double m1 = (double)(y2i - y1i) / (double)(x2i - x1i);
-                    double m2 = (double)(y2j - y1j) / (double)(x2j - x1j);
-
-                    double b1 = y1i - m1 * x1i;
-                    double b2 = y1j - m2 * x1j;
-
-                    //find the intersectinos between the two lines
-                    double x = (b2 - b1) / (m1 - m2);
-                    double y = m1 * x + b1;
-
-                    //Check if the point is with the two X values for each line
-                    Boolean condition1A = (x1i < x) && (x < x2i) || (x2i < x) && (x < x1i);
-                    Boolean condition1B = (x1j < x) && (x < x2j) || (x2j < x) && (x < x2i);
-                    Boolean condition1 = condition1A && condition1B;
-
-                    Boolean condition2A = (y1i < y) && (y < y2i) || (y2i < y) && (y < y1i);
-                    Boolean condition2B = (y1j < y) && (y < y2j) || (y2j < y) && (y < y1j);
-                    Boolean condition2 = condition2A && condition2B;
-                    
-                    
-                    count += condition1 && condition2 ? 1 : 0;
-
-                    if(condition1 && condition2)
+                    // Also skip wrap-around case where first and last segments share endpoint
+                    if (i == 0 && j + 1 == this.actions.Count - 1)
                     {
-                        this.intersectionPoints.Add(new Point((int)x, (int)y));
+                        continue;
                     }
 
-
+                    Point intersection;
+                    if (TryGetSegmentIntersection(a1, a2, b1, b2, out intersection))
+                    {
+                        count++;
+                        this.intersectionPoints.Add(intersection);
+                    }
                 }
             }
-            
 
             return count;
+        }
 
+        private static bool TryGetSegmentIntersection(Point p1, Point p2, Point p3, Point p4, out Point intersection)
+        {
+            intersection = new Point(0, 0);
 
+            // Parametric line intersection
+            double x1 = p1.X;
+            double y1 = p1.Y;
+            double x2 = p2.X;
+            double y2 = p2.Y;
+            double x3 = p3.X;
+            double y3 = p3.Y;
+            double x4 = p4.X;
+            double y4 = p4.Y;
 
+            double denom = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4);
 
+            // Parallel or collinear -> no single crossing point
+            if (Math.Abs(denom) < 1e-10)
+            {
+                return false;
+            }
+
+            double t = ((x1 - x3) * (y3 - y4) - (y1 - y3) * (x3 - x4)) / denom;
+            double u = ((x1 - x3) * (y1 - y2) - (y1 - y3) * (x1 - x2)) / denom;
+
+            // Strictly inside both segments (exclude touching at endpoints)
+            if (t <= 0.0 || t >= 1.0 || u <= 0.0 || u >= 1.0)
+            {
+                return false;
+            }
+
+            double ix = x1 + t * (x2 - x1);
+            double iy = y1 + t * (y2 - y1);
+            intersection = new Point((int)Math.Round(ix), (int)Math.Round(iy));
+            return true;
         }
 
         private double calculateCenterOfCancellation()
